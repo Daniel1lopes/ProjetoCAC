@@ -1,0 +1,32 @@
+﻿@model List<OutroTeste.Models.UnidadeAtendimento>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unidades de Atendimento</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="d-flex justify-content-center align-items-center" style="height: 60vh;">
+        <div class="d-flex flex-wrap">
+            <div class="m-1 w-100 text-center">
+                <h4 style="color:#bf0087">@ViewBag.CentroAtendimentoNome</h4>
+                <h4 style="color:#bf0087">@ViewBag.EspecialidadeNome</h4>
+                <h4 style="color:#bf0087">@ViewBag.ServicoNome</h4>
+                <br />
+                <br />
+                <h2 style="color:#43054e">Selecione a Unidade de Atendimento</h2>
+            </div>
+            @foreach (var unidade in Model)
+            {
+                <div class="d-flex m-1 container" style="flex: 1;">
+                    <a class="btn btn-primary btn-block" asp-action="Agendamento" asp-controller="CentroAtendimento">@Html.DisplayFor(modelItem => unidade.nmUnidadeAtendimento)</a>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="text-center mt-3">
+        <a class="btn btn-secondary" href="javascript:history.back()">Voltar</a>
+    </div>
+</body>
+</html>
