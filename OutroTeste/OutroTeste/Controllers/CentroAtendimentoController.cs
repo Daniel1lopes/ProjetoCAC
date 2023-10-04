@@ -72,5 +72,36 @@ namespace OutroTeste.Controllers
             ViewBag.EspecialidadeNome = _context.Especialidades.FirstOrDefault(e => e.idEspecialidade == servico.idEspecialidade)?.nmEspecialidade;
             return View(unidadesAtendimento);
         }
+        public IActionResult DatasDisponiveis([FromRoute] short idServico, [FromRoute] short idUnidadeAtendimento)
+        {
+            var datasDisponiveis = _context.Agendas
+                .Where(a => a.idServico == idServico && a.idUnidadeAtendimento == idUnidadeAtendimento)
+                .Join(
+                    _context.UnidadesAtendimento,
+                    a => a.idUnidadeAtendimento,
+                    ua => ua.idUnidadeAtendimento,
+                    (a, ua) => new { Agenda = a, UnidadeAtendimento = ua })
+                .GroupJoin(
+                    _context.Agendamentos.GroupBy(ag => ag.idAgenda)
+                        .Select(g => new { idAgenda = g.Key, nuQtdeAgendamento = g.Count() }),
+                    a => a.Agenda.idAgenda,
+                    qa => qa.idAgenda,
+                    (a, qa) => new { Agenda = a.Agenda, UnidadeAtendimento = a.UnidadeAtendimento, QtdeAgendamento = qa })
+                .SelectMany(
+                    x => x.QtdeAgendamento.DefaultIfEmpty(),
+                    (x, qa) => new { x.Agenda, x.UnidadeAtendimento, QtdeAgendamento = (qa == null ? 0 : qa.nuQtdeAgendamento) })
+                .Where(x => x.Agenda.nuVagas - x.Agenda.nuReserva - x.QtdeAgendamento > 0)
+                .Select(x => new { x.Agenda.dtAgenda, x.UnidadeAtendimento })
+                .Distinct();
+
+            if (!datasDisponiveis.Any())
+            {
+                return NotFound();
+            }
+
+            return View(datasDisponiveis);
+        }
+
+
     }
 }

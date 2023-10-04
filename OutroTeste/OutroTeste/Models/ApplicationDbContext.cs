@@ -8,6 +8,8 @@ namespace OutroTeste.Models
         public DbSet<CentroAtendimento> CentroAtendimentos { get; set; }
         public DbSet<Especialidade> Especialidades { get; set; }
         public DbSet<Servico> Servicos { get; set; }
+        public DbSet<Agenda> Agendas { get; set; }
+        public DbSet<Agendamento> Agendamentos { get; set; }
         public DbSet<UnidadeAtendimento> UnidadesAtendimento { get; set; }
         public DbSet<ServicoUnidadeAtendimento> ServicoUnidadeAtendimento { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

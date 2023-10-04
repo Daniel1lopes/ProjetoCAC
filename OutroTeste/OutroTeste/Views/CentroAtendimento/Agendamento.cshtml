@@ -1,0 +1,17 @@
+﻿@model IEnumerable<DateTime>
+
+<h2>Datas Disponíveis</h2>
+
+@if (Model != null)
+{
+    <ul>
+        @foreach (var data in Model)
+        {
+            <li>@data.ToString("dd/MM/yyyy")</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Não foi encontrada uma data (erro).</p>
+}
