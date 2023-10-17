@@ -9,9 +9,18 @@ namespace OutroTeste.Models
     {
         [Key]
         [Column("idUnidadeAtendimento", TypeName = "smallint")]
-        public short idUnidadeAtendimento { get; set; }
+        public int idUnidadeAtendimento { get; set; }
+        [Column("deUnidadeAtendimento", TypeName = "varchar(200)")]
+        public string deUnidadeAtendimento { get; set; }
+        [Column("imUnidadeAtendimento", TypeName = "varbinary(max)")]
+        public string imUnidadeAtendimento { get; set; }
         [Column("nmUnidadeAtendimento", TypeName = "varchar(100)")]
         public string nmUnidadeAtendimento { get; set; }
-        public ICollection<ServicoUnidadeAtendimento> Servicos { get; set; }
+        [Column("icAtivo", TypeName = "bit")]
+        public bool icAtivo { get; set; }
+        [ForeignKey("CentroAtendimento")]
+        public short idCentroAtendimento { get; set; }
+        public virtual CentroAtendimento CentroAtendimento { get; set; }
+        public ICollection<ServicoUnidadeAtendimento> ServicosUnidadeAtendimento { get; set; }
     }
 }

@@ -1,0 +1,25 @@
+﻿@model List<DateTime>
+
+@{
+    ViewData["Title"] = "Datas Disponíveis";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>Id do Serviço de Unidade de Atendimento: @ViewBag.IdServicoUnidadeAtendimento</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Data</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model)
+        {
+            <tr>
+                <td>@data.ToString("dd/MM/yyyy")</td>
+            </tr>
+        }
+    </tbody>
+</table>

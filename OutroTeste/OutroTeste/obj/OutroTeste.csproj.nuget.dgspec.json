@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\thurd\\Downloads\\ProjetoCAC\\OutroTeste\\OutroTeste\\OutroTeste.csproj": {}
+    "C:\\Users\\thurd\\Downloads\\ProjetoCAC1\\OutroTeste\\OutroTeste\\OutroTeste.csproj": {}
   },
   "projects": {
-    "C:\\Users\\thurd\\Downloads\\ProjetoCAC\\OutroTeste\\OutroTeste\\OutroTeste.csproj": {
+    "C:\\Users\\thurd\\Downloads\\ProjetoCAC1\\OutroTeste\\OutroTeste\\OutroTeste.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\thurd\\Downloads\\ProjetoCAC\\OutroTeste\\OutroTeste\\OutroTeste.csproj",
+        "projectUniqueName": "C:\\Users\\thurd\\Downloads\\ProjetoCAC1\\OutroTeste\\OutroTeste\\OutroTeste.csproj",
         "projectName": "OutroTeste",
-        "projectPath": "C:\\Users\\thurd\\Downloads\\ProjetoCAC\\OutroTeste\\OutroTeste\\OutroTeste.csproj",
+        "projectPath": "C:\\Users\\thurd\\Downloads\\ProjetoCAC1\\OutroTeste\\OutroTeste\\OutroTeste.csproj",
         "packagesPath": "C:\\Users\\thurd\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\thurd\\Downloads\\ProjetoCAC\\OutroTeste\\OutroTeste\\obj\\",
+        "outputPath": "C:\\Users\\thurd\\Downloads\\ProjetoCAC1\\OutroTeste\\OutroTeste\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\thurd\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -82,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }

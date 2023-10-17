@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/0K6bz679JiE3B3XOyAyDZlVX5KFgyNGvXtiLLefA/+Bb4jX23qru58Gf3ZfNuJlkhbUcCqqpcob0pLKP3qZoA==",
+  "dgSpecHash": "wkSUxwIP8LrDnHcCBM2OvnlT8M6thZHUNIMPjFkJh9xtpgMlhttNqZde0nopjrst2G5v8MAN2QGkMdIVt11oDw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\thurd\\Downloads\\ProjetoCAC\\OutroTeste\\OutroTeste\\OutroTeste.csproj",
+  "projectFilePath": "C:\\Users\\thurd\\Downloads\\ProjetoCAC1\\OutroTeste\\OutroTeste\\OutroTeste.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\thurd\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\thurd\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

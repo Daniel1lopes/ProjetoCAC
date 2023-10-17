@@ -3,9 +3,11 @@
     "",
     "\\OutroTeste",
     "\\OutroTeste\\OutroTeste",
+    "\\OutroTeste\\OutroTeste\\Controllers",
+    "\\OutroTeste\\OutroTeste\\Models",
     "\\OutroTeste\\OutroTeste\\Views",
     "\\OutroTeste\\OutroTeste\\Views\\CentroAtendimento"
   ],
-  "SelectedNode": "\\OutroTeste\\OutroTeste\\Views\\CentroAtendimento\\UnidadesAtendimento.cshtml",
+  "SelectedNode": "\\OutroTeste\\OutroTeste.sln",
   "PreviewInSolutionExplorer": false
 }

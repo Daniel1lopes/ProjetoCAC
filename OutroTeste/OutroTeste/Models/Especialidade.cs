@@ -9,9 +9,14 @@ namespace OutroTeste.Models
         [Key]
         [Column("idEspecialidade", TypeName = "smallint")]
         public short idEspecialidade { get; set; }
-        [Column("nmEspecialidade", TypeName = "varchar(100)")]
+        [Column("deEspecialidade", TypeName = "varchar(500)")]
+        public string? deEspecialidade { get; set; }
+        [Column("imEspecialidade", TypeName = "varbinary(max)")]
+        public byte[] imEspecialidade { get; set; }
+        [Column("nmEspecialidade", TypeName = "varchar(50)")]
         public string nmEspecialidade { get; set; }
         [Column("idCentroAtendimento", TypeName = "smallint")]
+
         public short idCentroAtendimento { get; set; }
         [ForeignKey("idCentroAtendimento")]
         [InverseProperty("Especialidades")]

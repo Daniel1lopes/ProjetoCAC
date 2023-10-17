@@ -10,11 +10,13 @@ namespace OutroTeste.Models
     public class Agendamento
     {
         [Key]
-        public int idAgendamento { get; set; }
+        public short idAgendamento { get; set; }
         public DateTime dtAgendamento { get; set; }
-        public int idAgenda { get; set; }
-        public int idPessoa { get; set; }
         [Column("icAtivo", TypeName = "bit")]
         public bool icAtivo { get; set; }
+        [ForeignKey("IdAgenda")]
+        public short idAgenda { get; set; }
+        [ForeignKey("IdPessoa")]
+        public short idPessoa { get; set; }
     }
 }

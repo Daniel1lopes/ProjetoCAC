@@ -1,21 +1,30 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OutroTeste.Models;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace OutroTeste.Models
 {
-    [Table("ServicoUnidadeAtendimento", Schema = "CACTB")]
+    [Table("ServicoUnidadeAtendimento", Schema = "CACTB")] // Especifique o nome da tabela
     public class ServicoUnidadeAtendimento
     {
         [Key]
-        [Column("idServico")] // Defina o nome correto da coluna
-        public short idServico { get; set; }
-        [Key]
-        [Column("idUnidadeAtendimento")] // Defina o nome correto da coluna
-        public short idUnidadeAtendimento { get; set; }
-        [ForeignKey("idServico")]
-        public Servico Servico { get; set; }
-        public UnidadeAtendimento UnidadeAtendimento { get; set; }
+        public short idServicoUnidadeAtendimento { get; set; }
+
+        [ForeignKey("UnidadeAtendimento")]
+        [Column("idUnidadeAtendimento", TypeName = "smallint")]
+        public int idUnidadeAtendimento { get; set; }
+        public virtual UnidadeAtendimento UnidadeAtendimento { get; set; }
+
+        [Column(TypeName = "smallint")]
+        [ForeignKey("Servico")]
+        public int idServico { get; set; }
+        public virtual Servico Servico { get; set; }
+
+        public bool icAtivo { get; set; }
+
+        public ICollection<Agenda> Agendas { get; set; }
+
     }
 }

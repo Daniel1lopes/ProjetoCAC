@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using OutroTeste.Models;
+using System.Runtime.Intrinsics.X86;
+using System;
 
 namespace OutroTeste.Controllers
 {
@@ -22,16 +24,16 @@ namespace OutroTeste.Controllers
             var centroAtendimentos = _context.CentroAtendimentos.ToList();
             return View(centroAtendimentos);
         }
-        [Route("CentroAtendimento/Especialidades/{id}")]
-        public IActionResult Especialidades([FromRoute] short id)
+        [Route("CentroAtendimento/Especialidades/{centroAtendimentoID}")]
+        public IActionResult Especialidades([FromRoute] short centroAtendimentoID)
         {
-            var centroAtendimento = _context.CentroAtendimentos.FirstOrDefault(c => c.idCentroAtendimento == id);
+            var centroAtendimento = _context.CentroAtendimentos.FirstOrDefault(c => c.idCentroAtendimento == centroAtendimentoID);
             if (centroAtendimento == null)
             {
                 return NotFound();
             }
             var especialidades = _context.Especialidades
-            .Where(e => e.idCentroAtendimento == id)
+            .Where(e => e.idCentroAtendimento == centroAtendimentoID)
             .ToList();
             ViewBag.CentroAtendimentoNome = centroAtendimento.nmCentroAtendimento;
             return View(especialidades);
@@ -63,45 +65,45 @@ namespace OutroTeste.Controllers
             {
                 return NotFound();
             }
-            var unidadesAtendimento = _context.ServicoUnidadeAtendimento
+            var unidadesAtendimento = _context.ServicosUnidadeAtendimento
             .Where(sua => sua.idServico == servicoId)
             .Select(sua => sua.UnidadeAtendimento)
             .ToList();
             ViewBag.CentroAtendimentoNome = centroAtendimento.nmCentroAtendimento;
             ViewBag.ServicoNome = servico.deServico;
             ViewBag.EspecialidadeNome = _context.Especialidades.FirstOrDefault(e => e.idEspecialidade == servico.idEspecialidade)?.nmEspecialidade;
+
             return View(unidadesAtendimento);
         }
-        public IActionResult DatasDisponiveis([FromRoute] short idServico, [FromRoute] short idUnidadeAtendimento)
+
+
+        [HttpGet]
+        [Route("CentroAtendimento/{centroId}/{servicoId}/DatasDisponiveis/")]
+        public IActionResult DatasDisponiveis([FromRoute] short centroId, [FromRoute] short servicoId)
         {
-            var datasDisponiveis = _context.Agendas
-                .Where(a => a.idServico == idServico && a.idUnidadeAtendimento == idUnidadeAtendimento)
-                .Join(
-                    _context.UnidadesAtendimento,
-                    a => a.idUnidadeAtendimento,
-                    ua => ua.idUnidadeAtendimento,
-                    (a, ua) => new { Agenda = a, UnidadeAtendimento = ua })
-                .GroupJoin(
-                    _context.Agendamentos.GroupBy(ag => ag.idAgenda)
-                        .Select(g => new { idAgenda = g.Key, nuQtdeAgendamento = g.Count() }),
-                    a => a.Agenda.idAgenda,
-                    qa => qa.idAgenda,
-                    (a, qa) => new { Agenda = a.Agenda, UnidadeAtendimento = a.UnidadeAtendimento, QtdeAgendamento = qa })
-                .SelectMany(
-                    x => x.QtdeAgendamento.DefaultIfEmpty(),
-                    (x, qa) => new { x.Agenda, x.UnidadeAtendimento, QtdeAgendamento = (qa == null ? 0 : qa.nuQtdeAgendamento) })
-                .Where(x => x.Agenda.nuVagas - x.Agenda.nuReserva - x.QtdeAgendamento > 0)
-                .Select(x => new { x.Agenda.dtAgenda, x.UnidadeAtendimento })
-                .Distinct();
+            var idServicoUnidadeAtendimento = _context.ServicosUnidadeAtendimento
+            .Where(sua => sua.idServico == servicoId && sua.UnidadeAtendimento.idUnidadeAtendimento == centroId)
+            .Select(sua => sua.idServicoUnidadeAtendimento)
+            .FirstOrDefault();
 
-            if (!datasDisponiveis.Any())
-            {
-                return NotFound();
-            }
+            var DatasDisponiveis = _context.Agendas
+                .FromSqlInterpolated($@"
+            SELECT DISTINCT A.dtAgenda  
+            FROM CACBD.CACTB.Agenda A
+            INNER JOIN CACBD.CACTB.ServicoUnidadeAtendimento SUA
+              ON SUA.idServicoUnidadeAtendimento = A.idServicoUnidadeAtendimento
+            LEFT JOIN (
+            SELECT idAgenda, COUNT(1) AS nuQtdeAgendamento
+            FROM CACBD.CACTB.Agendamento
+            GROUP BY idAgenda
+            ) AS QA ON QA.idAgenda = A.idAgenda
+            WHERE A.idServicoUnidadeAtendimento = {idServicoUnidadeAtendimento}
+            AND (A.nuVagas - A.nuReserva - ISNULL(QA.nuQtdeAgendamento,0)) > 0")
+                .Select(a => a.dtAgenda)
+                .ToList();
 
-            return View(datasDisponiveis);
+            return View(DatasDisponiveis);
         }
-
-
     }
 }
+
