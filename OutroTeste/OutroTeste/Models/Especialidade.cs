@@ -15,13 +15,11 @@ namespace OutroTeste.Models
         public byte[] imEspecialidade { get; set; }
         [Column("nmEspecialidade", TypeName = "varchar(50)")]
         public string nmEspecialidade { get; set; }
-        [Column("idCentroAtendimento", TypeName = "smallint")]
-
+        [Column("icAtivo", TypeName = "bit")]
+        public bool icAtivo { get; set; }
+        [ForeignKey("CentroAtendimento")]
         public short idCentroAtendimento { get; set; }
-        [ForeignKey("idCentroAtendimento")]
-        [InverseProperty("Especialidades")]
-        public CentroAtendimento CentroAtendimento { get; set; }
-        [InverseProperty("Especialidade")]
+        public virtual CentroAtendimento CentroAtendimento { get; set; }
         public ICollection<Servico> Servicos { get; set; }
     }
 }

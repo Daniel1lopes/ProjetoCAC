@@ -14,14 +14,14 @@ namespace OutroTeste.Models
 
         [ForeignKey("UnidadeAtendimento")]
         [Column("idUnidadeAtendimento", TypeName = "smallint")]
-        public int idUnidadeAtendimento { get; set; }
+        public short idUnidadeAtendimento { get; set; }
         public virtual UnidadeAtendimento UnidadeAtendimento { get; set; }
 
-        [Column(TypeName = "smallint")]
         [ForeignKey("Servico")]
-        public int idServico { get; set; }
+        [Column(TypeName = "smallint")]
+        public short idServico { get; set; }
         public virtual Servico Servico { get; set; }
-
+        [Column("icAtivo", TypeName = "bit")]
         public bool icAtivo { get; set; }
 
         public ICollection<Agenda> Agendas { get; set; }

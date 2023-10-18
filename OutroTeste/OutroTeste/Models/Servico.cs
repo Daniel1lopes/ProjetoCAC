@@ -10,7 +10,7 @@ namespace OutroTeste.Models
     {
         [Key]
         [Column("idServico", TypeName = "smallint")]
-        public int idServico { get; set; }
+        public short idServico { get; set; }
         [Column("deServico", TypeName = "varchar(500)")]
         public string deServico { get; set; }
         [Column("imServico", TypeName = "varbinary(max)")]

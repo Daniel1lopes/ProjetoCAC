@@ -15,16 +15,19 @@ namespace OutroTeste.Controllers
         {
             _context = context;
         }
+
         public IActionResult Agendamento()
         {
             return View();
         }
+
         public IActionResult Index()
         {
             var centroAtendimentos = _context.CentroAtendimentos.ToList();
             return View(centroAtendimentos);
         }
-        [Route("CentroAtendimento/Especialidades/{centroAtendimentoID}")]
+
+        [Route("{AtendimentoID}/Especialidades/")]
         public IActionResult Especialidades([FromRoute] short centroAtendimentoID)
         {
             var centroAtendimento = _context.CentroAtendimentos.FirstOrDefault(c => c.idCentroAtendimento == centroAtendimentoID);
@@ -38,12 +41,13 @@ namespace OutroTeste.Controllers
             ViewBag.CentroAtendimentoNome = centroAtendimento.nmCentroAtendimento;
             return View(especialidades);
         }
-        [Route("CentroAtendimento/Servicos/{id}")]
-        public IActionResult Servicos([FromRoute] short id)
+
+        [Route("{EspecialidadeID}/Servicos/")]
+        public IActionResult Servicos([FromRoute] int EspecialidadeID)
         {
             var especialidade = _context.Especialidades
             .Include(e => e.Servicos)
-            .FirstOrDefault(e => e.idEspecialidade == id);
+            .FirstOrDefault(e => e.idEspecialidade == EspecialidadeID);
             if (especialidade == null)
             {
                 return NotFound();
@@ -52,21 +56,22 @@ namespace OutroTeste.Controllers
             ViewBag.CentroAtendimentoNome = _context.CentroAtendimentos.FirstOrDefault(c => c.idCentroAtendimento == especialidade.idCentroAtendimento)?.nmCentroAtendimento;
             return View(especialidade.Servicos.ToList());
         }
-        [Route("CentroAtendimento/UnidadesAtendimento/{centroId}/{servicoId}")]
-        public IActionResult UnidadesAtendimento([FromRoute] short centroId, [FromRoute] short servicoId)
+
+        [Route("{centroAtendimentoID}/{servicoID}/UnidadesAtendimento")]
+        public IActionResult UnidadesAtendimento([FromRoute] short centroAtendimentoID, [FromRoute] short servicoID)
         {
-            var centroAtendimento = _context.CentroAtendimentos.FirstOrDefault(c => c.idCentroAtendimento == centroId);
+            var centroAtendimento = _context.CentroAtendimentos.FirstOrDefault(c => c.idCentroAtendimento == centroAtendimentoID);
             if (centroAtendimento == null)
             {
                 return NotFound();
             }
-            var servico = _context.Servicos.FirstOrDefault(s => s.idServico == servicoId);
+            var servico = _context.Servicos.FirstOrDefault(s => s.idServico == servicoID);
             if (servico == null)
             {
                 return NotFound();
             }
             var unidadesAtendimento = _context.ServicosUnidadeAtendimento
-            .Where(sua => sua.idServico == servicoId)
+            .Where(sua => sua.idServico == servicoID)
             .Select(sua => sua.UnidadeAtendimento)
             .ToList();
             ViewBag.CentroAtendimentoNome = centroAtendimento.nmCentroAtendimento;
@@ -77,9 +82,8 @@ namespace OutroTeste.Controllers
         }
 
 
-        [HttpGet]
-        [Route("CentroAtendimento/{centroId}/{servicoId}/DatasDisponiveis/")]
-        public IActionResult DatasDisponiveis([FromRoute] short centroId, [FromRoute] short servicoId)
+        [Route("{servicoUnidadeAtendimentoID}/DatasDisponiveis/")]
+        public IActionResult DatasDisponiveis([FromRoute] short servicoUnidadeAtendimentoID)
         {
             var idServicoUnidadeAtendimento = _context.ServicosUnidadeAtendimento
             .Where(sua => sua.idServico == servicoId && sua.UnidadeAtendimento.idUnidadeAtendimento == centroId)
