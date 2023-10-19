@@ -25,13 +25,13 @@ namespace OutroTeste.Models
             // Define a relação de um para muitos entre ServicoUnidadeAtendimento e Servico
             modelBuilder.Entity<ServicoUnidadeAtendimento>()
                 .HasOne(sua => sua.Servico)
-                .WithMany(s => s.UnidadesAtendimento)
-                .HasForeignKey(sua => sua.idServico);  // Use idServico aqui
+                .WithMany(s => s.ServicosUnidadeAtendimento)
+                .HasForeignKey(sua => sua.idServico);  
 
             // Define a relação de um para muitos entre ServicoUnidadeAtendimento e UnidadeAtendimento
             modelBuilder.Entity<ServicoUnidadeAtendimento>()
                 .HasOne(sua => sua.UnidadeAtendimento)
-                .WithMany(u => u.Servicos)
+                .WithMany(ua => ua.ServicosUnidadeAtendimento)
                 .HasForeignKey(sua => sua.idUnidadeAtendimento);
 
             // Define a chave primária da classe Agenda

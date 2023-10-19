@@ -20,7 +20,7 @@
             @foreach (var unidade in Model)
             {
                 <div class="d-flex m-1 container" style="flex: 1;">
-                    <a href="@Url.Action("DatasDisponiveis", "CentroAtendimento", new { centroId = 1, servicoId = ViewBag.servicoId, idServicoUnidadeAtendimento = ViewBag.IdServicoUnidadeAtendimento })" class="btn btn-primary btn-block">@Html.DisplayFor(modelItem => unidade.nmUnidadeAtendimento)</a>
+                    <a class="btn btn-primary btn-block" href="@Url.Action("DatasDisponiveis", "CentroAtendimento", new { servicoUnidadeAtendimentoID = ViewBag.servicoUnidadeAtendimentoID })">@unidade.nmUnidadeAtendimento</a>
                 </div>
             }
         </div>

@@ -13,7 +13,7 @@ namespace OutroTeste.Models
         [Column("deUnidadeAtendimento", TypeName = "varchar(200)")]
         public string deUnidadeAtendimento { get; set; }
         [Column("imUnidadeAtendimento", TypeName = "varbinary(max)")]
-        public string imUnidadeAtendimento { get; set; }
+        public byte[]? imUnidadeAtendimento { get; set; }
         [Column("nmUnidadeAtendimento", TypeName = "varchar(100)")]
         public string nmUnidadeAtendimento { get; set; }
         [Column("icAtivo", TypeName = "bit")]

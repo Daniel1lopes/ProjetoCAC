@@ -12,9 +12,9 @@ namespace OutroTeste.Models
         [Column("idServico", TypeName = "smallint")]
         public short idServico { get; set; }
         [Column("deServico", TypeName = "varchar(500)")]
-        public string deServico { get; set; }
+        public string? deServico { get; set; }
         [Column("imServico", TypeName = "varbinary(max)")]
-        public string imServico { get; set; }
+        public byte[]? imServico { get; set; }
         [Column("nmServico", TypeName = "varchar(100)")]
         public string nmServico { get; set; }
         [Column("icAtivo", TypeName = "bit")]

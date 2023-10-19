@@ -19,7 +19,7 @@
             @foreach (var servico in Model)
             {
                 <div class="d-flex m-1 container" style="flex: 1;">
-                    <a class="btn btn-primary btn-block" href="@Url.Action("UnidadesAtendimento", "CentroAtendimento", new { centroId = 1, servicoId = servico.idServico })">@servico.deServico</a>
+                    <a class="btn btn-primary btn-block" href="@Url.Action("UnidadesAtendimento", "CentroAtendimento", new { centroAtendimentoID = ViewBag.centroAtendimentoID ,servicoId = servico.idServico })">@servico.deServico</a>
                 </div>
             }
         </div>
