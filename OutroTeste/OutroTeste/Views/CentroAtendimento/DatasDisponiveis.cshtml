@@ -3,12 +3,19 @@
 @{
     ViewData["Title"] = "Datas Disponíveis";
 }
+<div class="m-1 w-100 text-center">
+    <h4 style="color:#bf0087">@ViewBag.centroAtendimentoNome</h4>
+    <h4 style="color:#bf0087">@ViewBag.especialidadeNome</h4>
+    <h4 style="color:#bf0087">@ViewBag.servicoNome</h4>
+    <h4 style="color:#bf0087">@ViewBag.unidadeNome</h4>
+</div>
 
-<h2>@ViewData["Title"]</h2>
+<div style="display: flex; justify-content: center; align-items: center; padding-right: 40px">
+    <a class="btn btn-secondary" href="javascript:history.back()">Voltar</a>
+    <h2 class="m-1 w-100 text-center">@ViewData["Title"]</h2>
+</div>
 
-<p>Id do Serviço de Unidade de Atendimento: @ViewBag.servicoUnidadeAtendimentoID</p>
-
-<table class="table">
+<table class="table">s
     <thead>
         <tr>
             <th>Data</th>
@@ -19,7 +26,7 @@
         {
             <tr>
                 <td>
-                    <a>@data.ToString("dd/MM/yyyy")</a>
+                    <a class="btn btn-primary btn-block" href="@Url.Action("horasDisponiveis", "CentroAtendimento", new { servicoUnidadeAtendimentoID = ViewBag.servicoUnidadeAtendimentoID })">@data.ToString("dd/MM/yyyy")</a
                 </td>
             </tr>
         }

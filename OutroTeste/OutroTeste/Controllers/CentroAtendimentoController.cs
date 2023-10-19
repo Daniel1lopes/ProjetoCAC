@@ -73,19 +73,17 @@ namespace OutroTeste.Controllers
                 .Select(sua => sua.UnidadeAtendimento)
                 .ToList();
 
-            var servicoUnidadeAtendimento = _context.ServicosUnidadeAtendimento.FirstOrDefault(e => e.idServicoUnidadeAtendimento == servicoID)?.idServicoUnidadeAtendimento;
-
             ViewBag.CentroAtendimentoNome = centroAtendimento.nmCentroAtendimento;
             ViewBag.ServicoNome = servico.deServico;
             ViewBag.EspecialidadeNome = _context.Especialidades.FirstOrDefault(e => e.idEspecialidade == servico.idEspecialidade)?.nmEspecialidade;
             ViewBag.CentroAtendimentoID = centroAtendimento.idCentroAtendimento;
-            ViewBag.servicoUnidadeAtendimentoID = servicoUnidadeAtendimento;
+            ViewBag.servicoUnidadeAtendimentoID = _context.ServicosUnidadeAtendimento.FirstOrDefault(e => e.idServicoUnidadeAtendimento == servicoID)?.idServicoUnidadeAtendimento;
             return View(unidadesAtendimento);
         }
 
 
-        [Route("CentroAtendimento/DatasDisponiveis/{servicoUnidadeAtendimentoID}")]
-        public IActionResult DatasDisponiveis([FromRoute] short servicoUnidadeAtendimentoID)
+        [Route("CentroAtendimento/{centroAtendimentoNome}/{especialidadeNome}/DatasDisponiveis/{servicoUnidadeAtendimentoID}/")]
+        public IActionResult DatasDisponiveis([FromRoute] short servicoUnidadeAtendimentoID, [FromRoute] string centroAtendimentoNome, [FromRoute] string especialidadeNome)
         {
             var Agenda = _context.Agendas
                 .Join(_context.ServicosUnidadeAtendimento, agenda => agenda.idServicoUnidadeAtendimento,
@@ -109,8 +107,28 @@ namespace OutroTeste.Controllers
                 .Select(a => a.dtAgenda)
                 .ToList();
 
+            var unidadeNome = _context.ServicosUnidadeAtendimento
+                .Include(sua => sua.UnidadeAtendimento)
+                .Where(sua => sua.idServicoUnidadeAtendimento == servicoUnidadeAtendimentoID)
+                .Select(sua => sua.UnidadeAtendimento.nmUnidadeAtendimento)
+                .FirstOrDefault();
 
-            return View(DatasDisponiveis);
+            ViewBag.unidadeNome = unidadeNome;
+
+            var servico = _context.ServicosUnidadeAtendimento
+                .Include(sua => sua.Servico)
+                .Where(sua => sua.idServicoUnidadeAtendimento == servicoUnidadeAtendimentoID)
+                .Select(sua => sua.Servico.nmServico)
+                .FirstOrDefault();
+
+            ViewBag.servicoNome = servico;
+
+            ViewBag.centroAtendimentoNome = centroAtendimentoNome;
+            ViewBag.especialidadeNome = especialidadeNome;
+
+            ViewBag.DataDisponivel = DatasDisponiveis;
+            ViewBag.Agenda = Agenda;
+            return View("DatasDisponiveis",DatasDisponiveis);
         }
     }
 }

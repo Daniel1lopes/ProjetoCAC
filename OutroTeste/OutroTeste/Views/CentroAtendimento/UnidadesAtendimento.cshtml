@@ -20,10 +20,12 @@
             @foreach (var unidade in Model)
             {
                 <div class="d-flex m-1 container" style="flex: 1;">
-                    <a class="btn btn-primary btn-block" href="@Url.Action("DatasDisponiveis", "CentroAtendimento", new { servicoUnidadeAtendimentoID = ViewBag.servicoUnidadeAtendimentoID })">@unidade.nmUnidadeAtendimento</a>
+                    <a class="btn btn-primary btn-block" href="@Url.Action("DatasDisponiveis", "CentroAtendimento", new { servicoUnidadeAtendimentoID = ViewBag.servicoUnidadeAtendimentoID,
+                                                                                                                          centroAtendimentoNome = ViewBag.CentroAtendimentoNome,
+                                                                                                                          especialidadeNome = ViewBag.EspecialidadeNome })">@unidade.nmUnidadeAtendimento</a>
                 </div>
             }
-        </div>
+        </div> 
     </div>
     <div class="text-center mt-3">
         <a class="btn btn-secondary" href="javascript:history.back()">Voltar</a>
