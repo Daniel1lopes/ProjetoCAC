@@ -7,6 +7,6 @@
     "\\OutroTeste\\Views",
     "\\OutroTeste\\Views\\CentroAtendimento"
   ],
-  "SelectedNode": "\\OutroTeste.sln",
+  "SelectedNode": "\\OutroTeste\\Controllers\\CentroAtendimentoController.cs",
   "PreviewInSolutionExplorer": false
 }

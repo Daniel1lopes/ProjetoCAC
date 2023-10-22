@@ -73,27 +73,33 @@ namespace OutroTeste.Controllers
                 .Select(sua => sua.UnidadeAtendimento)
                 .ToList();
 
+            ViewBag.CentroAtendimentoID = centroAtendimento.idCentroAtendimento;
+            ViewBag.ServicoID = servico.idServico;
+            ViewBag.EspecialidadeID = _context.Especialidades.FirstOrDefault(e => e.idEspecialidade == servico.idEspecialidade)?.idEspecialidade;
+
             ViewBag.CentroAtendimentoNome = centroAtendimento.nmCentroAtendimento;
             ViewBag.ServicoNome = servico.deServico;
             ViewBag.EspecialidadeNome = _context.Especialidades.FirstOrDefault(e => e.idEspecialidade == servico.idEspecialidade)?.nmEspecialidade;
+
             ViewBag.CentroAtendimentoID = centroAtendimento.idCentroAtendimento;
             ViewBag.servicoUnidadeAtendimentoID = _context.ServicosUnidadeAtendimento.FirstOrDefault(e => e.idServicoUnidadeAtendimento == servicoID)?.idServicoUnidadeAtendimento;
             return View(unidadesAtendimento);
         }
 
 
-        [Route("CentroAtendimento/{centroAtendimentoNome}/{especialidadeNome}/DatasDisponiveis/{servicoUnidadeAtendimentoID}/")]
-        public IActionResult DatasDisponiveis([FromRoute] short servicoUnidadeAtendimentoID, [FromRoute] string centroAtendimentoNome, [FromRoute] string especialidadeNome)
+        [Route("CentroAtendimento/{centroAtendimentoID}/{especialidadeID}/{servicoUnidadeAtendimentoID}/DatasDisponiveis/")]
+        public IActionResult DatasDisponiveis([FromRoute] short servicoUnidadeAtendimentoID, [FromRoute] short centroAtendimentoID, [FromRoute] short especialidadeID)
         {
-            var Agenda = _context.Agendas
+            // Select da Agenda inteira
+            var AgendaInteira = _context.Agendas
                 .Join(_context.ServicosUnidadeAtendimento, agenda => agenda.idServicoUnidadeAtendimento,
                                                            servicoUnidadeAtendimento => servicoUnidadeAtendimento.idServicoUnidadeAtendimento,
                                                            (agenda, servicoUnidadeAtendimento) => new {Agendas = agenda, ServicoUnidadeAtendimento = servicoUnidadeAtendimento })
                                                            .ToList();                                  
-
-            var DatasDisponiveis = _context.Agendas
+    
+            var AgendaSelecionada = _context.Agendas
                 .FromSqlInterpolated($@"
-            SELECT DISTINCT A.dtAgenda  
+             SELECT DISTINCT A.*
             FROM CACBD.CACTB.Agenda A
             INNER JOIN CACBD.CACTB.ServicoUnidadeAtendimento SUA
               ON SUA.idServicoUnidadeAtendimento = A.idServicoUnidadeAtendimento
@@ -104,9 +110,9 @@ namespace OutroTeste.Controllers
             ) AS QA ON QA.idAgenda = A.idAgenda
             WHERE A.idServicoUnidadeAtendimento = {servicoUnidadeAtendimentoID}
             AND (A.nuVagas - A.nuReserva - ISNULL(QA.nuQtdeAgendamento,0)) > 0")
-                .Select(a => a.dtAgenda)
                 .ToList();
 
+            // Extração de dados para view
             var unidadeNome = _context.ServicosUnidadeAtendimento
                 .Include(sua => sua.UnidadeAtendimento)
                 .Where(sua => sua.idServicoUnidadeAtendimento == servicoUnidadeAtendimentoID)
@@ -123,12 +129,14 @@ namespace OutroTeste.Controllers
 
             ViewBag.servicoNome = servico;
 
+            var centroAtendimentoNome = _context.CentroAtendimentos.FirstOrDefault(CA => CA.idCentroAtendimento == centroAtendimentoID)?.nmCentroAtendimento;
             ViewBag.centroAtendimentoNome = centroAtendimentoNome;
+
+            var especialidadeNome = _context.Especialidades.FirstOrDefault(E => E.idEspecialidade == especialidadeID)?.nmEspecialidade;
             ViewBag.especialidadeNome = especialidadeNome;
 
-            ViewBag.DataDisponivel = DatasDisponiveis;
-            ViewBag.Agenda = Agenda;
-            return View("DatasDisponiveis",DatasDisponiveis);
+
+            return View("DatasDisponiveis", AgendaSelecionada);
         }
     }
 }

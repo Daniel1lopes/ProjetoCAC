@@ -1,32 +1,39 @@
-﻿@model List<DateTime>
+﻿@model List<OutroTeste.Models.Agenda>
 
 @{
     ViewData["Title"] = "Datas Disponíveis";
 }
 <div class="m-1 w-100 text-center">
-    <h4 style="color:#bf0087">@ViewBag.centroAtendimentoNome</h4>
-    <h4 style="color:#bf0087">@ViewBag.especialidadeNome</h4>
-    <h4 style="color:#bf0087">@ViewBag.servicoNome</h4>
-    <h4 style="color:#bf0087">@ViewBag.unidadeNome</h4>
+    <h4 style="color:#bf0086">@ViewBag.centroAtendimentoNome</h4>
+    <h4 style="color:#bf0086">@ViewBag.especialidadeNome</h4>
+    <h4 style="color:#bf0086">@ViewBag.servicoNome</h4>
+    <h4 style="color:#bf0086">@ViewBag.unidadeNome</h4>
+</div>
+<hr>
+
+<div class="d-flex justify-content-between align-items-center">
+    <div>
+        <a class="btn btn-secondary" href="javascript:history.back()">Voltar</a>
+    </div>
+    <div class="w-100 text-center" style="padding-right: 5%">
+        <h2 class="m-1">@ViewData["Title"]</h2>
+    </div>
+    <div></div>
 </div>
 
-<div style="display: flex; justify-content: center; align-items: center; padding-right: 40px">
-    <a class="btn btn-secondary" href="javascript:history.back()">Voltar</a>
-    <h2 class="m-1 w-100 text-center">@ViewData["Title"]</h2>
-</div>
-
-<table class="table">s
+<table class="table">
     <thead>
         <tr>
-            <th>Data</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var data in Model)
-        {
+        @foreach (var agenda in Model) {
             <tr>
-                <td>
-                    <a class="btn btn-primary btn-block" href="@Url.Action("horasDisponiveis", "CentroAtendimento", new { servicoUnidadeAtendimentoID = ViewBag.servicoUnidadeAtendimentoID })">@data.ToString("dd/MM/yyyy")</a
+                <td style="display: flex; flex-direction: column; align-items: center;">
+                    <h3>Data - @agenda.dtAgenda.ToString("dd/MM/yyyy")</h3>
+                    <a class="btn btn-primary btn-block">Início: @agenda.hrInicio - Fim: @agenda.hrFim</a>
+                    <h5 style="padding-top: 5px">Número de vagas: @agenda.nuVagas</h5>
                 </td>
             </tr>
         }
