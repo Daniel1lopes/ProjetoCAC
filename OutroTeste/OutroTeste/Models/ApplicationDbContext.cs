@@ -12,6 +12,7 @@ namespace OutroTeste.Models
         public DbSet<Agendamento> Agendamentos { get; set; }
         public DbSet<UnidadeAtendimento> UnidadesAtendimento { get; set; }
         public DbSet<ServicoUnidadeAtendimento> ServicosUnidadeAtendimento { get; set; }
+        public DbSet<Pessoa> Pessoas { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
         {
@@ -39,7 +40,7 @@ namespace OutroTeste.Models
 
             // Define a relação de um para muitos entre ServicoUnidadeAtendimento e Agenda
             modelBuilder.Entity<Agenda>()
-                .HasOne(a => a.ServicoUnidadeAtendimento)
+                .HasOne(a => a.ServicosUnidadeAtendimento)
                 .WithMany(sua => sua.Agendas)
                 .HasForeignKey(a => a.idServicoUnidadeAtendimento);
 

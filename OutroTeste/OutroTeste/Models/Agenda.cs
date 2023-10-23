@@ -29,6 +29,8 @@ namespace OutroTeste.Models
         public short idServicoUnidadeAtendimento { get; set; }
 
         // Propriedade de navegação para ServicoUnidadeAtendimento
-        public virtual ServicoUnidadeAtendimento ServicoUnidadeAtendimento { get; set; }
+        public virtual ServicoUnidadeAtendimento ServicosUnidadeAtendimento { get; set; }
+
+        // public ICollection<Agendamento> Agendamentos { get; set; }
     }
 }
