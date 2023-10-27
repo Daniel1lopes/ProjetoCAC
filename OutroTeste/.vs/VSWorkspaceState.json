@@ -10,6 +10,6 @@
     "\\OutroTeste\\wwwroot",
     "\\OutroTeste\\wwwroot\\css"
   ],
-  "SelectedNode": "\\OutroTeste\\Views\\Shared\\_Layout.cshtml",
+  "SelectedNode": "\\OutroTeste\\Controllers\\CentroAtendimentoController.cs",
   "PreviewInSolutionExplorer": false
 }

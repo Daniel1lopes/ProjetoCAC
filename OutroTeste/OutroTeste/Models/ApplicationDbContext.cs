@@ -13,12 +13,15 @@ namespace OutroTeste.Models
         public DbSet<UnidadeAtendimento> UnidadesAtendimento { get; set; }
         public DbSet<ServicoUnidadeAtendimento> ServicosUnidadeAtendimento { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
+        public DbSet<DisponibilidadeAgenda> DisponibilidadeAgendas { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
         {
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             // Define a chave primária da classe ServicoUnidadeAtendimento
             modelBuilder.Entity<ServicoUnidadeAtendimento>()
                 .HasKey(sua => new { sua.idServicoUnidadeAtendimento });
@@ -27,7 +30,7 @@ namespace OutroTeste.Models
             modelBuilder.Entity<ServicoUnidadeAtendimento>()
                 .HasOne(sua => sua.Servico)
                 .WithMany(s => s.ServicosUnidadeAtendimento)
-                .HasForeignKey(sua => sua.idServico);  
+                .HasForeignKey(sua => sua.idServico);
 
             // Define a relação de um para muitos entre ServicoUnidadeAtendimento e UnidadeAtendimento
             modelBuilder.Entity<ServicoUnidadeAtendimento>()
@@ -43,6 +46,8 @@ namespace OutroTeste.Models
                 .HasOne(a => a.ServicosUnidadeAtendimento)
                 .WithMany(sua => sua.Agendas)
                 .HasForeignKey(a => a.idServicoUnidadeAtendimento);
+
+            modelBuilder.Entity<DisponibilidadeAgenda>().HasNoKey().ToView("DisponibilidadeAgenda", "cacvw");
 
             base.OnModelCreating(modelBuilder);
         }

@@ -89,13 +89,7 @@ namespace OutroTeste.Controllers
 
         [Route("CentroAtendimento/{centroAtendimentoID}/{especialidadeID}/{servicoUnidadeAtendimentoID}/DatasDisponiveis/")]
         public IActionResult DatasDisponiveis([FromRoute] short servicoUnidadeAtendimentoID, [FromRoute] short centroAtendimentoID, [FromRoute] short especialidadeID)
-        {
-            // Select da Agenda inteira
-            var AgendaInteira = _context.Agendas
-                .Join(_context.ServicosUnidadeAtendimento, agenda => agenda.idServicoUnidadeAtendimento,
-                                                           servicoUnidadeAtendimento => servicoUnidadeAtendimento.idServicoUnidadeAtendimento,
-                                                           (agenda, servicoUnidadeAtendimento) => new {Agendas = agenda, ServicoUnidadeAtendimento = servicoUnidadeAtendimento })
-                                                           .ToList();                                  
+        {                        
     
             var AgendaSelecionada = _context.Agendas
                 .FromSqlInterpolated($@"
@@ -135,6 +129,12 @@ namespace OutroTeste.Controllers
             var especialidadeNome = _context.Especialidades.FirstOrDefault(E => E.idEspecialidade == especialidadeID)?.nmEspecialidade;
             ViewBag.especialidadeNome = especialidadeNome;
 
+            var disponibilidadeAgenda = _context.DisponibilidadeAgendas
+                .Where(da => da.idServicoUnidadeAtendimento == servicoUnidadeAtendimentoID && da.nuQtdeDisponivel > 0)
+                .Select(sua => sua.nuQtdeDisponivel)
+                .ToList();
+
+            ViewBag.disponibilidadeAgenda = disponibilidadeAgenda;
 
             return View("DatasDisponiveis", AgendaSelecionada);
         }
