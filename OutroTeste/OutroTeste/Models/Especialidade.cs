@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OutroTeste.Models
+namespace agenda.Models
 {
     [Table("Especialidade", Schema = "CACTB")]
     public class Especialidade

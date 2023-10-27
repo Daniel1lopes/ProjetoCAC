@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using OutroTeste.Models;
+using agenda.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace OutroTeste.Models
+namespace agenda.Models
 {
     [Table("ServicoUnidadeAtendimento", Schema = "CACTB")] // Especifique o nome da tabela
     public class ServicoUnidadeAtendimento

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OutroTeste.Models;
+using agenda.Models;
 using System.Diagnostics;
 
-namespace OutroTeste.Controllers
+namespace agenda.Controllers
 {
     public class UsuarioController : Controller
     {
@@ -17,6 +17,17 @@ namespace OutroTeste.Controllers
         {
             return View();
         }
+
+        public IActionResult CriarConta()
+        {
+            return View();
+        }
+
+        public IActionResult EsquecerSenha()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

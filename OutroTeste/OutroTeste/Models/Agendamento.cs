@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using OutroTeste.Models;
+using agenda.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace OutroTeste.Models
+namespace agenda.Models
 {
     [Table("Agendamento", Schema = "CACTB")]
     public class Agendamento

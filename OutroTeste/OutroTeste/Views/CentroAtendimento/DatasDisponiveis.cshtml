@@ -1,12 +1,18 @@
-﻿@model List<OutroTeste.Models.Agenda>
+﻿@model List<agenda.Models.Agenda>
 
     @{
-    ViewData["Title"] = "Datas Disponíveis";
 
     int i = 0;
 
     }
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Datas Disponíveis</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
 
     <div class="m-1 w-100 text-center">
         <h4 style="color:#bf0086">@ViewBag.centroAtendimentoNome</h4>
@@ -21,7 +27,7 @@
             <a class="btn btn-secondary" href="javascript:history.back()">Voltar</a>
         </div>
         <div class="w-100 text-center" style="padding-right: 5%">
-            <h2 class="m-1">@ViewData["Title"]</h2>
+            <h2 class="m-1">Datas Disponíveis</h2>
         </div>
         <div></div>
     </div>
@@ -65,10 +71,11 @@
         <h4 id="dataAgenda">Data: </h4>
         <h4 id="horarioAgenda">Horário: </h4>
         <h4 id="qtdeDisponivel">Vaga(s) Disponíveis: </h4>
-        <button class="btn btn-primary btn-block" onclick="fecharPopup()">Cancelar</button>
-        <a class="btn btn-primary btn-block">Confirmar</a>
+        <div style="display: flex;">
+            <button class="btn btn-primary btn-cancelar" style="margin-right: 15px;" onclick="fecharPopup()">Cancelar</button>
+            <button class="btn btn-primary btn-cancelar">Confirmar</button>
+        </div>
     </div>
-
     <!-- A sobreposição -->
     <div id="overlayConfirmacao"></div>
 
@@ -87,3 +94,6 @@
             document.getElementById('popupConfirmacao').style.display = 'none';
         }
     </script>
+</body>
+</html>
+

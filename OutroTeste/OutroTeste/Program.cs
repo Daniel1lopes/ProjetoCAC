@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
-using OutroTeste.Models;
+using agenda.Models;
 
-namespace OutroTeste
+namespace agenda
 {
     public class Program
     {

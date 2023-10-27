@@ -1,4 +1,4 @@
-namespace OutroTeste.Models
+namespace agenda.Models
 {
     public class ErrorViewModel
     {

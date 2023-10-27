@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "GXm6ycRDaqs+HTrenmzofPLyLURToTrAenRhU80TRtA=",
+  "Hash": "8X8ekTuAx1NLPgvqnW6rWJriW/h/7J6dQo2L8el89WQ=",
   "Source": "OutroTeste",
   "BasePath": "_content/OutroTeste",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\wwwroot\\favicon32.ico",
+      "SourceId": "OutroTeste",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\wwwroot\\",
+      "BasePath": "_content/OutroTeste",
+      "RelativePath": "favicon32.ico",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\favicon32.ico"
     },
     {
       "Identity": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\wwwroot\\Imagens\\iconuser.png",

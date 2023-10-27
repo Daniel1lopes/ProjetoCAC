@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using OutroTeste.Models;
+using agenda.Models;
 using System.Runtime.Intrinsics.X86;
 using System;
 
-namespace OutroTeste.Controllers
+namespace agenda.Controllers
 {
     public class CentroAtendimentoController : Controller
     {
@@ -19,12 +19,14 @@ namespace OutroTeste.Controllers
         public IActionResult Index()
         {
             var centroAtendimentos = _context.CentroAtendimentos.ToList();
+            ViewData["Title"] = "AgendaCAC - Centro de Atendimento";
             return View(centroAtendimentos);
         }
 
         [Route("CentroAtendimento/Especialidades/{centroAtendimentoID}")]
         public IActionResult Especialidades([FromRoute] short centroAtendimentoID)
         {
+            ViewData["Title"] = "AgendaCAC - Especialidades";
             var centroAtendimento = _context.CentroAtendimentos.FirstOrDefault(c => c.idCentroAtendimento == centroAtendimentoID);
             if (centroAtendimento == null)
             {
@@ -41,6 +43,7 @@ namespace OutroTeste.Controllers
         [Route("CentroAtendimento/Servicos/{EspecialidadeID}")]
         public IActionResult Servicos([FromRoute] int EspecialidadeID)
         {
+            ViewData["Title"] = "AgendaCAC - Serviços";
             var especialidade = _context.Especialidades
             .Include(e => e.Servicos)
             .FirstOrDefault(e => e.idEspecialidade == EspecialidadeID);
@@ -58,6 +61,7 @@ namespace OutroTeste.Controllers
         [Route("CentroAtendimento/UnidadesAtendimento/{centroAtendimentoID}/{servicoID}")]
         public IActionResult UnidadesAtendimento([FromRoute] short centroAtendimentoID, [FromRoute] short servicoID)
         {
+            ViewData["Title"] = "AgendaCAC - Unidade de Atendimento";
             var servico = _context.Servicos.FirstOrDefault(s => s.idServico == servicoID);
             if (servico == null)
             {
@@ -89,8 +93,9 @@ namespace OutroTeste.Controllers
 
         [Route("CentroAtendimento/{centroAtendimentoID}/{especialidadeID}/{servicoUnidadeAtendimentoID}/DatasDisponiveis/")]
         public IActionResult DatasDisponiveis([FromRoute] short servicoUnidadeAtendimentoID, [FromRoute] short centroAtendimentoID, [FromRoute] short especialidadeID)
-        {                        
-    
+        {
+            ViewData["Title"] = "AgendaCAC - Datas Disponíveis";
+
             var AgendaSelecionada = _context.Agendas
                 .FromSqlInterpolated($@"
              SELECT DISTINCT A.*

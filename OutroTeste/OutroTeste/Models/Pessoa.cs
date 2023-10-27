@@ -1,12 +1,13 @@
-﻿using OutroTeste.Models;
+﻿using agenda.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace OutroTeste.Models
+namespace agenda.Models
 {
     [Table("Pessoa", Schema = "CACTB")] 
     public class Pessoa
     {
+        [Key]
         public int idPessoa { get; set; }
 
         [Column(TypeName = "date")]
@@ -35,17 +36,11 @@ namespace OutroTeste.Models
 
         public byte idSexo { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Agendamento> Agendamento { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Colaborador> Colaborador { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dependente> Dependente { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Dependente> Dependente1 { get; set; }
 
         public virtual Sexo Sexo { get; set; }
 

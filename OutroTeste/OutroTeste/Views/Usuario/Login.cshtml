@@ -1,6 +1,5 @@
-﻿<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" asp-append-version="true">
-<link rel="stylesheet" href="~/Views/Usuario/login.cshtml.css" asp-append-version="true">
+﻿<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" asp-append-version="true">
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
 <div class="wrapper">
     <form action="">
@@ -16,13 +15,13 @@
 
         <div class="remember-forgot">
             <label><input type="checkbox" />Lembrar de mim</label>
-            <a href="#">Esqueceu a senha?</a>
+            <a href="@Url.Action("EsquecerSenha", "Usuario")">Esqueceu a senha?</a>
         </div>
 
-        <button type="submit" class="btn">Logar</button>
+        <button type="submit" class="btn-login">Logar</button>
 
         <div class="criar-conta">
-            <p>Não tem uma conta?<a href="#">  Registre-se</a></p>
+            <p>Não tem uma conta?<a href="@Url.Action("CriarConta", "Usuario")">  Registre-se</a></p>
         </div>
     </form>
 </div>

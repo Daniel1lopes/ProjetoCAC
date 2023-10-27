@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OutroTeste.Models;
+using agenda.Models;
 
-namespace OutroTeste.Models
+namespace agenda.Models
 {
     public class ApplicationDbContext : DbContext
     {
@@ -13,7 +13,14 @@ namespace OutroTeste.Models
         public DbSet<UnidadeAtendimento> UnidadesAtendimento { get; set; }
         public DbSet<ServicoUnidadeAtendimento> ServicosUnidadeAtendimento { get; set; }
         public DbSet<Pessoa> Pessoas { get; set; }
+        public DbSet<Dependente> Dependentes { get; set; }
+        public DbSet<TipoDependente> TipoDependentes { get; set; }
         public DbSet<DisponibilidadeAgenda> DisponibilidadeAgendas { get; set; }
+        public DbSet<HorarioServico> HorarioServicos { get; set; }
+        public DbSet<DiaSemana> DiaSemanas { get; set; }
+        public DbSet<Sexo> Sexos { get; set; }
+        public DbSet<Colaborador> Colaboradores { get; set; }
+        public DbSet<CentroAtendimentoColaborador> CentroAtendimentoColaboradores { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

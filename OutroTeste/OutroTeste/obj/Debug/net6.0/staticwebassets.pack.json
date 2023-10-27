@@ -29,6 +29,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\wwwroot\\favicon32.ico",
+      "PackagePath": "staticwebassets\\favicon32.ico"
+    },
+    {
       "Id": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
