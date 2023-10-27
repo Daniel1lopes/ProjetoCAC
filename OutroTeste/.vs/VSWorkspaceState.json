@@ -6,10 +6,8 @@
     "\\OutroTeste\\Models",
     "\\OutroTeste\\Views",
     "\\OutroTeste\\Views\\CentroAtendimento",
-    "\\OutroTeste\\Views\\Shared",
-    "\\OutroTeste\\wwwroot",
-    "\\OutroTeste\\wwwroot\\css"
+    "\\OutroTeste\\Views\\Shared"
   ],
-  "SelectedNode": "\\OutroTeste\\Controllers\\CentroAtendimentoController.cs",
+  "SelectedNode": "\\OutroTeste.sln",
   "PreviewInSolutionExplorer": false
 }

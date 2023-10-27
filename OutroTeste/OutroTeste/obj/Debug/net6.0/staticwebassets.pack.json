@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\OutroTeste.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\wwwroot\\Imagens\\Login.png",
+      "PackagePath": "staticwebassets\\Imagens\\Login.png"
+    },
+    {
       "Id": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\wwwroot\\Imagens\\iconuser.png",
       "PackagePath": "staticwebassets\\Imagens\\iconuser.png"
     },

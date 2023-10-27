@@ -7,29 +7,47 @@ namespace OutroTeste.Models
     [Table("Pessoa", Schema = "CACTB")] 
     public class Pessoa
     {
-        [Key]
-        [Column("idAgenda", TypeName = "int")]
-        public int idAgenda { get; set; }
-        [Column("dtAgenda", TypeName = "date")]
-        public DateTime dtAgenda { get; set; }
-        [Column("hrFim", TypeName = "time")]
-        public TimeSpan? hrFim { get; set; }
-        [Column("hrInicio", TypeName = "time")]
-        public TimeSpan hrInicio { get; set; }
-        [Column("nuReserva", TypeName = "smallint")]
-        public short? nuReserva { get; set; }
-        [Column("nuVagas", TypeName = "smallint")]
-        public short nuVagas { get; set; }
-        [Column("icAtivo", TypeName = "bit")]
+        public int idPessoa { get; set; }
+
+        [Column(TypeName = "date")]
+        public DateTime dtNascimento { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string nmPessoa { get; set; }
+
+        [Required]
+        [StringLength(12)]
+        public string nuTelefone { get; set; }
+
+        [Required]
+        [StringLength(11)]
+        public string nuCPF { get; set; }
+
+        [StringLength(50)]
+        public string coSenha { get; set; }
+
+        [Required]
+        [StringLength(70)]
+        public string edEmail { get; set; }
+
         public bool icAtivo { get; set; }
 
-        // Chave estrangeira para ServicoUnidadeAtendimento
-        [ForeignKey("Sexo")]
-        [Column("idServicoUnidadeAtendimento", TypeName = "tinyint")]
-        public short idSexo { get; set; }
+        public byte idSexo { get; set; }
 
-        // Propriedade de navegação para ServicoUnidadeAtendimento
-        // public virtual Sexo Sexos { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Agendamento> Agendamento { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Colaborador> Colaborador { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Dependente> Dependente { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Dependente> Dependente1 { get; set; }
+
+        public virtual Sexo Sexo { get; set; }
 
     }
 }

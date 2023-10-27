@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "l66VpFCPAO9jMlund77bCWwTml1x9SfFmGnUNApFx0s=",
+  "Hash": "GXm6ycRDaqs+HTrenmzofPLyLURToTrAenRhU80TRtA=",
   "Source": "OutroTeste",
   "BasePath": "_content/OutroTeste",
   "Mode": "Default",
@@ -100,6 +100,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Imagens\\iconuser.png"
+    },
+    {
+      "Identity": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\wwwroot\\Imagens\\Login.png",
+      "SourceId": "OutroTeste",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\wwwroot\\",
+      "BasePath": "_content/OutroTeste",
+      "RelativePath": "Imagens/Login.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Imagens\\Login.png"
     },
     {
       "Identity": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\wwwroot\\Imagens\\marca ceub versao negativa lilas.png",

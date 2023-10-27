@@ -1,39 +1,39 @@
 ﻿@model List<OutroTeste.Models.Agenda>
 
-@{
+    @{
     ViewData["Title"] = "Datas Disponíveis";
 
     int i = 0;
 
-}
+    }
 
 
-<div class="m-1 w-100 text-center">
-    <h4 style="color:#bf0086">@ViewBag.centroAtendimentoNome</h4>
-    <h4 style="color:#bf0086">@ViewBag.especialidadeNome</h4>
-    <h4 style="color:#bf0086">@ViewBag.servicoNome</h4>
-    <h4 style="color:#bf0086">@ViewBag.unidadeNome</h4>
-</div>
-<hr>
-
-<div class="d-flex justify-content-between align-items-center">
-    <div>
-        <a class="btn btn-secondary" href="javascript:history.back()">Voltar</a>
+    <div class="m-1 w-100 text-center">
+        <h4 style="color:#bf0086">@ViewBag.centroAtendimentoNome</h4>
+        <h4 style="color:#bf0086">@ViewBag.especialidadeNome</h4>
+        <h4 style="color:#bf0086">@ViewBag.servicoNome</h4>
+        <h4 style="color:#bf0086">@ViewBag.unidadeNome</h4>
     </div>
-    <div class="w-100 text-center" style="padding-right: 5%">
-        <h2 class="m-1">@ViewData["Title"]</h2>
-    </div>
-    <div></div>
-</div>
+    <hr>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var agenda in Model)
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <a class="btn btn-secondary" href="javascript:history.back()">Voltar</a>
+        </div>
+        <div class="w-100 text-center" style="padding-right: 5%">
+            <h2 class="m-1">@ViewData["Title"]</h2>
+        </div>
+        <div></div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var agenda in Model)
         {
             if (@ViewBag.disponibilidadeAgenda[i] <= 0)
             {
@@ -42,8 +42,8 @@
                 var vagasRestantes = agenda.nuVagas - agenda.nuReserva;
                 var horarioConfirmacao = @agenda.hrInicio.ToString() + " - " + @agenda.hrFim.ToString();
                 var agendaConfirmacao = @agenda.dtAgenda.ToString("dd/MM/yyyy");
-                <tr>
-                    <td style="display: flex; flex-direction: column; align-items: center;">
+            <tr>
+                <td style="display: flex; flex-direction: column; align-items: center;">
                     <h3>Data - @agenda.dtAgenda.ToString("dd/MM/yyyy")</h3>
                     <a class="btn btn-primary btn-block" onclick="return abrirPopup('@agendaConfirmacao', '@horarioConfirmacao', '@ViewBag.disponibilidadeAgenda[i]');">Início: @agenda.hrInicio - Fim: @agenda.hrFim </a>
                     <h5 style="padding-top: 5px">Número de vagas restantes: @ViewBag.disponibilidadeAgenda[i] </h5>
@@ -52,38 +52,38 @@
             }
             i++;
         }
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
-<!-- O pop-up em si -->
-<div id="popupConfirmacao" class="m-1 w-100 text-center">
-    <h3>Deseja confirmar o agendamento?</h3>
-    <h4 style="color:#bf0086">@ViewBag.centroAtendimentoNome</h4>
-    <h4 style="color:#bf0086">@ViewBag.especialidadeNome</h4>
-    <h4 style="color:#bf0086">@ViewBag.servicoNome</h4>
-    <h4 style="color:#bf0086">@ViewBag.unidadeNome</h4>
-    <h4 id="dataAgenda">Data: </h4>
-    <h4 id="horarioAgenda">Horário: </h4>
-    <h4 id="qtdeDisponivel">Vaga(s) Disponíveis: </h4>
-    <button class="btn btn-primary btn-block" onclick="fecharPopup()">Cancelar</button>
-    <a class="btn btn-primary btn-block">Confirmar</a>
-</div>
+    <!-- O pop-up em si -->
+    <div id="popupConfirmacao" class="m-1 w-100 text-center">
+        <h3>Deseja confirmar o agendamento?</h3>
+        <h4 style="color:#bf0086">@ViewBag.centroAtendimentoNome</h4>
+        <h4 style="color:#bf0086">@ViewBag.especialidadeNome</h4>
+        <h4 style="color:#bf0086">@ViewBag.servicoNome</h4>
+        <h4 style="color:#bf0086">@ViewBag.unidadeNome</h4>
+        <h4 id="dataAgenda">Data: </h4>
+        <h4 id="horarioAgenda">Horário: </h4>
+        <h4 id="qtdeDisponivel">Vaga(s) Disponíveis: </h4>
+        <button class="btn btn-primary btn-block" onclick="fecharPopup()">Cancelar</button>
+        <a class="btn btn-primary btn-block">Confirmar</a>
+    </div>
 
-<!-- A sobreposição -->
-<div id="overlayConfirmacao"></div>
+    <!-- A sobreposição -->
+    <div id="overlayConfirmacao"></div>
 
-<!-- script popup -->
-<script type="text/javascript">
-    function abrirPopup(data, horario, qtdeDisponivel) {
-        document.getElementById('dataAgenda').innerText = "Data: " + data;
-        document.getElementById('horarioAgenda').innerText = "Horário: " + horario;
-        document.getElementById('qtdeDisponivel').innerText = "Vaga(s) Disponíveis: " + qtdeDisponivel;
-        document.getElementById('overlayConfirmacao').style.display = 'block';
-        document.getElementById('popupConfirmacao').style.display = 'block';
-    }
+    <!-- script popup -->
+    <script type="text/javascript">
+        function abrirPopup(data, horario, qtdeDisponivel) {
+            document.getElementById('dataAgenda').innerText = "Data: " + data;
+            document.getElementById('horarioAgenda').innerText = "Horário: " + horario;
+            document.getElementById('qtdeDisponivel').innerText = "Vaga(s) Disponíveis: " + qtdeDisponivel;
+            document.getElementById('overlayConfirmacao').style.display = 'block';
+            document.getElementById('popupConfirmacao').style.display = 'block';
+        }
 
-    function fecharPopup() {
-        document.getElementById('overlayConfirmacao').style.display = 'none';
-        document.getElementById('popupConfirmacao').style.display = 'none';
-    }
-</script>
+        function fecharPopup() {
+            document.getElementById('overlayConfirmacao').style.display = 'none';
+            document.getElementById('popupConfirmacao').style.display = 'none';
+        }
+    </script>
