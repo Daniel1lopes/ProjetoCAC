@@ -2,7 +2,7 @@
   "ExpandedNodes": [
     "",
     "\\OutroTeste",
-    "\\OutroTeste\\Models",
+    "\\OutroTeste\\Controllers",
     "\\OutroTeste\\Views",
     "\\OutroTeste\\Views\\CentroAtendimento",
     "\\OutroTeste\\Views\\Shared",
@@ -11,6 +11,6 @@
     "\\OutroTeste\\wwwroot\\css",
     "\\OutroTeste\\wwwroot\\Imagens"
   ],
-  "SelectedNode": "\\OutroTeste\\wwwroot\\favicon.ico",
+  "SelectedNode": "\\OutroTeste.sln",
   "PreviewInSolutionExplorer": false
 }

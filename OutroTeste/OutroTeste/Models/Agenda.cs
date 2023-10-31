@@ -4,9 +4,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace agenda.Models
 {
-    [Table("Agenda", Schema = "CACTB")] // Especifique o nome da tabela
+    [Table("Agenda", Schema = "CACTB")] 
     public class Agenda
     {
+        public Agenda()
+        {
+            Agendamento = new HashSet<Agendamento>();
+        }
+
         [Key]
         [Column("idAgenda", TypeName = "int")]
         public int idAgenda { get; set; }
@@ -23,14 +28,12 @@ namespace agenda.Models
         [Column("icAtivo", TypeName = "bit")]
         public bool icAtivo { get; set; }
 
-        // Chave estrangeira para ServicoUnidadeAtendimento
         [ForeignKey("ServicoUnidadeAtendimento")]
         [Column("idServicoUnidadeAtendimento", TypeName = "smallint")]
         public short idServicoUnidadeAtendimento { get; set; }
 
-        // Propriedade de navegação para ServicoUnidadeAtendimento
-        public virtual ServicoUnidadeAtendimento ServicosUnidadeAtendimento { get; set; }
+        public virtual ServicoUnidadeAtendimento ServicoUnidadeAtendimento { get; set; }
 
-        // public ICollection<Agendamento> Agendamentos { get; set; }
+        public ICollection<Agendamento> Agendamento { get; set; }
     }
 }

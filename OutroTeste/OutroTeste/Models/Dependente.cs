@@ -20,6 +20,8 @@ namespace agenda.Models
 
         public virtual Pessoa Pessoa { get; set; }
 
+        public virtual Pessoa Pessoa1 { get; set; }
+
         public virtual TipoDependente TipoDependente { get; set; }
     }
 }

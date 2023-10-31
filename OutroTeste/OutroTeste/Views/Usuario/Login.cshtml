@@ -1,4 +1,23 @@
-﻿<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" asp-append-version="true">
+﻿@{
+    ViewData["Title"] = "AgendaCAC - Login";
+}
+@if (ViewData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success">
+        @ViewData["MensagemSucesso"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (ViewData["MensagemErro"] != null)
+{
+    <div class="alert alert-success">
+        @ViewData["MensagemErro"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" asp-append-version="true">
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
 <div class="wrapper">
@@ -19,7 +38,6 @@
         </div>
 
         <button type="submit" class="btn-login">Logar</button>
-
         <div class="criar-conta">
             <p>Não tem uma conta?<a href="@Url.Action("CriarConta", "Usuario")">  Registre-se</a></p>
         </div>

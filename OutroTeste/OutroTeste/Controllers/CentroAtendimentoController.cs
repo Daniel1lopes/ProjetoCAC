@@ -45,7 +45,7 @@ namespace agenda.Controllers
         {
             ViewData["Title"] = "AgendaCAC - Serviços";
             var especialidade = _context.Especialidades
-            .Include(e => e.Servicos)
+            .Include(e => e.Servico)
             .FirstOrDefault(e => e.idEspecialidade == EspecialidadeID);
             if (especialidade == null)
             {
@@ -55,7 +55,7 @@ namespace agenda.Controllers
             ViewBag.EspecialidadeNome = especialidade.nmEspecialidade;
             ViewBag.CentroAtendimentoNome = _context.CentroAtendimentos.FirstOrDefault(c => c.idCentroAtendimento == especialidade.idCentroAtendimento)?.nmCentroAtendimento;
             ViewBag.centroAtendimentoID = _context.CentroAtendimentos.FirstOrDefault(c => c.idCentroAtendimento == especialidade.idCentroAtendimento)?.idCentroAtendimento;
-            return View(especialidade.Servicos.ToList());
+            return View(especialidade.Servico.ToList());
         }
 
         [Route("CentroAtendimento/UnidadesAtendimento/{centroAtendimentoID}/{servicoID}")]

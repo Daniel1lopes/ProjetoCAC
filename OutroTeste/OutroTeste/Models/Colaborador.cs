@@ -6,6 +6,11 @@ namespace agenda.Models
     [Table("Colaborador", Schema = "CACTB")]
     public class Colaborador
     {
+        public Colaborador()
+        {
+            CentroAtendimentoColaborador = new HashSet<CentroAtendimentoColaborador>();
+        }
+
         [Key]
         public int idColaborador { get; set; }
 

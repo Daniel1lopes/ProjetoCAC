@@ -8,6 +8,10 @@ namespace agenda.Models
     [Table("Servico", Schema = "CACTB")]
     public class Servico
     {
+        public Servico()
+        {
+            ServicoUnidadeAtendimento = new HashSet<ServicoUnidadeAtendimento>();
+        }
         [Key]
         [Column("idServico", TypeName = "smallint")]
         public short idServico { get; set; }
@@ -23,6 +27,6 @@ namespace agenda.Models
         [Column("idEspecialidade", TypeName = "smallint")]
         public short idEspecialidade { get; set; }
         public virtual Especialidade Especialidade { get; set; }
-        public ICollection<ServicoUnidadeAtendimento> ServicosUnidadeAtendimento { get; set; }
+        public ICollection<ServicoUnidadeAtendimento> ServicoUnidadeAtendimento { get; set; }
     }
 }

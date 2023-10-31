@@ -5,6 +5,11 @@ namespace agenda.Models
 {
     public class DiaSemana
     {
+        public DiaSemana()
+        {
+            HorarioServico = new HashSet<HorarioServico>();
+        }
+
         [Key]
         public byte idDiaSemana { get; set; }
 

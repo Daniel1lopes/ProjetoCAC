@@ -6,6 +6,11 @@ namespace agenda.Models
     [Table("TipoDependente", Schema = "CACTB")]
     public class TipoDependente
     {
+        public TipoDependente()
+        {
+            Dependente = new HashSet<Dependente>();
+        }
+
         [Key]
         public byte idTipoDependente { get; set; }
 

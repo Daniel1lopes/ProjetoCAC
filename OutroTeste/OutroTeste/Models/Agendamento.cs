@@ -11,17 +11,18 @@ namespace agenda.Models
     {
         [Key]
         public int idAgendamento { get; set; }
-        public DateTime dtAgendamento { get; set; }
-        [Column("icAtivo", TypeName = "bit")]
-        public bool icAtivo { get; set; }
-       // [ForeignKey("Agenda")]
-        public int idAgenda { get; set; }
-       //  public virtual Agenda Agendas { get; set; }
-       // public ICollection<Agenda> Agenda { get; set; }
 
-       // public virtual ServicoUnidadeAtendimento ServicosUnidadeAtendimento { get; set; }
-       // [ForeignKey("Pessoa")]
-       // public short idPessoa { get; set; }
-       // public virtual Pessoa Pessoas { get; set; }
+        [Column(TypeName = "smalldatetime")]
+        public DateTime dtAgendamento { get; set; }
+
+        public bool icAtivo { get; set; }
+
+        public int idAgenda { get; set; }
+
+        public int idPessoa { get; set; }
+
+        public virtual Agenda Agenda { get; set; }
+
+        public virtual Pessoa Pessoa { get; set; }
     }
 }

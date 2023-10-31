@@ -6,6 +6,10 @@ namespace agenda.Models
     [Table("Especialidade", Schema = "CACTB")]
     public class Especialidade
     {
+        public Especialidade()
+        {
+            Servico = new HashSet<Servico>();
+        }
         [Key]
         [Column("idEspecialidade", TypeName = "smallint")]
         public short idEspecialidade { get; set; }
@@ -20,6 +24,6 @@ namespace agenda.Models
         [ForeignKey("CentroAtendimento")]
         public short idCentroAtendimento { get; set; }
         public virtual CentroAtendimento CentroAtendimento { get; set; }
-        public ICollection<Servico> Servicos { get; set; }
+        public ICollection<Servico> Servico { get; set; }
     }
 }
