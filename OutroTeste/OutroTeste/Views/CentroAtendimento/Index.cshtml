@@ -4,7 +4,6 @@
 <html>
 <head>
     <title>Centros de Atendimento</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
     <div class="justify-content-center align-items-center" style="height: 40vh; margin-top:21%">
@@ -14,7 +13,7 @@
             </div>
             @foreach (var centroAtendimento in Model)
             {
-                <div class="m-1" style="flex: 1;">
+                <div class="m-1 d-flex justify-content-center align-items-center" style="flex: 1;">
                     <a href="@Url.Action("Especialidades", "CentroAtendimento", new { id = centroAtendimento.idCentroAtendimento })" class="btn btn-primary btn-block">@centroAtendimento.nmCentroAtendimento</a>
                 </div>
             }
