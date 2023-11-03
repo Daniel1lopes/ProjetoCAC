@@ -4,6 +4,13 @@
     ViewData["Title"] = "AgendaCAC - Criar usuário";
 }
 
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
 @if (TempData["MensagemErro"] != null)
 {
     <div class="alert alert-danger">
@@ -12,8 +19,6 @@
     </div>
 }
 
-<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
@@ -21,38 +26,41 @@
     <form asp-action="Criar" asp-controller="Usuario" method="post">
         <h1>Cadastro</h1>
         <div class="input-box">
-            <input type="text" asp-for="nmPessoa" placeholder="Nome" required />
+            <input type="text" asp-for="nmPessoa"/>
             @Html.ValidationMessageFor(x => x.nmPessoa)
         </div>
         <div class="input-box">
-            <input type="email" asp-for="edEmail" placeholder="Email" required />
+            <input asp-for="edEmail"/>
             @Html.ValidationMessageFor(x => x.edEmail)
-
         </div>
         <div class="input-box">
-            <input type="tel" asp-for="nuTelefone" placeholder="Número de telefone" required />
+            <input type="tel" asp-for="nuTelefone" />
             @Html.ValidationMessageFor(x => x.nuTelefone)
         </div>
         <div class="input-box">
-            <input type="text" asp-for="nuCPF" placeholder="Número do CPF" required />
+            <input type="text" asp-for="nuCPF"/>
             @Html.ValidationMessageFor(x => x.nuCPF)
         </div>
         <div class="input-box">
-            <input required="" type="text" placeholder="Data de Nascimento" asp-for="dtNascimento" onfocus="(this.type='date')" onblur="(this.type='')"/>
+            <input type="text" asp-for="dtNascimento" placeholder="Data de Nascimento" onfocus="this.type='date'" onblur="this.type='text'"/>
             @Html.ValidationMessageFor(x => x.dtNascimento)
         </div>
         <div class="input-box">
-            <input type="password" asp-for="coSenha" placeholder="Senha" required />
+            <input type="password" asp-for="coSenha"/>
             @Html.ValidationMessageFor(x => x.coSenha)
+
         </div>
         <div class="input-box">
-            <input type="password" asp-for="coSenhaConfirmar" placeholder="Confirmar Senha" required />
+            <input type="password" asp-for="coSenhaConfirmar"/>
             @Html.ValidationMessageFor(x => x.coSenhaConfirmar)
         </div>
-        <div class="remember-forgot" style="justify-content: space-around !important;">
+        <div class="remember-forgot" style="justify-content: space-around !important; padding: 10px; margin-bottom: -1px;">
             <label><input type="radio" asp-for="idSexo" value="2">Homem</label>
             <label><input type="radio" asp-for="idSexo" value="1">Mulher</label>
         </div>
+        <span style="position: relative; top: -10px;">
+            @Html.ValidationMessageFor(x => x.idSexo)
+        </span>
 
         <button type="submit" class="btn-login">Cadastrar</button>
         <div class="criar-conta">
@@ -61,4 +69,6 @@
         <input type="hidden" asp-for="icAtivo" value="true" />
     </form>
 </div>
+
+
 

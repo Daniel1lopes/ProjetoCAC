@@ -7,7 +7,11 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-using OutroTeste.Models;
+using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
+using NuGet.Protocol.Plugins;
+using System.Drawing.Text;
+using Microsoft.Identity.Client;
 
 namespace agenda.Controllers
 {
@@ -21,18 +25,79 @@ namespace agenda.Controllers
 
         public IActionResult Login()
         {
-            var mensagemSucesso = TempData["MensagemSucesso"] as string;
-            if (!string.IsNullOrEmpty(mensagemSucesso))
-            {
-                ViewData["MensagemSucesso"] = mensagemSucesso;
-            }
-
             return View();
         }
 
+        public Pessoa BuscarPorLogin(string login)
+        {
+            return _context.Pessoas.FirstOrDefault(x => x.nmPessoa.ToUpper() == login.ToUpper());
+        }
+
+        [HttpPost]
+        public IActionResult Logar(Login login)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var senha = login.Senha.GerarHash();
+
+                    var verificacao = _context.Pessoas.FirstOrDefault(x => x.coSenha == senha);
+
+                    Pessoa pessoa = BuscarPorLogin(login.Usuario);
+
+                    if (pessoa != null && verificacao !=null)
+                    {
+                        return RedirectToAction("Index", "CentroAtendimento");
+                    }
+                    else
+                    {
+                        TempData["MensagemErro"] = "Usuário e/ou senha inválido(s). Por favor, tente novamente.";
+                        return View("Login");
+                    }
+                }
+                TempData["MensagemErro"] = "Por favor, preencha todos os campos.";
+                return View("Login");
+            }
+            catch (Exception erro)
+            {
+                TempData["MensagemErro"] = $"Ops, não foi possível realizar seu login, tente novamente. Erro: {erro.Message}";
+                return View("Login");
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         public IActionResult CriarConta()
         {
-            ViewBag.Sexos = _context.Sexos.ToList();
             return View();
         }
 
@@ -41,27 +106,50 @@ namespace agenda.Controllers
         {
             try
             {
+                if (pessoa.dtNascimento > DateTime.Now)
+                {
+                    TempData["MensagemErro"] = "A data de nascimento não pode estar no futuro.";
+
+                    return View("CriarConta", pessoa);
+                }
+
+                var idade = DateTime.Now.Year - pessoa.dtNascimento.Year;
+                if (idade > 100)
+                {
+                    TempData["MensagemErro"] = "A pessoa não pode ter mais de 100 anos.";
+
+                    return View("CriarConta", pessoa);
+                }
+
+                if (pessoa.coSenhaConfirmar == "")
+                {
+                    TempData["MensagemErro"] = "É necessário confirmar a senha.";
+
+                    return View("CriarConta", pessoa);
+                }
+
                 if (pessoa.coSenhaConfirmar != pessoa.coSenha)
                 {
                     TempData["MensagemErro"] = "A senha e a confirmação de senha não correspondem.";
 
                     return View("CriarConta", pessoa);
                 }
-                else if (pessoa.idSexo == 1 || pessoa.idSexo == 2) 
+
+                if (pessoa.idSexo != 1 && pessoa.idSexo != 2)
                 {
-                    if (ModelState.IsValid)
-                    {
-
-                        pessoa.SetSenhaHash();
-                        _context.Pessoas.Add(pessoa);
-                        _context.SaveChanges();
-
-                        TempData["MensagemSucesso"] = "Usuário cadastrado com sucesso!";
-                        return RedirectToAction("Login");
-                    }
                     TempData["MensagemErro"] = "Selecione pelo menos 1 sexo.";
 
                     return View("CriarConta", pessoa);
+                }
+
+                if (ModelState.IsValid)
+                {
+                    pessoa.SetSenhaHash();
+                    _context.Pessoas.Add(pessoa);
+                    _context.SaveChanges();
+
+                    TempData["MensagemSucesso"] = "Usuário cadastrado com sucesso!";
+                    return RedirectToAction("Login");
                 }
 
                 else
@@ -78,11 +166,12 @@ namespace agenda.Controllers
 
             catch (Exception erro)
             {
-                TempData["MensagemErro"] = (erro);
+                TempData["MensagemErro"] = erro.Message;
 
                 return RedirectToAction("CriarConta");
             }
         }
+
         [AllowAnonymous, HttpGet("esqueceu-senha")]
         public IActionResult EsquecerSenha()
         {
@@ -98,7 +187,7 @@ namespace agenda.Controllers
                 ModelState.Clear();
                 model.EmailMandado = true;
             }
-            return View();
+            return View("EsquecerSenha", model);
         }
 
 

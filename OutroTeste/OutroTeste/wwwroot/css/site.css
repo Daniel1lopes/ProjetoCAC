@@ -228,3 +228,15 @@ body {
         padding: 10px 50px;
         font-weight: 500;
     }
+
+.alert {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0s, opacity 0.5s linear;
+}
+
+    .alert.hide {
+        visibility: hidden;
+        opacity: 0;
+    }
+

@@ -67,3 +67,11 @@ build_metadata.AdditionalFiles.CssScope =
 [C:/Users/thurd/Downloads/ProjetoI/ProjetoCAC/OutroTeste/OutroTeste/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-tmzwd30ru2
+
+[C:/Users/thurd/Downloads/ProjetoI/ProjetoCAC/OutroTeste/OutroTeste/Views/Shared/_LayoutDeslogado.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXREZXNsb2dhZG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-zqaaw20v6z
+
+[C:/Users/thurd/Downloads/ProjetoI/ProjetoCAC/OutroTeste/OutroTeste/Views/Shared/_LayoutLogado.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRMb2dhZG8uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-xqf0bsio8l

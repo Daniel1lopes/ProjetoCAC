@@ -21,40 +21,52 @@ namespace agenda.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idPessoa { get; set; }
 
-        [Required(ErrorMessage = "Digite a data de nascimento")]
+        [Required(ErrorMessage = "Por favor, preencha a data de nascimento")]
         [Column(TypeName = "date")]
         public DateTime dtNascimento { get; set; }
 
-        [Required(ErrorMessage = "Digite o nome do usuário")]
+        [Required(ErrorMessage = "Por favor, preencha o nome")]
         [StringLength(100)]
+        [RegularExpression(@"^[^\d]*$", ErrorMessage = "O nome não pode conter números.")]
+        [Display(Name = "Nome da Pessoa", Prompt = "Nome")]
         public string nmPessoa { get; set; }
 
 
-        [Required(ErrorMessage = "Digite o número do telefone")]
+        [Required(ErrorMessage = "Por favor, preencha o número de telefone")] 
         [StringLength(12)]
+        [Phone(ErrorMessage="O celular informado não é válido")]
+        [RegularExpression(@"^\d{11,12}$", ErrorMessage = "O telefone deve conter de 11 a 12 dígitos.")]
+        [Display(Name = "Número de Telefone", Prompt = "Número de Telefone")]
         public string nuTelefone { get; set; }
 
-        [Required(ErrorMessage = "Digite o número do CPF")]
+        [Required(ErrorMessage = "Por favor, preencha o campo CPF")]
         [StringLength(11)]
+        [RegularExpression(@"^\d{11}$", ErrorMessage = "O CPF deve conter exatamente 11 dígitos.")]
+        [Display(Name = "Número de CPF", Prompt = "Número de CPF")]
         public string nuCPF { get; set; }
 
-        [Required(ErrorMessage = "Digite a senha")]
+        [Required(ErrorMessage = "Por favor, preencha a senha")]
         [StringLength(50)]
+        [Display(Name = "Senha", Prompt = "Senha")]
         public string coSenha { get; set; }
 
+        [Required(ErrorMessage = "Por favor, preencha a confirmação da senha")]
         [DataType(DataType.Password)]
+        [Display(Name = "Confirmar senha", Prompt = "Confirmar Senha")]
         [NotMapped]
         public string coSenhaConfirmar { get; set; }
 
-        [Required(ErrorMessage = "Digite o email")]
+        [Required(ErrorMessage = "Por favor, preencha o email")]
         [StringLength(70)]
+        [EmailAddress(ErrorMessage = "Por favor, insira um endereço de email válido")]
+        [Display(Name = "Email", Prompt = "Email")]
         public string edEmail { get; set; }
 
         public bool icAtivo { get; set; }
 
         [ForeignKey("Sexo")]
         [Required(ErrorMessage = "Por favor, escolha um gênero.")]
-        [Range(1, 2, ErrorMessage = "O gênero deve ser (Mulher) ou (Homem).")]
+        [Range(1, 2, ErrorMessage = "Campo gênero pendente")]
         public byte idSexo { get; set; }
         [ValidateNever]
         public virtual Sexo Sexo { get; set; }

@@ -1,17 +1,19 @@
-﻿@{
+﻿@model agenda.Models.Login
+
+@{
     ViewData["Title"] = "AgendaCAC - Login";
 }
-@if (ViewData["MensagemSucesso"] != null)
+@if (TempData["MensagemSucesso"] != null)
 {
     <div class="alert alert-success">
-        @ViewData["MensagemSucesso"]
+        @TempData["MensagemSucesso"]
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
-@if (ViewData["MensagemErro"] != null)
+@if (TempData["MensagemErro"] != null)
 {
-    <div class="alert alert-success">
-        @ViewData["MensagemErro"]
+    <div class="alert alert-danger">
+        @TempData["MensagemErro"]
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
@@ -21,18 +23,18 @@
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
 <div class="wrapper">
-    <form action="">
+    <form asp-action="Logar" asp-controller="Usuario" method="post">
         <h1>Login</h1>
         <div class="input-box">
-            <input type="text" placeholder="Usuario" required />
-            <box-icon type='solid' name='user'></box-icon>
+            <input asp-for="Usuario" />
+            @Html.ValidationMessageFor(x => x.Usuario)
         </div>
         <div class="input-box">
-            <input type="password" placeholder="Senha" required />
-            <box-icon name='lock-alt' type='solid'></box-icon>
+            <input asp-for="Senha" />
+            @Html.ValidationMessageFor(x => x.Senha)
         </div>
 
-        <div class="remember-forgot">
+        <div class="remember-forgot" style="padding-top: 10px;">
             <label><input type="checkbox" />Lembrar de mim</label>
             <a href="@Url.Action("EsquecerSenha", "Usuario")">Esqueceu a senha?</a>
         </div>
@@ -43,3 +45,4 @@
         </div>
     </form>
 </div>
+

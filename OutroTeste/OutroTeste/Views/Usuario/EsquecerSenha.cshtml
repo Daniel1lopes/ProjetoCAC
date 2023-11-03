@@ -1,4 +1,4 @@
-﻿@model OutroTeste.Models.EsqueceuSenha
+﻿@model agenda.Models.EsqueceuSenha
 
 @{
     ViewData["Title"] = "AgendaCAC - Redefinir senha";
@@ -7,22 +7,40 @@
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
 <div class="wrapper">
-
-    <form asp-action="EsquecerSenha" asp-controller="Usuario">
-        <h1>Esqueceu a senha</h1>
+    @if (Model?.EmailMandado == true)
+    {
+        <div class="alert alert-success text-center" role="alert">
+            <p>Enviamos com sucesso um email para seu email registrado</p>
+        </div>
+        <div class="text-center">
+        <a href="@Url.Action("Login", "Usuario")" class="btn btn-voltar btn-block">Voltar para Login</a>
+        </div>
+    }
+    else 
+    {
+        <form asp-action="EsquecerSenha" asp-controller="Usuario" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <h1>Esqueceu a senha ?</h1>
         <div class="input-box">
-            <input asp-for="Email" placeholder="Insira o email da conta" />
-            <span asp-validation-for="Email" class="text-danger"></span>
+            <input asp-for="Email" />
+             @Html.ValidationMessageFor(x => x.Email)
         </div>
 
         <button type="submit" class="btn-login">Enviar link de redefinição</button>
+        </form>
         <div class="criar-conta">
             <p>Lembrou da sua senha?<a href="@Url.Action("Login", "Usuario")">  Entrar</a></p>
         </div>
-    </form>
+    }
 </div>
 
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+    document.querySelector('.btn-close').addEventListener('click', function () {
+        this.parentElement.classList.add('hide');
+    });
+</script>
