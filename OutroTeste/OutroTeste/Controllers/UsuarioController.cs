@@ -44,10 +44,23 @@ namespace agenda.Controllers
 
                     var verificacao = _context.Pessoas.FirstOrDefault(x => x.coSenha == senha);
 
+                    var colaboradorAdmin = _context.Pessoas
+                        .Where(p => p.nmPessoa.ToUpper() == login.Usuario.ToUpper() && p.coSenha == senha)
+                        .Join(_context.Colaboradores, p => p.idPessoa, c => c.idPessoa, (p, c) => c)
+                        .Select(c => c.icAdministrador)
+                        .FirstOrDefault();
+
+
                     Pessoa pessoa = BuscarPorLogin(login.Usuario);
 
                     if (pessoa != null && verificacao !=null)
                     {
+                        if (colaboradorAdmin == true)
+                        {
+                            HttpContext.Session.SetString("IsAdmin", colaboradorAdmin.ToString());
+                        }
+                        HttpContext.Session.SetString("User", login.Usuario.ToString());
+
                         return RedirectToAction("Index", "CentroAtendimento");
                     }
                     else
@@ -66,35 +79,12 @@ namespace agenda.Controllers
             }
         }
 
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            return RedirectToAction("Index", "CentroAtendimento");
+        }
 
         public IActionResult CriarConta()
         {
@@ -190,6 +180,10 @@ namespace agenda.Controllers
             return View("EsquecerSenha", model);
         }
 
+        public IActionResult Teste()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -17,13 +17,21 @@ namespace agenda
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // Add session services to the DI container
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // You can adjust the timeout as needed
+                options.Cookie.HttpOnly = true; // Prevent the client-side script from accessing the cookie
+                options.Cookie.IsEssential = true; // Make the session cookie essential
+            });
+
             // Configure the database context
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
 
             var app = builder.Build();
 
-            // Migrate the database
+            // Migrate the database. This is typically for deploying updates to the database.
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -35,6 +43,7 @@ namespace agenda
                 catch (Exception ex)
                 {
                     // Handle any errors
+                    // Log the error or take appropriate action
                 }
             }
 
@@ -43,23 +52,24 @@ namespace agenda
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            // Insert the UseSession call here to enable session before UseAuthorization
+            app.UseSession();
+
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "especialidades",
-                    pattern: "CentroAtendimento/Especialidades/{id}",
-                    defaults: new { controller = "CentroAtendimento", action = "Especialidades" });
+            app.MapControllerRoute(
+                name: "especialidades",
+                pattern: "CentroAtendimento/Especialidades/{id}",
+                defaults: new { controller = "CentroAtendimento", action = "Especialidades" });
 
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=CentroAtendimento}/{action=Index}/{id?}");
-            });
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=CentroAtendimento}/{action=Index}/{id?}");
 
             app.Run();
         }

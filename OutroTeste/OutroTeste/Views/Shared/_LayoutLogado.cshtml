@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -27,6 +29,15 @@
                         </li>
                     </ul>
                 </div>
+                @if (Context.Session.GetString("IsAdmin") == "true")
+                {
+                    <ul class="navbar-nav flex-grow-1 ">
+                        <li class="nav-item ">
+                            <a class="nav-link text-white " asp-area="" asp-controller="Usuario" asp-action="Teste">Teste</a>
+                        </li>
+                    </ul>
+                }
+
             </div>
         </nav>
     </header>
