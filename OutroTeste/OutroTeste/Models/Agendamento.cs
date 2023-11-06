@@ -21,8 +21,10 @@ namespace agenda.Models
 
         public int idPessoa { get; set; }
 
+        [ForeignKey("idAgenda")]
         public virtual Agenda Agenda { get; set; }
 
+        [ForeignKey("idPessoa")]
         public virtual Pessoa Pessoa { get; set; }
     }
 }

@@ -111,7 +111,6 @@ namespace agenda.Controllers
             AND (A.nuVagas - A.nuReserva - ISNULL(QA.nuQtdeAgendamento,0)) > 0")
                 .ToList();
 
-            // Extração de dados para view
             var unidadeNome = _context.ServicosUnidadeAtendimento
                 .Include(sua => sua.UnidadeAtendimento)
                 .Where(sua => sua.idServicoUnidadeAtendimento == servicoUnidadeAtendimentoID)
@@ -142,6 +141,50 @@ namespace agenda.Controllers
             ViewBag.disponibilidadeAgenda = disponibilidadeAgenda;
 
             return View("DatasDisponiveis", AgendaSelecionada);
+        }
+
+        public IActionResult HorariosMarcados(int idAgenda, int idPessoa, Agendamento agendamento)
+        {
+            ViewData["Title"] = "AgendaCAC - Horários Marcados";
+
+            ViewBag.idAgenda = idAgenda;
+            ViewBag.idPessoa = idPessoa;
+
+            var agenda = _context.Agendas.Find(idAgenda); 
+            var pessoa = _context.Pessoas.Find(idPessoa); 
+
+            if (agenda != null && pessoa != null)
+            {
+                agendamento.Agenda = agenda;
+                agendamento.Pessoa = pessoa;
+
+                agendamento = new Agendamento
+                {
+                    dtAgendamento = DateTime.Now,
+                    icAtivo = true,
+                    idAgenda = idAgenda,
+                    idPessoa = idPessoa
+                };
+
+                _context.Agendamentos.Add(agendamento);
+
+                _context.SaveChanges();
+            }
+            else
+            {
+                var errors = new List<string>();
+                foreach (var modelState in ViewData.ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        errors.Add(error.ErrorMessage);
+                    }
+                }
+
+                TempData["MensagemErro"] = string.Join("\n", errors);
+            }
+
+            return View();
         }
     }
 }

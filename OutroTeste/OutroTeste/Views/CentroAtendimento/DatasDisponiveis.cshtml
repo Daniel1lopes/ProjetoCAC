@@ -1,10 +1,9 @@
 ﻿@model List<agenda.Models.Agenda>
 
-    @{
-
+@{
     int i = 0;
+}
 
-    }
 
 <!DOCTYPE html>
 <html>
@@ -12,7 +11,12 @@
     <title>Datas Disponíveis</title>
 </head>
 <body>
-
+    <div id="popupErro" class="m-1 w-100 text-center" style="display: none;">
+        <div class="alert alert-danger">
+            <span id="mensagemErroPopup"></span>
+            <button type="button" class="btn-close" onclick="fecharPopupLogin()" aria-label="Close"></button>
+        </div>
+    </div>
     <div class="m-1 w-100 text-center">
         <h4 style="color:#bf0086">@ViewBag.centroAtendimentoNome</h4>
         <h4 style="color:#bf0086">@ViewBag.especialidadeNome</h4>
@@ -39,24 +43,34 @@
         </thead>
         <tbody>
             @foreach (var agenda in Model)
-        {
-            if (@ViewBag.disponibilidadeAgenda[i] <= 0)
             {
-                continue;
-            } else {
-                var vagasRestantes = agenda.nuVagas - agenda.nuReserva;
-                var horarioConfirmacao = @agenda.hrInicio.ToString() + " - " + @agenda.hrFim.ToString();
-                var agendaConfirmacao = @agenda.dtAgenda.ToString("dd/MM/yyyy");
-            <tr>
-                <td style="display: flex; flex-direction: column; align-items: center;">
-                    <h3>Data - @agenda.dtAgenda.ToString("dd/MM/yyyy")</h3>
-                    <a class="btn btn-primary btn-block" onclick="return abrirPopup('@agendaConfirmacao', '@horarioConfirmacao', '@ViewBag.disponibilidadeAgenda[i]');">Início: @agenda.hrInicio - Fim: @agenda.hrFim </a>
-                    <h5 style="padding-top: 5px">Número de vagas restantes: @ViewBag.disponibilidadeAgenda[i] </h5>
-                </td>
-            </tr>
+                if (@ViewBag.disponibilidadeAgenda[i] <= 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    var vagasRestantes = agenda.nuVagas - agenda.nuReserva;
+                    var horarioConfirmacao = @agenda.hrInicio.ToString() + " - " + @agenda.hrFim.ToString();
+                    var agendaConfirmacao = @agenda.dtAgenda.ToString("dd/MM/yyyy");
+                    <tr>
+                        <td style="display: flex; flex-direction: column; align-items: center;">
+                            <h3>Data - @agenda.dtAgenda.ToString("dd/MM/yyyy")</h3>
+                            @if (Context.Session.GetString("idPessoa") != null)
+                            {
+                                <a class="btn btn-primary btn-block" onclick="return abrirPopup('@agendaConfirmacao', '@horarioConfirmacao', '@ViewBag.disponibilidadeAgenda[i]', @agenda.idAgenda);">Início: @agenda.hrInicio - Fim: @agenda.hrFim </a>
+                                var idAgenda = agenda.idAgenda;
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary btn-block" onclick="userDeslogado()">Início: @agenda.hrInicio - Fim: @agenda.hrFim </a>
+                            }
+                            <h5 style="padding-top: 5px">Número de vagas restantes: @ViewBag.disponibilidadeAgenda[i] </h5>
+                        </td>
+                    </tr>
+                }
+                i++;
             }
-            i++;
-        }
         </tbody>
     </table>
 
@@ -72,7 +86,7 @@
         <h4 id="qtdeDisponivel">Vaga(s) Disponíveis: </h4>
         <div style="display: flex;">
             <button class="btn btn-primary btn-cancelar" style="margin-right: 15px;" onclick="fecharPopup()">Cancelar</button>
-            <button class="btn btn-primary btn-cancelar">Confirmar</button>
+            <button class="btn btn-primary btn-cancelar" id="confirmButton">Confirmar</button>
         </div>
     </div>
     <!-- A sobreposição -->
@@ -80,10 +94,17 @@
 
     <!-- script popup -->
     <script type="text/javascript">
-        function abrirPopup(data, horario, qtdeDisponivel) {
+        function abrirPopup(data, horario, qtdeDisponivel, idAgenda) {
             document.getElementById('dataAgenda').innerText = "Data: " + data;
             document.getElementById('horarioAgenda').innerText = "Horário: " + horario;
             document.getElementById('qtdeDisponivel').innerText = "Vaga(s) Disponíveis: " + qtdeDisponivel;
+
+            var confirmButton = document.getElementById('confirmButton');
+            confirmButton.setAttribute('data-idAgenda', idAgenda);
+            confirmButton.onclick = function () {
+                confirmarAgendamento(idAgenda);
+            };
+
             document.getElementById('overlayConfirmacao').style.display = 'block';
             document.getElementById('popupConfirmacao').style.display = 'block';
         }
@@ -91,6 +112,25 @@
         function fecharPopup() {
             document.getElementById('overlayConfirmacao').style.display = 'none';
             document.getElementById('popupConfirmacao').style.display = 'none';
+        }
+
+        function confirmarAgendamento(idAgenda) {
+            var idPessoa = '@Context.Session.GetInt32("idPessoa")';
+            var url = '@Url.Action("HorariosMarcados", "CentroAtendimento")' + '?idAgenda=' + idAgenda + '&idPessoa=' + idPessoa;
+
+            window.location.href = url;
+        }
+
+        function userDeslogado() {
+            var mensagemErro = "Por favor, realize o login para marcar a consulta";
+            document.getElementById('mensagemErroPopup').innerText = mensagemErro;
+            document.getElementById('popupErro').style.display = 'block';
+        }
+
+        function fecharPopupLogin() {
+            document.getElementById('overlayConfirmacao').style.display = 'none';
+            document.getElementById('popupConfirmacao').style.display = 'none';
+            document.getElementById('popupErro').style.display = 'none';
         }
     </script>
 </body>

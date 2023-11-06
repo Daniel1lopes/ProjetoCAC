@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using NuGet.Protocol.Plugins;
 using System.Drawing.Text;
 using Microsoft.Identity.Client;
+using Microsoft.AspNetCore.Http;
 
 namespace agenda.Controllers
 {
@@ -28,9 +29,26 @@ namespace agenda.Controllers
             return View();
         }
 
-        public Pessoa BuscarPorLogin(string login)
+        public Pessoa BuscarPorNome(string login)
         {
             return _context.Pessoas.FirstOrDefault(x => x.nmPessoa.ToUpper() == login.ToUpper());
+        }
+
+        public Pessoa BuscarPorEmail(string login)
+        {
+            return _context.Pessoas.FirstOrDefault(x => x.edEmail.ToUpper() == login.ToUpper());
+        }
+
+        public String displayNomePessoa(string Usuario)
+        {
+            if(Usuario.Contains("@"))
+            {
+                return _context.Pessoas.Where(p => p.edEmail == Usuario).Select(p => p.nmPessoa).FirstOrDefault();
+            } 
+            else
+            {
+                return _context.Pessoas.Where(x => x.nmPessoa.ToUpper() == Usuario.ToUpper()).Select(x => x.nmPessoa).FirstOrDefault();
+            }
         }
 
         [HttpPost]
@@ -42,7 +60,7 @@ namespace agenda.Controllers
                 {
                     var senha = login.Senha.GerarHash();
 
-                    var verificacao = _context.Pessoas.FirstOrDefault(x => x.coSenha == senha);
+                    var verificacaoSenha = _context.Pessoas.FirstOrDefault(x => x.coSenha == senha);
 
                     var colaboradorAdmin = _context.Pessoas
                         .Where(p => p.nmPessoa.ToUpper() == login.Usuario.ToUpper() && p.coSenha == senha)
@@ -51,17 +69,32 @@ namespace agenda.Controllers
                         .FirstOrDefault();
 
 
-                    Pessoa pessoa = BuscarPorLogin(login.Usuario);
+                    Pessoa pessoaNome = BuscarPorNome(login.Usuario);
 
-                    if (pessoa != null && verificacao !=null)
+                    Pessoa pessoaEmail = BuscarPorEmail(login.Usuario);
+
+                    if (pessoaNome != null || pessoaEmail != null)
                     {
-                        if (colaboradorAdmin == true)
+                        if (verificacaoSenha != null)
                         {
-                            HttpContext.Session.SetString("IsAdmin", colaboradorAdmin.ToString());
-                        }
-                        HttpContext.Session.SetString("User", login.Usuario.ToString());
+                            if (colaboradorAdmin == true)
+                            {
+                                HttpContext.Session.SetString("IsAdmin", colaboradorAdmin.ToString());
+                            }
 
-                        return RedirectToAction("Index", "CentroAtendimento");
+                            HttpContext.Session.SetString("User", displayNomePessoa(login.Usuario));
+
+                            if (pessoaNome != null)
+                            {
+                                HttpContext.Session.SetInt32("idPessoa", pessoaNome.idPessoa);
+                            }
+                            else if (pessoaEmail != null) 
+                            {
+                                HttpContext.Session.SetInt32("idPessoa", pessoaEmail.idPessoa);
+                            }
+
+                            return RedirectToAction("Index", "CentroAtendimento");
+                        }
                     }
                     else
                     {
@@ -173,7 +206,6 @@ namespace agenda.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 ModelState.Clear();
                 model.EmailMandado = true;
             }

@@ -967,5 +967,3 @@ C:\Users\thurd\Downloads\ProjetoI\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net
 C:\Users\thurd\Downloads\ProjetoI\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\OutroTeste.pdb
 C:\Users\thurd\Downloads\ProjetoI\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\OutroTeste.genruntimeconfig.cache
 C:\Users\thurd\Downloads\ProjetoI\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\ref\OutroTeste.dll
-C:\Users\thurd\Downloads\ProjetoI\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\scopedcss\Views\Shared\_LayoutLogado.cshtml.rz.scp.css
-C:\Users\thurd\Downloads\ProjetoI\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\scopedcss\Views\Shared\_LayoutDeslogado.cshtml.rz.scp.css
