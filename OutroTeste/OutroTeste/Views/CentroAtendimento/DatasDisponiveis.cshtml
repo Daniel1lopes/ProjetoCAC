@@ -2,6 +2,9 @@
 
 @{
     int i = 0;
+
+    var limitePorHorario = ViewBag.LimitePorHorario as Dictionary<int, bool>;
+
 }
 
 
@@ -46,25 +49,34 @@
             {
                 if (@ViewBag.disponibilidadeAgenda[i] <= 0)
                 {
+                    i++;
                     continue;
                 }
                 else
                 {
+                    bool podeAgendar = limitePorHorario.ContainsKey(agenda.idAgenda) ? limitePorHorario[agenda.idAgenda] : false;
                     var vagasRestantes = agenda.nuVagas - agenda.nuReserva;
                     var horarioConfirmacao = @agenda.hrInicio.ToString() + " - " + @agenda.hrFim.ToString();
                     var agendaConfirmacao = @agenda.dtAgenda.ToString("dd/MM/yyyy");
                     <tr>
                         <td style="display: flex; flex-direction: column; align-items: center;">
                             <h3>Data - @agenda.dtAgenda.ToString("dd/MM/yyyy")</h3>
-                            @if (Context.Session.GetString("idPessoa") != null)
-                            {
-                                <a class="btn btn-primary btn-block" onclick="return abrirPopup('@agendaConfirmacao', '@horarioConfirmacao', '@ViewBag.disponibilidadeAgenda[i]', @agenda.idAgenda);">Início: @agenda.hrInicio - Fim: @agenda.hrFim </a>
-                                var idAgenda = agenda.idAgenda;
-                            }
-                            else
+                            @if (Context.Session.GetString("idPessoa") == null)
                             {
                                 <a class="btn btn-primary btn-block" onclick="userDeslogado()">Início: @agenda.hrInicio - Fim: @agenda.hrFim </a>
                             }
+                            else if (podeAgendar)
+                            {
+                                @if (Context.Session.GetString("idPessoa") != null)
+                                {
+                                    <a class="btn btn-primary btn-block" onclick="return abrirPopup('@agendaConfirmacao', '@horarioConfirmacao', '@ViewBag.disponibilidadeAgenda[i]', @agenda.idAgenda);">Início: @agenda.hrInicio - Fim: @agenda.hrFim </a>
+                                }
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary btn-block" style="background-color: #808080 !important; border-color: #1B1212 !important;" onclick="limiteUser()">Início: @agenda.hrInicio - Fim: @agenda.hrFim </a>
+                            }
+
                             <h5 style="padding-top: 5px">Número de vagas restantes: @ViewBag.disponibilidadeAgenda[i] </h5>
                         </td>
                     </tr>
@@ -123,6 +135,12 @@
 
         function userDeslogado() {
             var mensagemErro = "Por favor, realize o login para marcar a consulta";
+            document.getElementById('mensagemErroPopup').innerText = mensagemErro;
+            document.getElementById('popupErro').style.display = 'block';
+        }
+
+        function limiteUser() {
+            var mensagemErro = "Você já marcou uma consulta neste horário, olhe seus horários marcados.";
             document.getElementById('mensagemErroPopup').innerText = mensagemErro;
             document.getElementById('popupErro').style.display = 'block';
         }

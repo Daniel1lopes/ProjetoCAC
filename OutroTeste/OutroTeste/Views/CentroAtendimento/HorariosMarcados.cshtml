@@ -1,11 +1,33 @@
-﻿@if (TempData["MensagemErro"] != null)
+﻿@model List<agenda.Models.Agenda>
+
+@if (TempData["MensagemErro"] != null)
 {
-    <div class="alert alert-danger">
+    <div class="alert alert-danger" style="text-align: center;">
         @Html.Raw(TempData["MensagemErro"].ToString().Replace("\n", "<br/>"))
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success" style="text-align: center;">
+        @Html.Raw(TempData["MensagemSucesso"])
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 
-<h1>ID Agenda: @ViewBag.idAgenda</h1>
-<h1>ID Pessoa: @ViewBag.idPessoa</h1>
+@if (ViewBag.HorarioAgendado != null)
+{
+    @foreach (var horario in ViewBag.HorarioAgendado)
+    {
+        <h1>Data do Agendamento: @horario.dtAgenda.ToString("dd/MM/yyyy")</h1>
+        <h1>Horário Início: @horario.hrInicio</h1>
+        <h1>Horário Fim: @horario.hrFim</h1>
+        <br/>
+    }
+}
+else
+{
+    <h1>NÃO HÁ NENHUM HORÁRIO MARCADO.</h1>
+}
+
