@@ -144,12 +144,6 @@ namespace agenda.Controllers
                     return View("CriarConta", pessoa);
                 }
 
-                if (pessoa.coSenhaConfirmar == "")
-                {
-                    TempData["MensagemErro"] = "É necessário confirmar a senha.";
-
-                    return View("CriarConta", pessoa);
-                }
 
                 if (pessoa.coSenhaConfirmar != pessoa.coSenha)
                 {
@@ -158,9 +152,19 @@ namespace agenda.Controllers
                     return View("CriarConta", pessoa);
                 }
 
-                if (pessoa.idSexo != 1 && pessoa.idSexo != 2)
+                var cpfExistente = _context.Pessoas.FirstOrDefault(p => p.nuCPF == pessoa.nuCPF);
+                var emailExistente = _context.Pessoas.FirstOrDefault(p => p.edEmail == pessoa.edEmail);
+
+                if (cpfExistente != null)
                 {
-                    TempData["MensagemErro"] = "Selecione pelo menos 1 sexo.";
+                    TempData["MensagemErro"] = "Já existe um CPF com esse email.";
+
+                    return View("CriarConta", pessoa);
+                }
+
+                if (emailExistente != null)
+                {
+                    TempData["MensagemErro"] = "Já existe uma conta com esse email.";
 
                     return View("CriarConta", pessoa);
                 }

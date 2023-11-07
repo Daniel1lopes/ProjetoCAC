@@ -16,7 +16,7 @@
     </div>
 }
 
-@if (ViewBag.HorarioAgendado != null)
+@if (ViewBag.HorarioAgendado != null && ViewBag.HorarioAgendado.Count > 0)
 {
     @foreach (var horario in ViewBag.HorarioAgendado)
     {
@@ -26,8 +26,8 @@
         <br/>
     }
 }
-else
-{
+else 
+{   
     <h1>NÃO HÁ NENHUM HORÁRIO MARCADO.</h1>
 }
 
