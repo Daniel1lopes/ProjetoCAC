@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using agenda.Models;
+using OutroTeste.Models;
 
 namespace agenda.Models
 {
@@ -16,11 +17,13 @@ namespace agenda.Models
         public DbSet<Dependente> Dependentes { get; set; }
         public DbSet<TipoDependente> TipoDependentes { get; set; }
         public DbSet<DisponibilidadeAgenda> DisponibilidadeAgendas { get; set; }
+        public DbSet<AgendamentoFull> AgendamentoFulls { get; set; }
         public DbSet<HorarioServico> HorarioServicos { get; set; }
         public DbSet<DiaSemana> DiaSemanas { get; set; }
         public DbSet<Sexo> Sexos { get; set; }
         public DbSet<Colaborador> Colaboradores { get; set; }
         public DbSet<CentroAtendimentoColaborador> CentroAtendimentoColaboradores { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
@@ -50,6 +53,8 @@ namespace agenda.Models
                 .HasForeignKey(a => a.idServicoUnidadeAtendimento);
 
             modelBuilder.Entity<DisponibilidadeAgenda>().HasNoKey().ToView("DisponibilidadeAgenda", "cacvw");
+
+            modelBuilder.Entity<AgendamentoFull>().HasNoKey().ToView("AgendamentoFull", "cacvw");
 
             modelBuilder.Entity<Agenda>()
             .HasMany(e => e.Agendamento)

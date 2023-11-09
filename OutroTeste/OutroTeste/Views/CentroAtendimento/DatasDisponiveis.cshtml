@@ -2,9 +2,6 @@
 
 @{
     int i = 0;
-
-    var limitePorHorario = ViewBag.LimitePorHorario as Dictionary<int, bool>;
-
 }
 
 
@@ -54,7 +51,6 @@
                 }
                 else
                 {
-                    bool podeAgendar = limitePorHorario.ContainsKey(agenda.idAgenda) ? limitePorHorario[agenda.idAgenda] : false;
                     var vagasRestantes = agenda.nuVagas - agenda.nuReserva;
                     var horarioConfirmacao = @agenda.hrInicio.ToString() + " - " + @agenda.hrFim.ToString();
                     var agendaConfirmacao = @agenda.dtAgenda.ToString("dd/MM/yyyy");
@@ -65,7 +61,7 @@
                             {
                                 <a class="btn btn-primary btn-block" onclick="userDeslogado()">Início: @agenda.hrInicio - Fim: @agenda.hrFim </a>
                             }
-                            else if (podeAgendar)
+                            else if (ViewBag.limitePorEspecialidade == false)
                             {
                                 @if (Context.Session.GetString("idPessoa") != null)
                                 {
@@ -140,7 +136,7 @@
         }
 
         function limiteUser() {
-            var mensagemErro = "Você já marcou uma consulta nesse horário, olhe seus horários marcados.";
+            var mensagemErro = "Só é possível possuir uma consulta marcada por Especialidade, olhe seus horários marcados.";
             document.getElementById('mensagemErroPopup').innerText = mensagemErro;
             document.getElementById('popupErro').style.display = 'block';
         }

@@ -155,13 +155,11 @@ namespace agenda.Controllers
 
             var idPessoa = HttpContext.Session.GetInt32("idPessoa");
 
-            var limitePorHorario = AgendaSelecionada.ToDictionary(
-                agenda => agenda.idAgenda,
-                agenda => LimitePorUser(idPessoa, agenda.idAgenda)
-            );
+            var limitePorEspecialidade = _context.AgendamentoFulls.Any(ag => ag.idPessoa == idPessoa
+                                                                         && ag.idEspecialidade == especialidadeID
+                                                                         && ag.icAtivoAgendamento == true);
 
-            ViewBag.LimitePorHorario = limitePorHorario;
-
+            ViewBag.limitePorEspecialidade = limitePorEspecialidade;
 
             return View("DatasDisponiveis", AgendaSelecionada);
         }
@@ -177,43 +175,61 @@ namespace agenda.Controllers
 
                 if (agenda != null && pessoa != null)
                 {
-                    agendamento.Agenda = agenda;
-                    agendamento.Pessoa = pessoa;
-
-                    agendamento = new Agendamento
+                    var qtdeDisponivel = _context.DisponibilidadeAgendas.FirstOrDefault(da => da.idAgenda == idAgenda);
+                    if (qtdeDisponivel.nuQtdeDisponivel - 1 >= 0)
                     {
-                        dtAgendamento = DateTime.Now,
-                        icAtivo = true,
-                        idAgenda = idAgenda,
-                        idPessoa = idPessoa
-                    };
+                        agendamento.Agenda = agenda;
+                        agendamento.Pessoa = pessoa;
 
-                    _context.Agendamentos.Add(agendamento);
+                        agendamento = new Agendamento
+                        {
+                            dtAgendamento = DateTime.Now,
+                            icAtivo = true,
+                            idAgenda = idAgenda,
+                            idPessoa = idPessoa
+                        };
 
-                    _context.SaveChanges();
+                        _context.Agendamentos.Add(agendamento);
 
-                    TempData["MensagemSucesso"] = "Parabéns, sua consulta foi marcada com sucesso !";
+                        _context.SaveChanges();
+
+                        TempData["MensagemSucesso"] = "Parabéns, sua consulta foi marcada com sucesso !";
+                    }
+                    else
+                    {
+                        TempData["MensagemErro"] = "Ops, sua vaga foi preenchida.";
+                        return View("HorariosMarcados");
+                    }
                 }
+
             }
             catch (Exception erro)
             {
                 TempData["MensagemErro"] = $"Ops, não conseguimos apagar seu usuário, tente novamante, detalhe do erro: {erro.Message}";
             }
 
-            var HorarioAgendado = _context.Agendamentos.Where(ag => ag.idPessoa == HttpContext.Session.GetInt32("idPessoa"))
-                                    .Join(_context.Agendas,
-                                          ag => ag.idAgenda,
-                                          a => a.idAgenda, (ag, a) => new
-                                          {
-                                              a.idAgenda,
-                                              a.dtAgenda,
-                                              a.hrInicio,
-                                              a.hrFim
-                                          }).ToList();
+            var idPessoaHorario = HttpContext.Session.GetInt32("idPessoa");
+
+            var HorarioAgendado = _context.AgendamentoFulls.Where(ag => ag.idPessoa == idPessoaHorario && ag.icAtivoAgendamento == true).ToList();
 
             ViewBag.HorarioAgendado = HorarioAgendado;
 
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult CancelarHorario(int idAgendamento)
+        {
+            var agendamento = _context.Agendamentos.FirstOrDefault(ag => ag.idAgendamento == idAgendamento);
+
+            if (agendamento != null)
+            {
+                agendamento.icAtivo = false;
+                _context.SaveChanges();
+                TempData["MensagemSucesso"] = "Consulta desmarcada com sucesso !";
+            }
+
+            return RedirectToAction("HorariosMarcados");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model List<agenda.Models.Agenda>
+﻿@model List<agenda.Models.Agendamento>
 
 @if (TempData["MensagemErro"] != null)
 {
@@ -18,16 +18,32 @@
 
 @if (ViewBag.HorarioAgendado != null && ViewBag.HorarioAgendado.Count > 0)
 {
+    <h1 style="text-align: center; padding-bottom: 10px;">HÓRARIOS MARCADOS</h1>
+    <div class="cards-container">
     @foreach (var horario in ViewBag.HorarioAgendado)
     {
-        <h1>Data do Agendamento: @horario.dtAgenda.ToString("dd/MM/yyyy")</h1>
-        <h1>Horário Início: @horario.hrInicio</h1>
-        <h1>Horário Fim: @horario.hrFim</h1>
-        <br/>
+        <div class="card">
+            <div class="card-content">
+                <p><strong>Data do Agendamento: </strong>@horario.dtAgenda.ToString("dd/MM/yyyy")</p>
+                <p><strong>Horário Início:</strong> @horario.hrInicio</p>
+                <p><strong>Horário Fim:</strong> @horario.hrFim</p>
+                <p><strong>Centro de Atendimento:</strong> @horario.nmCentroAtendimento</p>
+                <p><strong>Especialidade:</strong> @horario.nmEspecialidade</p>
+                <p><strong>Serviço:</strong> @horario.nmServico</p>
+                <p><strong>Unidade de Atendimento:</strong> @horario.deUnidadeAtendimento</p>
+                    <form asp-controller="CentroAtendimento" asp-action="CancelarHorario" method="post">
+                        <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
+                <div class="button-group">
+                    <button class="button">Imprimir</button>
+                    <button class="button" type="submit">Cancelar</button>
+                </div>
+                    </form>
+            </div>
+        </div>
     }
+    </div>
 }
 else 
 {   
     <h1>NÃO HÁ NENHUM HORÁRIO MARCADO.</h1>
 }
-
