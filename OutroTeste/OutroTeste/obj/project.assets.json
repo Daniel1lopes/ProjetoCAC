@@ -11428,19 +11428,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\thurd\\.nuget\\packages\\": {}
+    "C:\\Users\\Desktop\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\OutroTeste.csproj",
+      "projectUniqueName": "C:\\Users\\Desktop\\Desktop\\AgendaCAC\\AgendaCAC2\\ProjetoCAC\\OutroTeste\\OutroTeste\\OutroTeste.csproj",
       "projectName": "OutroTeste",
-      "projectPath": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\OutroTeste.csproj",
-      "packagesPath": "C:\\Users\\thurd\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\thurd\\Downloads\\ProjetoI\\ProjetoCAC\\OutroTeste\\OutroTeste\\obj\\",
+      "projectPath": "C:\\Users\\Desktop\\Desktop\\AgendaCAC\\AgendaCAC2\\ProjetoCAC\\OutroTeste\\OutroTeste\\OutroTeste.csproj",
+      "packagesPath": "C:\\Users\\Desktop\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Desktop\\Desktop\\AgendaCAC\\AgendaCAC2\\ProjetoCAC\\OutroTeste\\OutroTeste\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\thurd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Desktop\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

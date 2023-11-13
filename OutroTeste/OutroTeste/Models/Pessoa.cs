@@ -90,9 +90,10 @@ namespace agenda.Models
             coSenha = coSenha.GerarHash();
         }
 
-        public void SetNovaSenha(string novaSenha)
+        public string SetNovaSenha(string novaSenha)
         {
             coSenha = novaSenha.GerarHash();
+            return coSenha;
         }
 
         public string GerarNovaSenha()

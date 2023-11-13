@@ -7,18 +7,22 @@
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
 <div class="wrapper">
-    @if (Model?.EmailMandado == true)
+    @if (TempData["MensagemSucesso"] != null)
     {
-        <div class="alert alert-success text-center" role="alert">
-            <p>Enviamos com sucesso um email para seu email registrado</p>
-        </div>
-        <div class="text-center">
-        <a href="@Url.Action("Login", "Usuario")" class="btn btn-voltar btn-block">Voltar para Login</a>
+        <div class="alert alert-success" style="text-align: center;">
+            @TempData["MensagemSucesso"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
-    else 
+    @if (TempData["MensagemErro"] != null)
     {
-        <form asp-action="EsquecerSenha" asp-controller="Usuario" method="post">
+        <div class="alert alert-danger" style="text-align: center;">
+            @TempData["MensagemErro"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+        <form asp-action="RedifinirSenha" asp-controller="Usuario" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <h1>Esqueceu a senha ?</h1>
         <div class="input-box">
@@ -31,16 +35,4 @@
         <div class="criar-conta">
             <p>Lembrou da sua senha?<a href="@Url.Action("Login", "Usuario")">  Entrar</a></p>
         </div>
-    }
 </div>
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-
-<script>
-    document.querySelector('.btn-close').addEventListener('click', function () {
-        this.parentElement.classList.add('hide');
-    });
-</script>

@@ -13,6 +13,11 @@ using NuGet.Protocol.Plugins;
 using System.Drawing.Text;
 using Microsoft.Identity.Client;
 using Microsoft.AspNetCore.Http;
+using OutroTeste.Models;
+using System.Net.Mail;
+using System.Net;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace agenda.Controllers
 {
@@ -198,23 +203,79 @@ namespace agenda.Controllers
                 return RedirectToAction("CriarConta");
             }
         }
-
-        [AllowAnonymous, HttpGet("esqueceu-senha")]
         public IActionResult EsquecerSenha()
         {
             return View();
         }
 
-        [AllowAnonymous, HttpPost("esqueceu-senha")]
-        public IActionResult EsquecerSenha(EsqueceuSenha model)
+        [HttpPost]
+        public IActionResult RedifinirSenha(EsqueceuSenha esqueceuSenha)
         {
-            if (ModelState.IsValid)
+            try
             {
-                ModelState.Clear();
-                model.EmailMandado = true;
-            }
-            return View("EsquecerSenha", model);
+                if (ModelState.IsValid)
+                {
+                    Pessoa pessoa = _context.Pessoas.FirstOrDefault(x => x.edEmail.ToUpper() == esqueceuSenha.Email.ToUpper());
+
+                    if (pessoa != null)
+                    {
+                        string novaSenha = pessoa.GerarNovaSenha();
+                        string novaSenhaCriptografada = pessoa.SetNovaSenha(novaSenha);
+
+                        pessoa.coSenha = novaSenhaCriptografada;
+
+                        _context.Pessoas.Update(pessoa);
+                        _context.SaveChanges();
+
+                        TempData["MensagemSucesso"] = "Enviamos a senha com sucesso para o seu email registrado, se não encontrar, cheque seu spam.";
+                        EnviarEmailSenha(pessoa.edEmail, novaSenha, pessoa.nmPessoa);
+                        return RedirectToAction("EsquecerSenha");
+                    }
+                    TempData["MensagemErro"] = "Não consegumos refinir sua senha. Por favor, verifique os dados informados.";
+                }
+                return View("EsquecerSenha", esqueceuSenha);
+            } catch (Exception erro)
+            {
+                TempData["MensagemErro"] = $"Ops, não conseguimos redefinir sua senha, tente novamente, detalhe do erro: {erro.Message}";
+                return RedirectToAction("EsquecerSenha");
+            }   
         }
+
+        private void EnviarEmailSenha(string paraEmail, string novaSenha, string nomePessoa)
+        {
+            try
+            {
+                var fromAddress = new MailAddress("agendacac.ceub@gmail.com", "AgendaCAC"); 
+                var toAddress = new MailAddress(paraEmail);
+                const string fromPassword = "mrew xmmp kjtx qyzd"; 
+                const string subject = "Sua nova senha - AgendaCAC";
+                string body = $"Olá, {nomePessoa},\n\n Sua nova senha na AgendaCAC do CEUB é: {novaSenha}";
+
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com", 
+                    Port = 587, 
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                };
+
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body
+                })
+                {
+                    smtp.Send(message);
+                }
+            }
+            catch (Exception erro)
+            {
+                // Trate a exceção conforme necessário
+            }
+        }
+
 
         public IActionResult Teste()
         {
