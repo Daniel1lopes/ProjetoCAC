@@ -7,8 +7,10 @@
     "\\OutroTeste\\OutroTeste\\Models",
     "\\OutroTeste\\OutroTeste\\Views",
     "\\OutroTeste\\OutroTeste\\Views\\CentroAtendimento",
-    "\\OutroTeste\\OutroTeste\\Views\\Usuario"
+    "\\OutroTeste\\OutroTeste\\Views\\Usuario",
+    "\\OutroTeste\\OutroTeste\\wwwroot",
+    "\\OutroTeste\\OutroTeste\\wwwroot\\css"
   ],
-  "SelectedNode": "\\OutroTeste\\OutroTeste\\Views\\Usuario\\EditarUsuario.cshtml",
+  "SelectedNode": "\\OutroTeste\\OutroTeste\\wwwroot\\css\\site.css",
   "PreviewInSolutionExplorer": false
 }
