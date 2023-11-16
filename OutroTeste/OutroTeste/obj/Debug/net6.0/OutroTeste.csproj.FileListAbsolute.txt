@@ -1261,3 +1261,4 @@ C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\o
 C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\OutroTeste.pdb
 C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\OutroTeste.genruntimeconfig.cache
 C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\ref\OutroTeste.dll
+C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\OutroTeste.sourcelink.json

@@ -3,26 +3,25 @@
 @{
     ViewData["Title"] = "AgendaCAC - Login";
 }
-@if (TempData["MensagemSucesso"] != null)
-{
-    <div class="alert alert-success" style="text-align: center;">
-        @TempData["MensagemSucesso"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-@if (TempData["MensagemErro"] != null)
-{
-    <div class="alert alert-danger" style="text-align: center;">
-        @TempData["MensagemErro"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" asp-append-version="true">
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
 <div class="wrapper">
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-success" style="text-align: center;">
+            @TempData["MensagemSucesso"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-danger" style="text-align: center;">
+            @TempData["MensagemErro"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
     <form asp-action="Logar" asp-controller="Usuario" method="post">
         <h1>Login</h1>
         <div class="input-box">

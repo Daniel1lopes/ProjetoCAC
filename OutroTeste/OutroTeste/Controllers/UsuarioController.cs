@@ -67,7 +67,7 @@ namespace agenda.Controllers
                 {
                     var senha = login.Senha.GerarHash();
 
-                    var verificacaoSenha = _context.Pessoas.FirstOrDefault(x => x.coSenha == senha);
+                    var verificacaoSenha = _context.Pessoas.FirstOrDefault(x => x.coSenha == senha && x.edEmail == login.Usuario);
 
                     var colaboradorAdmin = _context.Pessoas
                         .Where(p => p.nmPessoa.ToUpper() == login.Usuario.ToUpper() && p.coSenha == senha)
@@ -75,12 +75,9 @@ namespace agenda.Controllers
                         .Select(c => c.icAdministrador)
                         .FirstOrDefault();
 
-
-                    Pessoa pessoaNome = BuscarPorNome(login.Usuario);
-
                     Pessoa pessoaEmail = BuscarPorEmail(login.Usuario);
 
-                    if (pessoaNome != null || pessoaEmail != null)
+                    if (pessoaEmail != null)
                     {
                         if (verificacaoSenha != null)
                         {
@@ -90,12 +87,8 @@ namespace agenda.Controllers
                             }
 
                             HttpContext.Session.SetString("User", displayNomePessoa(login.Usuario));
-
-                            if (pessoaNome != null)
-                            {
-                                HttpContext.Session.SetInt32("idPessoa", pessoaNome.idPessoa);
-                            }
-                            else if (pessoaEmail != null) 
+                            
+                            if (pessoaEmail != null) 
                             {
                                 HttpContext.Session.SetInt32("idPessoa", pessoaEmail.idPessoa);
                             }
@@ -146,7 +139,7 @@ namespace agenda.Controllers
                 var idade = DateTime.Now.Year - pessoa.dtNascimento.Year;
                 if (idade > 100)
                 {
-                    TempData["MensagemErro"] = "A pessoa não pode ter mais de 100 anos.";
+                    TempData["MensagemErro"] = "Eu acho que você está mentindo a sua idade...";
 
                     return View("CriarConta", pessoa);
                 }
@@ -351,7 +344,7 @@ namespace agenda.Controllers
                     var idade = DateTime.Now.Year - editar.dtNascimento.Year;
                     if (idade > 100)
                     {
-                        TempData["MensagemErro"] = "A pessoa não pode ter mais de 100 anos.";
+                        TempData["MensagemErro"] = "Eu acho que você está mentindo sua idade...";
 
                         return View("EditarUsuario", editarPessoaErro);
                     }
