@@ -3,14 +3,14 @@
     "",
     "\\OutroTeste",
     "\\OutroTeste\\OutroTeste",
-    "\\OutroTeste\\OutroTeste\\Controllers",
     "\\OutroTeste\\OutroTeste\\Models",
     "\\OutroTeste\\OutroTeste\\Views",
     "\\OutroTeste\\OutroTeste\\Views\\CentroAtendimento",
+    "\\OutroTeste\\OutroTeste\\Views\\Shared",
     "\\OutroTeste\\OutroTeste\\Views\\Usuario",
     "\\OutroTeste\\OutroTeste\\wwwroot",
     "\\OutroTeste\\OutroTeste\\wwwroot\\css"
   ],
-  "SelectedNode": "\\OutroTeste\\OutroTeste\\wwwroot\\css\\site.css",
+  "SelectedNode": "\\OutroTeste\\OutroTeste\\Views\\Shared\\_Layout.cshtml",
   "PreviewInSolutionExplorer": false
 }

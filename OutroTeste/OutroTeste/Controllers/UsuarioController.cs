@@ -36,11 +36,6 @@ namespace agenda.Controllers
             return View();
         }
 
-        public Pessoa BuscarPorNome(string login)
-        {
-            return _context.Pessoas.FirstOrDefault(x => x.nmPessoa.ToUpper() == login.ToUpper());
-        }
-
         public Pessoa BuscarPorEmail(string login)
         {
             return _context.Pessoas.FirstOrDefault(x => x.edEmail.ToUpper() == login.ToUpper());
@@ -70,7 +65,7 @@ namespace agenda.Controllers
                     var verificacaoSenha = _context.Pessoas.FirstOrDefault(x => x.coSenha == senha && x.edEmail == login.Usuario);
 
                     var colaboradorAdmin = _context.Pessoas
-                        .Where(p => p.nmPessoa.ToUpper() == login.Usuario.ToUpper() && p.coSenha == senha)
+                        .Where(p => p.edEmail.ToUpper() == login.Usuario.ToUpper() && p.coSenha == senha)
                         .Join(_context.Colaboradores, p => p.idPessoa, c => c.idPessoa, (p, c) => c)
                         .Select(c => c.icAdministrador)
                         .FirstOrDefault();
@@ -95,11 +90,11 @@ namespace agenda.Controllers
 
                             return RedirectToAction("Index", "CentroAtendimento");
                         }
-                    }
-                    else
-                    {
-                        TempData["MensagemErro"] = "Usuário e/ou senha inválido(s). Por favor, tente novamente.";
-                        return View("Login");
+                        else
+                        {
+                            TempData["MensagemErro"] = "Usuário e/ou senha inválido(s). Por favor, tente novamente.";
+                            return View("Login");
+                        }
                     }
                 }
                 TempData["MensagemErro"] = "Por favor, preencha todos os campos.";
@@ -319,11 +314,12 @@ namespace agenda.Controllers
                 idSexo = pessoa.idSexo
             };
 
-            if (editar.nmPessoa == pessoa.nmPessoa && pessoa.nuTelefone == editar.nuTelefone && pessoa.nuCPF == editar.nuCPF && pessoa.idSexo == editar.idSexo && pessoa.dtNascimento == editar.dtNascimento && pessoa.edEmail == editar.edEmail)
-            {
-                TempData["MensagemErro"] = "Não houve nenhuma alteração dos dados do usuário.";
-                return RedirectToAction("EditarUsuario", editarPessoaErro);
-            }
+                if (editar.nmPessoa == pessoa.nmPessoa && pessoa.nuTelefone == editar.nuTelefone && pessoa.nuCPF == editar.nuCPF && pessoa.idSexo == editar.idSexo && pessoa.dtNascimento == editar.dtNascimento && pessoa.edEmail == editar.edEmail && editar.coSenha == null && editar.coSenhaConfirmar == null)
+                {
+                    TempData["MensagemErro"] = "Não houve nenhuma alteração dos dados do usuário.";
+                    return RedirectToAction("EditarUsuario", editarPessoaErro);
+                }
+
 
             var userCadastrado = _context.Pessoas.FirstOrDefault(p => p.idPessoa == idPessoa);
 

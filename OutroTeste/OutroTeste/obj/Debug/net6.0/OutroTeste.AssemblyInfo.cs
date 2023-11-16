@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OutroTeste")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+577c1020e32decec3e9b15a688671c36b5c8f506")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+da0c50412975b651bfafbfcede5f32b87b35af4f")]
 [assembly: System.Reflection.AssemblyProductAttribute("OutroTeste")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OutroTeste")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

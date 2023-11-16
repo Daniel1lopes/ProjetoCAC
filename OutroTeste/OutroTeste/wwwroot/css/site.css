@@ -313,3 +313,63 @@ body {
     .alert.show {
         opacity: 1;
     }
+
+.card-horizontal {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; 
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0, .2);
+    font-family: "Poppins", sans-serif;
+    margin-bottom: 20px;
+    padding: 20px;
+    gap: 20px;
+}
+
+    .card-horizontal .card-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+        .card-horizontal .card-section p {
+            margin: 5px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+    .card-horizontal .button-group {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+        .card-horizontal .button-group button {
+            margin-top: 10px;
+        }
+
+    .card-horizontal form {
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: none;
+        width: auto;
+    }
+
+    .card-horizontal .button-group form {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+
+
+
+
+
+
+

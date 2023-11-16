@@ -1,20 +1,5 @@
 ﻿@model List<CentroAtendimento>
 
-@if (TempData["MensagemSucesso"] != null)
-{
-    <div class="alert alert-success" style="text-align: center;">
-        @TempData["MensagemSucesso"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-@if (TempData["MensagemErro"] != null)
-{
-    <div class="alert alert-danger" style="text-align: center;">
-        @TempData["MensagemErro"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
 <!DOCTYPE html>
 <html>
 <head>

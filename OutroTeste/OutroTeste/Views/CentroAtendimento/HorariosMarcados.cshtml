@@ -31,13 +31,13 @@
                 <p><strong>Especialidade:</strong> @horario.nmEspecialidade</p>
                 <p><strong>Serviço:</strong> @horario.nmServico</p>
                 <p><strong>Unidade de Atendimento:</strong> @horario.deUnidadeAtendimento</p>
-                    <form asp-controller="CentroAtendimento" asp-action="CancelarHorario" method="post">
-                        <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
-                <div class="button-group">
-                    <button class="button">Imprimir</button>
-                    <button class="button" type="submit">Cancelar</button>
-                </div>
-                    </form>
+                <form asp-controller="CentroAtendimento" asp-action="CancelarHorario" method="post">
+                    <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
+                    <div class="button-group">
+                        <button class="button">Imprimir</button>
+                        <button class="button" type="submit">Cancelar</button>
+                    </div>
+                </form>
             </div>
         </div>
     }

@@ -231,6 +231,46 @@ namespace agenda.Controllers
 
             return RedirectToAction("HorariosMarcados");
         }
+
+        [HttpPost]
+        public IActionResult CancelarHorarioADM(int idAgendamento)
+        {
+            var agendamento = _context.Agendamentos.FirstOrDefault(ag => ag.idAgendamento == idAgendamento);
+
+            if (agendamento != null)
+            {
+                agendamento.icAtivo = false;
+                _context.SaveChanges();
+                TempData["MensagemSucesso"] = "Consulta desmarcada com sucesso !";
+            }
+
+            return RedirectToAction("HorarioAdministrador");
+        }
+
+        public IActionResult HorarioAdministrador()
+        {
+            ViewData["Title"] = "AgendaCAC - Horários (ADM)";
+
+            var HorarioAdministrador = _context.AgendamentoFulls.Where(af => af.icAtivoAgendamento == true).Join(_context.Pessoas, af => af.idPessoa, p => p.idPessoa,
+                                                                      (af, p) => new
+                                                                      {
+                                                                          af.dtAgenda,
+                                                                          af.hrInicio,
+                                                                          af.hrFim,
+                                                                          af.nmCentroAtendimento,
+                                                                          af.nmEspecialidade,
+                                                                          af.nmServico,
+                                                                          af.idAgendamento,
+                                                                          af.nmUnidadeAtendimento,
+                                                                          p.nmPessoa,
+                                                                          p.edEmail,
+                                                                          p.nuTelefone
+                                                                      }).ToList();
+
+            ViewBag.HorarioAdministrador = HorarioAdministrador;
+
+            return View();
+        }
     }
 }
 
