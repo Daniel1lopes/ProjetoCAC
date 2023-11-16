@@ -25,7 +25,7 @@ namespace agenda.Models
         [Column(TypeName = "date")]
         public DateTime dtNascimento { get; set; }
 
-        [Required(ErrorMessage = "Por favor, preencha o nome")]
+        [Required(ErrorMessage = "Por favor, preencha o seu nome")]
         [StringLength(100)]
         [RegularExpression(@"^[^\d]*$", ErrorMessage = "O nome não pode conter números.")]
         [Display(Name = "Nome da Pessoa", Prompt = "Nome")]
@@ -45,13 +45,10 @@ namespace agenda.Models
         [Display(Name = "Número de CPF", Prompt = "Número de CPF")]
         public string nuCPF { get; set; }
 
-        [Required(ErrorMessage = "Por favor, preencha a senha")]
         [StringLength(50)]
         [Display(Name = "Senha", Prompt = "Senha")]
         public string coSenha { get; set; }
 
-        [Required(ErrorMessage = "Por favor, preencha a confirmação da senha")]
-        [DataType(DataType.Password)]
         [Display(Name = "Confirmar senha", Prompt = "Confirmar Senha")]
         [NotMapped]
         public string coSenhaConfirmar { get; set; }

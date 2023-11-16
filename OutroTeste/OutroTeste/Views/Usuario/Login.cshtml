@@ -30,12 +30,12 @@
             @Html.ValidationMessageFor(x => x.Usuario)
         </div>
         <div class="input-box">
-            <input asp-for="Senha" />
+            <input type="password" asp-for="Senha" id="Senha"/>
             @Html.ValidationMessageFor(x => x.Senha)
         </div>
 
         <div class="remember-forgot" style="padding-top: 10px;">
-            <label><input type="checkbox" />Lembrar de mim</label>
+            <label><input type="checkbox" id="showPasswordCheckbox" /> Mostrar senha</label>
             <a href="@Url.Action("EsquecerSenha", "Usuario")">Esqueceu a senha?</a>
         </div>
 
@@ -46,3 +46,16 @@
     </form>
 </div>
 
+<script>
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById('Senha');
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
+
+    // Adiciona um ouvinte de eventos ao checkbox
+    document.getElementById('showPasswordCheckbox').addEventListener('click', togglePasswordVisibility);
+</script>

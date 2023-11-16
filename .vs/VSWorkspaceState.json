@@ -6,8 +6,9 @@
     "\\OutroTeste\\OutroTeste\\Controllers",
     "\\OutroTeste\\OutroTeste\\Models",
     "\\OutroTeste\\OutroTeste\\Views",
-    "\\OutroTeste\\OutroTeste\\Views\\CentroAtendimento"
+    "\\OutroTeste\\OutroTeste\\Views\\CentroAtendimento",
+    "\\OutroTeste\\OutroTeste\\Views\\Usuario"
   ],
-  "SelectedNode": "\\OutroTeste\\OutroTeste.sln",
+  "SelectedNode": "\\OutroTeste\\OutroTeste\\Views\\Usuario\\Login.cshtml",
   "PreviewInSolutionExplorer": false
 }

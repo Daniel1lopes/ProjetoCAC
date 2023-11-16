@@ -46,14 +46,15 @@
             @Html.ValidationMessageFor(x => x.dtNascimento)
         </div>
         <div class="input-box">
-            <input type="password" asp-for="coSenha"/>
+            <input type="password" asp-for="coSenha" id="coSenha"/>
             @Html.ValidationMessageFor(x => x.coSenha)
 
         </div>
         <div class="input-box">
-            <input type="password" asp-for="coSenhaConfirmar"/>
+            <input type="password" asp-for="coSenhaConfirmar" id="coSenhaConfirmar" />
             @Html.ValidationMessageFor(x => x.coSenhaConfirmar)
         </div>
+        <label style="padding-bottom: 10px;"><input type="checkbox" id="showPasswordCheckbox" /> Mostrar senha</label>
         <div class="remember-forgot" style="justify-content: space-around !important; padding: 10px; margin-bottom: -1px;">
             <label><input type="radio" asp-for="idSexo" value="2">Homem</label>
             <label><input type="radio" asp-for="idSexo" value="1">Mulher</label>
@@ -61,7 +62,6 @@
         <span style="position: relative; top: -10px;">
             @Html.ValidationMessageFor(x => x.idSexo)
         </span>
-
         <button type="submit" class="btn-login">Cadastrar</button>
         <div class="criar-conta">
             <p>Já tem uma conta?<a href="@Url.Action("Login", "Usuario")">  Entrar</a></p>
@@ -70,5 +70,19 @@
     </form>
 </div>
 
+<script>
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById('coSenha');
+        var passwordInput1 = document.getElementById('coSenhaConfirmar');
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            passwordInput1.type = "text";
+        } else {
+            passwordInput.type = "password";
+            passwordInput1.type = "password";
+        }
+    }
 
+    document.getElementById('showPasswordCheckbox').addEventListener('click', togglePasswordVisibility);
+</script>
 

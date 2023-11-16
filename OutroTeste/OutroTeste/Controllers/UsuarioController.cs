@@ -18,6 +18,8 @@ using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
+using Microsoft.IdentityModel.Tokens;
 
 namespace agenda.Controllers
 {
@@ -149,10 +151,16 @@ namespace agenda.Controllers
                     return View("CriarConta", pessoa);
                 }
 
-
-                if (pessoa.coSenhaConfirmar != pessoa.coSenha)
+                if (String.IsNullOrEmpty(pessoa.coSenha))
                 {
-                    TempData["MensagemErro"] = "A senha e a confirmação de senha não correspondem.";
+                    TempData["MensagemErro"] = "A senha não pode ser vazia.";
+
+                    if (pessoa.coSenhaConfirmar != pessoa.coSenha)
+                    {
+                        TempData["MensagemErro"] = "A senha e a confirmação de senha não correspondem.";
+
+                        return View("CriarConta", pessoa);
+                    }
 
                     return View("CriarConta", pessoa);
                 }
@@ -240,7 +248,7 @@ namespace agenda.Controllers
                 return RedirectToAction("EsquecerSenha");
             }   
         }
-
+        // FUNÇÃO PARA ENVIAR EMAIL
         private void EnviarEmailSenha(string paraEmail, string novaSenha, string nomePessoa)
         {
             try
@@ -272,10 +280,140 @@ namespace agenda.Controllers
             }
             catch (Exception erro)
             {
-                // Trate a exceção conforme necessário
+                // Tratar a exceção 
             }
         }
 
+        public IActionResult EditarUsuario()
+        {
+            var idPessoa = HttpContext.Session.GetInt32("idPessoa");
+            Pessoa pessoa = _context.Pessoas.FirstOrDefault(p => p.idPessoa == idPessoa);
+
+            if (pessoa == null)
+            {
+                TempData["MensagemErro"] = "Não foi encontrado o usuário.";
+                return View();
+            }
+            
+            var editarPessoa = new EditarPessoa
+            {
+                nmPessoa = pessoa.nmPessoa,
+                nuCPF = pessoa.nuCPF,
+                nuTelefone = pessoa.nuTelefone,
+                edEmail = pessoa.edEmail,
+                dtNascimento = pessoa.dtNascimento,
+                idSexo = pessoa.idSexo
+            };
+
+            return View(editarPessoa);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UsuarioEditar(EditarPessoa editar)
+        {
+            var idPessoa = HttpContext.Session.GetInt32("idPessoa");
+
+            Pessoa pessoa = _context.Pessoas.FirstOrDefault(p => p.idPessoa == idPessoa);
+
+            var editarPessoaErro = new EditarPessoa
+            {
+                nmPessoa = pessoa.nmPessoa,
+                nuCPF = pessoa.nuCPF,
+                nuTelefone = pessoa.nuTelefone,
+                edEmail = pessoa.edEmail,
+                dtNascimento = pessoa.dtNascimento,
+                idSexo = pessoa.idSexo
+            };
+
+            var userCadastrado = _context.Pessoas.FirstOrDefault(p => p.idPessoa == idPessoa);
+
+            if (string.IsNullOrEmpty(editar.coSenha))
+            {
+                ModelState.Remove("coSenha");
+            }
+            if (string.IsNullOrEmpty(editar.coSenhaConfirmar))
+            {
+                ModelState.Remove("coSenhaConfirmar");
+            }
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (editar.dtNascimento > DateTime.Now)
+                    {
+                        TempData["MensagemErro"] = "A data de nascimento não pode estar no futuro.";
+
+                        return View("EditarUsuario", editarPessoaErro);
+                    }
+
+                    var idade = DateTime.Now.Year - editar.dtNascimento.Year;
+                    if (idade > 100)
+                    {
+                        TempData["MensagemErro"] = "A pessoa não pode ter mais de 100 anos.";
+
+                        return View("EditarUsuario", editarPessoaErro);
+                    }
+
+                    var cpfExistente = _context.Pessoas.FirstOrDefault(p => p.nuCPF == editar.nuCPF);
+                    var emailExistente = _context.Pessoas.FirstOrDefault(p => p.edEmail == editar.edEmail);
+
+                    if (cpfExistente != null)
+                    {
+                        ModelState.Remove("nuCPF");
+                    }
+
+                    if (emailExistente != null)
+                    {
+                        ModelState.Remove("edEmail");
+                    }
+
+                    if (!string.IsNullOrEmpty(editar.coSenha) && editar.coSenha == editar.coSenhaConfirmar)
+                    {
+                        pessoa.coSenha = pessoa.SetNovaSenha(editar.coSenha);
+                        pessoa.coSenhaConfirmar = editar.coSenhaConfirmar; // Assuming you also want to check for null before setting this
+                    }
+                    else if (!string.IsNullOrEmpty(editar.coSenha) || !string.IsNullOrEmpty(editar.coSenhaConfirmar))
+                    {
+                        TempData["MensagemErro"] = "A senha e a confirmação de senha não correspondem.";
+                        return View("EditarUsuario", editarPessoaErro);
+                    }
+
+                       pessoa.nmPessoa = editar.nmPessoa;
+                       pessoa.nuTelefone = editar.nuTelefone;
+                       pessoa.nuCPF = editar.nuCPF;
+                       pessoa.idSexo = editar.idSexo;
+                       pessoa.dtNascimento = editar.dtNascimento;
+                       pessoa.edEmail = editar.edEmail;
+
+                    _context.Pessoas.Update(pessoa);
+                    _context.SaveChanges();
+
+                        TempData["MensagemSucesso"] = "Usuário editado com sucesso!";
+                        return RedirectToAction("EditarUsuario");              
+                } 
+                else
+                {
+                    var mensagemErro = "Não foi possível atualizar seu usuário, verifique os seguintes erros: ";
+                    foreach (var modelStateKey in ViewData.ModelState.Keys)
+                    {
+                        var modelStateVal = ViewData.ModelState[modelStateKey];
+                        foreach (var error in modelStateVal.Errors)
+                        {
+                            mensagemErro += $"{error.ErrorMessage} ";
+                        }
+                    }
+                    TempData["MensagemErro"] = mensagemErro;
+                    return RedirectToAction("EditarUsuario", editarPessoaErro);
+                }
+            }
+            catch (Exception erro)
+            {
+                TempData["MensagemErro"] = $"Ops, não conseguimos redefinir sua senha, tente novamente, detalhe do erro: {erro.Message}";
+                return RedirectToAction("EditarUsuario");
+            }
+        }
 
         public IActionResult Teste()
         {

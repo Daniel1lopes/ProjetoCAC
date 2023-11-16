@@ -9,7 +9,6 @@ namespace agenda.Models
         public string Usuario { get; set; }
 
         [Required(ErrorMessage = "Por favor, insira a senha.")]
-        [DataType(DataType.Password)]
         [Display(Name = "Senha do usuário", Prompt = "Senha do usuário")]
         public string Senha { get; set; }
     }

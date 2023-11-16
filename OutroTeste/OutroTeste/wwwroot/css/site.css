@@ -299,3 +299,22 @@ body {
         border: none;
         cursor: pointer;
     }
+
+.field-validation-error {
+    color: #d9534f; /* Cor do texto de erro */
+    font-size: 0.8rem; /* Tamanho do texto de erro */
+    margin-top: 4px; /* Espaçamento acima da mensagem de erro */
+    margin-bottom: 10px; /* Espaçamento abaixo da mensagem de erro */
+}
+
+.field-validation-valid {
+    display: none; /* Oculta quando não há erros */
+}
+
+.validation-message {
+    display: block;
+    color: #d9534f;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    margin-bottom: 10px;
+}
