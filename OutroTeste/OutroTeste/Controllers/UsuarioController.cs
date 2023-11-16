@@ -375,6 +375,7 @@ namespace agenda.Controllers
                        return View("EditarUsuario", editarPessoaErro);
                    }
 
+                   pessoa.idPessoa = (int)idPessoa;
                    pessoa.nmPessoa = editar.nmPessoa;
                    pessoa.nuTelefone = editar.nuTelefone;
                    pessoa.nuCPF = editar.nuCPF;
