@@ -66,8 +66,9 @@ namespace agenda.Controllers
 
                     var colaboradorAdmin = _context.Pessoas
                         .Where(p => p.edEmail.ToUpper() == login.Usuario.ToUpper() && p.coSenha == senha)
-                        .Join(_context.Colaboradores, p => p.idPessoa, c => c.idPessoa, (p, c) => c)
-                        .Select(c => c.icAdministrador)
+                        .Join(_context.Colaboradores, p => p.idPessoa, c => c.idPessoa, (p, c) => new { Pessoa = p, Colaborador = c })
+                        .Where(pc => pc.Colaborador.icAdministrador == true && pc.Colaborador.icAtivo == true)
+                        .Select(pc => pc.Colaborador.icAdministrador)
                         .FirstOrDefault();
 
                     Pessoa pessoaEmail = BuscarPorEmail(login.Usuario);
