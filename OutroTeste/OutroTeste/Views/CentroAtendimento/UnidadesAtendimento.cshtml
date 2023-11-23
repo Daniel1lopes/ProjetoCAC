@@ -18,10 +18,13 @@
             </div>
             @foreach (var unidade in Model)
             {
+                var servicoUnidadeAtendimentoID = ViewBag.ServicoUnidadeAtendimentoIDs[unidade.idUnidadeAtendimento];
+
                 <div class="d-flex m-1 container" style="flex: 1;">
-                    <a class="btn btn-primary btn-block" href="@Url.Action("DatasDisponiveis", "CentroAtendimento", new { servicoUnidadeAtendimentoID = ViewBag.servicoUnidadeAtendimentoID,
+                    <a class="btn btn-primary btn-block" href="@Url.Action("DatasDisponiveis", "CentroAtendimento", new { servicoUnidadeAtendimentoID,
                                                                                                                           centroAtendimentoID = ViewBag.centroAtendimentoID,
-                                                                                                                          especialidadeID = ViewBag.especialidadeID })">@unidade.nmUnidadeAtendimento</a>
+                                                                                                                          especialidadeID = ViewBag.especialidadeID,
+                                                                                                                          unidadeID = unidade.idUnidadeAtendimento})">@unidade.nmUnidadeAtendimento</a>
                 </div>
             }
         </div> 

@@ -11,12 +11,11 @@
     <title>Datas Disponíveis</title>
 </head>
 <body>
-    <div id="popupErro" class="m-1 w-100 text-center" style="display: none;">
-        <div class="alert alert-danger">
-            <span id="mensagemErroPopup"></span>
-            <button type="button" class="btn-close" onclick="fecharPopupLogin()" aria-label="Close"></button>
-        </div>
+    <div id="popupErro" class="alert alert-danger" style="display: none; text-align: center;" role="alert">
+        <span id="mensagemErroPopup"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" onclick="fecharPopupLogin()" aria-label="Close"></button>
     </div>
+
     <div class="m-1 w-100 text-center">
         <h4 style="color:#bf0086">@ViewBag.centroAtendimentoNome</h4>
         <h4 style="color:#bf0086">@ViewBag.especialidadeNome</h4>
@@ -32,7 +31,6 @@
         <div class="w-100 text-center" style="padding-right: 5%">
             <h2 class="m-1" style="padding-right: 45px; ">Datas Disponíveis</h2>
         </div>
-        <div></div>
     </div>
 
     <table class="table">
@@ -52,25 +50,32 @@
                 else
                 {
                     var vagasRestantes = agenda.nuVagas - agenda.nuReserva;
-                    var horarioConfirmacao = @agenda.hrInicio.ToString() + " - " + @agenda.hrFim.ToString();
                     var agendaConfirmacao = @agenda.dtAgenda.ToString("dd/MM/yyyy");
+
+                    var horas = agenda.hrInicio.Hours.ToString("00");
+                    var minutos = agenda.hrInicio.Minutes.ToString("00");
+                    var horarioConfirmacao = $"{horas}:{minutos}";
+
+                    var horasInicio = agenda.hrInicio.Hours.ToString("00");
+                    var minutosInicio = agenda.hrInicio.Minutes.ToString("00");
+                    var horarioInicio = $"{horasInicio}:{minutosInicio}";
                     <tr>
                         <td style="display: flex; flex-direction: column; align-items: center;">
                             <h3>Data - @agenda.dtAgenda.ToString("dd/MM/yyyy")</h3>
                             @if (Context.Session.GetString("idPessoa") == null)
                             {
-                                <a class="btn btn-primary btn-block" onclick="userDeslogado()">Início: @agenda.hrInicio - Fim: @agenda.hrFim </a>
+                                <a class="btn btn-primary btn-block" onclick="userDeslogado()">Horário: @horarioInicio horas</a>
                             }
                             else if (ViewBag.limitePorEspecialidade == false)
                             {
                                 @if (Context.Session.GetString("idPessoa") != null)
                                 {
-                                    <a class="btn btn-primary btn-block" onclick="return abrirPopup('@agendaConfirmacao', '@horarioConfirmacao', '@ViewBag.disponibilidadeAgenda[i]', @agenda.idAgenda);">Início: @agenda.hrInicio - Fim: @agenda.hrFim </a>
+                                    <a class="btn btn-primary btn-block" onclick="return abrirPopup('@agendaConfirmacao', '@horarioConfirmacao', '@ViewBag.disponibilidadeAgenda[i]', @agenda.idAgenda);">Horário: @horarioInicio horas</a>
                                 }
                             }
                             else
                             {
-                                <a class="btn btn-primary btn-block" style="background-color: #808080 !important; border-color: #1B1212 !important;" onclick="limiteUser()">Início: @agenda.hrInicio - Fim: @agenda.hrFim </a>
+                                <a class="btn btn-primary btn-block" style="background-color: #808080 !important; border-color: #1B1212 !important;" onclick="limiteUser()">Horário: @horarioInicio horas</a>
                             }
 
                             <h5 style="padding-top: 5px">Número de vagas restantes: @ViewBag.disponibilidadeAgenda[i] </h5>
@@ -94,7 +99,11 @@
         <h4 id="qtdeDisponivel">Vaga(s) Disponíveis: </h4>
         <div style="display: flex;">
             <button class="btn btn-primary btn-cancelar" style="margin-right: 15px;" onclick="fecharPopup()">Cancelar</button>
+            <form asp-controller="CentroAtendimento" asp-action="MarcacaoDeHorario" method="post" style="text-align: center;">
+                <input type="hidden" name="idAgenda" id="formIDAgenda"/>
+                <input type="hidden" name="idPessoa" value="@Context.Session.GetString("User")" />
             <button class="btn btn-primary btn-cancelar" id="confirmButton">Confirmar</button>
+            </form>
         </div>
     </div>
     <!-- A sobreposição -->
@@ -106,12 +115,7 @@
             document.getElementById('dataAgenda').innerText = "Data: " + data;
             document.getElementById('horarioAgenda').innerText = "Horário: " + horario;
             document.getElementById('qtdeDisponivel').innerText = "Vaga(s) Disponíveis: " + qtdeDisponivel;
-
-            var confirmButton = document.getElementById('confirmButton');
-            confirmButton.setAttribute('data-idAgenda', idAgenda);
-            confirmButton.onclick = function () {
-                confirmarAgendamento(idAgenda);
-            };
+            document.getElementById('formIDAgenda').value = idAgenda;
 
             document.getElementById('overlayConfirmacao').style.display = 'block';
             document.getElementById('popupConfirmacao').style.display = 'block';
@@ -120,13 +124,6 @@
         function fecharPopup() {
             document.getElementById('overlayConfirmacao').style.display = 'none';
             document.getElementById('popupConfirmacao').style.display = 'none';
-        }
-
-        function confirmarAgendamento(idAgenda) {
-            var idPessoa = '@Context.Session.GetInt32("idPessoa")';
-            var url = '@Url.Action("HorariosMarcados", "CentroAtendimento")' + '?idAgenda=' + idAgenda + '&idPessoa=' + idPessoa;
-
-            window.location.href = url;
         }
 
         function userDeslogado() {

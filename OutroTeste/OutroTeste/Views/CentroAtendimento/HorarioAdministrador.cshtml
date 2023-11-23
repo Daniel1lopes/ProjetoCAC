@@ -38,13 +38,14 @@
                     <p><strong>Horário Fim:</strong> @horario.hrFim</p>
                 </div>
                 <div></div>
-                <div>
-                    <form asp-controller="CentroAtendimento" asp-action="CancelarHorarioADM" method="post" style="text-align: center;">
+                <div class="button-container">
+                    <button class="btn btn-primary button-imprimir">Imprimir</button>
+                    <form asp-controller="CentroAtendimento" asp-action="CancelarHorarioADM" method="post" class="button-form">
                         <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
-                        <button class="btn btn-primary" style="margin-left: -80px; margin-right: 5px; padding: 10px; background-color: #43054e !important;">Imprimir</button>
-                        <button class="btn btn-primary" style="margin-left: 5px; padding: 10px; background-color: #43054e !important;" type="submit">Cancelar</button>
+                        <button class="btn btn-primary button-cancelar" type="submit">Cancelar</button>
                     </form>
                 </div>
+
             </div>
         }
     </div>

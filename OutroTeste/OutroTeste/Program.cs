@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
+using System.Globalization;
 using agenda.Models;
+using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace agenda
 {
@@ -17,12 +21,19 @@ namespace agenda
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // Add localization services to the container
+            builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+            builder.Services.AddControllersWithViews()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
             // Add session services to the DI container
             builder.Services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(30); // You can adjust the timeout as needed
-                options.Cookie.HttpOnly = true; // Prevent the client-side script from accessing the cookie
-                options.Cookie.IsEssential = true; // Make the session cookie essential
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
             });
 
             // Configure the database context
@@ -30,6 +41,9 @@ namespace agenda
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase")));
 
             var app = builder.Build();
+
+            // Configure culture settings
+            CultureConfiguration.Configure(builder.Services, app);
 
             // Migrate the database. This is typically for deploying updates to the database.
             using (var scope = app.Services.CreateScope())
@@ -72,6 +86,29 @@ namespace agenda
                 pattern: "{controller=CentroAtendimento}/{action=Index}/{id?}");
 
             app.Run();
+        }
+    }
+
+    public class CultureConfiguration
+    {
+        public static void Configure(IServiceCollection services, WebApplication app)
+        {
+            var supportedCultures = new[] { new CultureInfo("pt-BR") };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(culture: "pt-BR", uiCulture: "pt-BR"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
+
+            var cultureInfo = new CultureInfo("pt-BR");
+            cultureInfo.NumberFormat.CurrencySymbol = "";
+            cultureInfo.NumberFormat.CurrencyDecimalDigits = 2;
+            cultureInfo.NumberFormat.CurrencyDecimalSeparator = ",";
+            cultureInfo.NumberFormat.CurrencyGroupSeparator = ".";
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
         }
     }
 }

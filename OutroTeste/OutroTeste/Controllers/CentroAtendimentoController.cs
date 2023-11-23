@@ -83,11 +83,18 @@ namespace agenda.Controllers
             ViewBag.EspecialidadeID = _context.Especialidades.FirstOrDefault(e => e.idEspecialidade == servico.idEspecialidade)?.idEspecialidade;
 
             ViewBag.CentroAtendimentoNome = centroAtendimento.nmCentroAtendimento;
-            ViewBag.ServicoNome = servico.deServico;
+            ViewBag.ServicoNome = servico.nmServico;
             ViewBag.EspecialidadeNome = _context.Especialidades.FirstOrDefault(e => e.idEspecialidade == servico.idEspecialidade)?.nmEspecialidade;
 
+            var servicoUnidadeAtendimentoIDs = unidadesAtendimento.ToDictionary(
+                unidade => unidade.idUnidadeAtendimento,
+                unidade => _context.ServicosUnidadeAtendimento
+                .FirstOrDefault(e => e.idServico == servicoID && e.idUnidadeAtendimento == unidade.idUnidadeAtendimento)
+                ?.idServicoUnidadeAtendimento);
+
+            ViewBag.ServicoUnidadeAtendimentoIDs = servicoUnidadeAtendimentoIDs;
+
             ViewBag.CentroAtendimentoID = centroAtendimento.idCentroAtendimento;
-            ViewBag.servicoUnidadeAtendimentoID = _context.ServicosUnidadeAtendimento.FirstOrDefault(e => e.idServicoUnidadeAtendimento == servicoID)?.idServicoUnidadeAtendimento;
             return View(unidadesAtendimento);
         }
 
@@ -105,7 +112,7 @@ namespace agenda.Controllers
         }
 
         [Route("CentroAtendimento/{centroAtendimentoID}/{especialidadeID}/{servicoUnidadeAtendimentoID}/DatasDisponiveis/")]
-        public IActionResult DatasDisponiveis([FromRoute] short servicoUnidadeAtendimentoID, [FromRoute] short centroAtendimentoID, [FromRoute] short especialidadeID)
+        public IActionResult DatasDisponiveis([FromRoute] short servicoUnidadeAtendimentoID, [FromRoute] short centroAtendimentoID, [FromRoute] short especialidadeID, short unidadeID)
         {
             ViewData["Title"] = "AgendaCAC - Datas Disponíveis";
 
@@ -124,18 +131,20 @@ namespace agenda.Controllers
             AND (A.nuVagas - A.nuReserva - ISNULL(QA.nuQtdeAgendamento,0)) > 0")
                 .ToList();
 
-            var unidadeNome = _context.ServicosUnidadeAtendimento
-                .Include(sua => sua.UnidadeAtendimento)
-                .Where(sua => sua.idServicoUnidadeAtendimento == servicoUnidadeAtendimentoID)
-                .Select(sua => sua.UnidadeAtendimento.nmUnidadeAtendimento)
+            var unidadeNome = _context.UnidadesAtendimento
+                .Where(ua => ua.idUnidadeAtendimento == unidadeID)
+                .Select(ua => ua.nmUnidadeAtendimento)
                 .FirstOrDefault();
 
             ViewBag.unidadeNome = unidadeNome;
 
             var servico = _context.ServicosUnidadeAtendimento
-                .Include(sua => sua.Servico)
                 .Where(sua => sua.idServicoUnidadeAtendimento == servicoUnidadeAtendimentoID)
-                .Select(sua => sua.Servico.nmServico)
+                .Join(_context.Servicos,
+                      sua => sua.idServico,
+                      s => s.idServico,
+                      (sua, s) => new { s.nmServico })
+                .Select(x => x.nmServico)
                 .FirstOrDefault();
 
             ViewBag.servicoNome = servico;
@@ -164,29 +173,40 @@ namespace agenda.Controllers
             return View("DatasDisponiveis", AgendaSelecionada);
         }
 
-        public IActionResult HorariosMarcados(int idAgenda, int idPessoa, Agendamento agendamento)
+        public IActionResult HorariosMarcados()
         {
             ViewData["Title"] = "AgendaCAC - Horários Marcados";
 
+            var idPessoaHorario = HttpContext.Session.GetInt32("idPessoa");
+
+            var HorarioAgendado = _context.AgendamentoFulls.Where(ag => ag.idPessoa == idPessoaHorario && ag.icAtivoAgendamento == true).ToList();
+
+            ViewBag.HorarioAgendado = HorarioAgendado;
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult MarcacaoDeHorario(int idAgenda, int idPessoa, Agendamento agendamento)
+        {
             try
             {
                 var agenda = _context.Agendas.Find(idAgenda);
-                var pessoa = _context.Pessoas.Find(idPessoa);
+                var idPessoaSessao = HttpContext.Session.GetInt32("idPessoa");
 
-                if (agenda != null && pessoa != null)
+                if (agenda != null && idPessoaSessao != null)
                 {
                     var qtdeDisponivel = _context.DisponibilidadeAgendas.FirstOrDefault(da => da.idAgenda == idAgenda);
                     if (qtdeDisponivel.nuQtdeDisponivel - 1 >= 0)
                     {
                         agendamento.Agenda = agenda;
-                        agendamento.Pessoa = pessoa;
 
                         agendamento = new Agendamento
                         {
                             dtAgendamento = DateTime.Now,
                             icAtivo = true,
                             idAgenda = idAgenda,
-                            idPessoa = idPessoa
+                            idPessoa = (int)idPessoaSessao
                         };
 
                         _context.Agendamentos.Add(agendamento);
@@ -194,11 +214,11 @@ namespace agenda.Controllers
                         _context.SaveChanges();
 
                         TempData["MensagemSucesso"] = "Parabéns, sua consulta foi marcada com sucesso !";
+                        return RedirectToAction("HorariosMarcados");
                     }
                     else
                     {
                         TempData["MensagemErro"] = "Ops, sua vaga foi preenchida.";
-                        return View("HorariosMarcados");
                     }
                 }
 
@@ -207,12 +227,6 @@ namespace agenda.Controllers
             {
                 TempData["MensagemErro"] = $"Ops, não conseguimos apagar seu usuário, tente novamante, detalhe do erro: {erro.Message}";
             }
-
-            var idPessoaHorario = HttpContext.Session.GetInt32("idPessoa");
-
-            var HorarioAgendado = _context.AgendamentoFulls.Where(ag => ag.idPessoa == idPessoaHorario && ag.icAtivoAgendamento == true).ToList();
-
-            ViewBag.HorarioAgendado = HorarioAgendado;
 
             return View();
         }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 
 namespace agenda.Models
 {
@@ -22,6 +23,8 @@ namespace agenda.Models
         public int idPessoa { get; set; }
 
         [Required(ErrorMessage = "Por favor, preencha a data de nascimento")]
+        [DataType(DataType.Date, ErrorMessage = "Formato de data inválido")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         [Column(TypeName = "date")]
         public DateTime dtNascimento { get; set; }
 
@@ -45,10 +48,12 @@ namespace agenda.Models
         [Display(Name = "Número de CPF", Prompt = "Número de CPF")]
         public string nuCPF { get; set; }
 
+        [Required(ErrorMessage = "Por favor, preencha o campo senha")]
         [StringLength(50)]
         [Display(Name = "Senha", Prompt = "Senha")]
         public string coSenha { get; set; }
 
+        [Required(ErrorMessage = "Por favor, confirme sua senha")]
         [Display(Name = "Confirmar senha", Prompt = "Confirmar Senha")]
         [NotMapped]
         public string coSenhaConfirmar { get; set; }

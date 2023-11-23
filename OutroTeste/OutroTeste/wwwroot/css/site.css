@@ -249,6 +249,10 @@ body {
     padding-bottom: 70px;
 }
 
+.cards-container > .card:only-child {
+    flex: 0 1 58%;
+}
+
 .card-header {
     font-size: 24px;
     color: #333;
@@ -268,19 +272,18 @@ body {
     }
 
 .button-group {
+    display: flex;
+    justify-content: space-between;
     position: absolute;
     bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 100px;
+    right: 100px;
     text-align: center;
-    width: 100%; 
 }
 
     .button-group .button {
-        margin: 0 5px; 
-        display: inline-block;
+        margin: 0;
         padding: 10px 20px;
-        margin: 10px;
         border-radius: 5px;
         text-decoration: none;
         color: white;
@@ -366,6 +369,33 @@ body {
         align-items: center !important;
         width: 100% !important;
     }
+
+.button-container {
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.button-imprimir, .button-cancelar {
+    padding: 10px;
+    background-color: #43054e !important; 
+    border: none;
+    cursor: pointer;
+}
+
+.button-imprimir {
+    margin-right: 10px; 
+}
+
+.button-cancelar {
+    margin-left: 10px; 
+}
+
+.button-form {
+    display: flex; 
+    justify-content: center; 
+}
+
 
 
 

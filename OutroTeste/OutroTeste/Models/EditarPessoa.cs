@@ -7,6 +7,7 @@ namespace agenda.Models
 {
     public class EditarPessoa
     {
+        [DataType(DataType.Date)]
         [Required(ErrorMessage = "Por favor, preencha a data de nascimento")]
         [Column(TypeName = "date")]
         public DateTime dtNascimento { get; set; }
