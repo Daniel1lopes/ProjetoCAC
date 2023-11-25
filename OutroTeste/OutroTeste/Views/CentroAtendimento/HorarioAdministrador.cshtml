@@ -16,6 +16,41 @@
 
 @if (ViewBag.HorarioAdministrador != null && ViewBag.HorarioAdministrador.Count > 0)
 {
+    <h1 style="text-align: center; padding-bottom: 10px;">FILTRAR HORÁRIOS</h1>
+    <div style="flex-direction: row;">
+         <div class="dropdown">
+            <div class="form-group">
+                <label for="centroAtendimentoSelect">Centro de Atendimento:</label>
+                <select class="form-control" id="centroAtendimentoSelect">
+                    <option value="">Selecione um Centro de Atendimento</option>
+                    @foreach (var centroAtendimento in ViewBag.CentroAtendimento)
+                    {
+                        <option value="@centroAtendimento.idCentroAtendimento">@centroAtendimento.nmCentroAtendimento</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="especialidadeSelect">Especialidade:</label>
+                <select class="form-control" id="especialidadeSelect">
+                    <option value="">Selecione uma Especialidade</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="servicoSelect">Serviço:</label>
+                <select class="form-control" id="servicoSelect">
+                    <option value="">Selecione um Serviço</option>
+                </select>
+            </div>
+         </div>
+    </div>
+
+    <div class="form-group">
+        <label>Nome do usuário:</label>
+        <input type="text" class="form-control" placeholder="Insira o nome da pessoa">
+    </div>
+
     <h1 style="text-align: center; padding-bottom: 10px;">HÓRARIOS MARCADOS</h1>
     <div class="cards-container">
         @foreach (var horario in ViewBag.HorarioAdministrador)
@@ -54,3 +89,46 @@ else
 {
     <h1 style="text-align: center;">NÃO HÁ NENHUM HORÁRIO MARCADO.</h1>
 }
+
+<script>
+
+    $(document).ready(function () {
+        $('#centroAtendimentoSelect').change(function () {
+            var idCentroAtendimento = $(this).val();
+            atualizarEspecialidades(idCentroAtendimento);
+        });
+
+        $('#especialidadeSelect').change(function () {
+            var idCentroAtendimento = $('#centroAtendimentoSelect').val();
+            var idEspecialidade = $(this).val();
+            atualizarServicos(idCentroAtendimento, idEspecialidade);
+        });
+    });
+
+    function atualizarEspecialidades(idCentroAtendimento) {
+        if (idCentroAtendimento) {
+            $.getJSON('/CentroAtendimento/GetEspecialidadesPorCentro', { idCentroAtendimento: idCentroAtendimento }, function (data) {
+                var especialidadeSelect = $('#especialidadeSelect');
+                especialidadeSelect.empty();
+                especialidadeSelect.append($('<option>', { value: '', text: 'Selecione uma Especialidade' }));
+                $.each(data, function (index, item) {
+                    especialidadeSelect.append($('<option>', { value: item.idEspecialidade, text: item.nmEspecialidade }));
+                });
+            });
+        }
+    }
+
+    function atualizarServicos(idCentroAtendimento, idEspecialidade) {
+        if (idCentroAtendimento && idEspecialidade) {
+            $.getJSON('/CentroAtendimento/GetServicosFiltrados', { idCentroAtendimento: idCentroAtendimento, idEspecialidade: idEspecialidade }, function (data) {
+                var servicoSelect = $('#servicoSelect');
+                servicoSelect.empty();
+                servicoSelect.append($('<option>', { value: '', text: 'Selecione um Serviço' }));
+                $.each(data, function (index, item) {
+                    servicoSelect.append($('<option>', { value: item.idServico, text: item.nmServico }));
+                });
+            });
+        }
+    }
+
+</script>

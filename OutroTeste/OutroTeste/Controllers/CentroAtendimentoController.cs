@@ -114,6 +114,7 @@ namespace agenda.Controllers
         [Route("CentroAtendimento/{centroAtendimentoID}/{especialidadeID}/{servicoUnidadeAtendimentoID}/DatasDisponiveis/")]
         public IActionResult DatasDisponiveis([FromRoute] short servicoUnidadeAtendimentoID, [FromRoute] short centroAtendimentoID, [FromRoute] short especialidadeID, short unidadeID)
         {
+
             ViewData["Title"] = "AgendaCAC - Datas Disponíveis";
 
             var AgendaSelecionada = _context.Agendas
@@ -265,6 +266,17 @@ namespace agenda.Controllers
         {
             ViewData["Title"] = "AgendaCAC - Horários (ADM)";
 
+            var CentroAtendimento = _context.CentroAtendimentos.Select(ca => new { ca.nmCentroAtendimento, ca.idCentroAtendimento }).ToList();
+            ViewBag.CentroAtendimento = CentroAtendimento;
+
+            var Especialidade = _context.Especialidades.Select(e => new { e.nmEspecialidade, e.idEspecialidade }).ToList();
+            ViewBag.Especialidade = Especialidade;
+
+            var Servico = _context.Servicos.Select(s => new { s.nmServico, s.idServico }).ToList();
+            ViewBag.Servico = Servico;
+
+            var nomeUser = _context.Pessoas.Select(nu => nu.nmPessoa).ToList();
+
             var HorarioAdministrador = _context.AgendamentoFulls.Where(af => af.icAtivoAgendamento == true).Join(_context.Pessoas, af => af.idPessoa, p => p.idPessoa,
                                                                       (af, p) => new
                                                                       {
@@ -285,6 +297,47 @@ namespace agenda.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public JsonResult GetEspecialidadesPorCentro(int idCentroAtendimento)
+        {
+            var especialidades = _context.Especialidades
+                .Where(e => e.idCentroAtendimento == idCentroAtendimento)
+                .Select(e => new { e.idEspecialidade, e.nmEspecialidade })
+                .ToList();
+
+            return Json(especialidades);
+        }
+
+        [HttpGet]
+        public JsonResult GetServicosFiltrados(int idCentroAtendimento, int idEspecialidade)
+        {
+        var servicos = _context.Servicos
+            .Join(
+                _context.Especialidades,
+                servico => servico.idEspecialidade,
+                especialidade => especialidade.idEspecialidade,
+                (servico, especialidade) => new { Servico = servico, Especialidade = especialidade }
+            )
+            .Join(
+                _context.CentroAtendimentos,
+                se => se.Especialidade.idCentroAtendimento,
+                centroAtendimento => centroAtendimento.idCentroAtendimento,
+                (se, centroAtendimento) => new { se.Servico, se.Especialidade, CentroAtendimento = centroAtendimento }
+            )
+            .Where(x => x.Especialidade.idEspecialidade == idEspecialidade && x.CentroAtendimento.idCentroAtendimento == idCentroAtendimento)
+            .Select(x => new
+            {
+                x.Servico.nmServico,
+                x.Servico.idServico,
+                x.Especialidade.idEspecialidade,
+                x.CentroAtendimento.idCentroAtendimento
+            })
+            .ToList();
+
+            return Json(servicos);
+        }
+
     }
 }
 
