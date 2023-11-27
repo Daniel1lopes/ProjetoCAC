@@ -25,7 +25,7 @@
     <form asp-action="Criar" asp-controller="Usuario" method="post">
         <h1>Cadastro</h1>
         <div class="input-box">
-            <input type="text" asp-for="nmPessoa"/>
+            <input type="text" id="nmPessoa" asp-for="nmPessoa" />
             @Html.ValidationMessageFor(x => x.nmPessoa)
         </div>
         <div class="input-box">
@@ -89,6 +89,15 @@
     }
 
     document.getElementById('showPasswordCheckbox').addEventListener('click', togglePasswordVisibility);
+
+    $(document).ready(function () {
+        $('#nmPessoa').on('input', function () {
+            var inputVal = $(this).val();
+            var capitalized = inputVal.replace(/(^|\s)\S/g, function (t) { return t.toUpperCase(); });
+            $('#nmPessoa').val(capitalized);
+        });
+    });
+
     </script>
 
 

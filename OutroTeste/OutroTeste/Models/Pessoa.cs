@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 using System.Globalization;
 
 namespace agenda.Models
 {
     [Table("Pessoa", Schema = "CACTB")] 
-    public class Pessoa
+    public class Pessoa 
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public Pessoa()

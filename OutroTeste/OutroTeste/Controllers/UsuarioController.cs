@@ -20,12 +20,14 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
 
 namespace agenda.Controllers
 {
     public class UsuarioController : Controller
     {
         private readonly ApplicationDbContext _context;
+
         public UsuarioController(ApplicationDbContext context)
         {
             _context = context;
@@ -54,7 +56,7 @@ namespace agenda.Controllers
         }
 
         [HttpPost]
-        public IActionResult Logar(Login login)
+        public async Task<IActionResult> Logar(Login login)
         {
             try
             {

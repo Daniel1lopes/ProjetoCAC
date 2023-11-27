@@ -1,4 +1,5 @@
 ﻿@model agenda.Models.EditarPessoa
+
 @{
     ViewData["Title"] = "AgendaCAC - Editar usuário";
 
@@ -6,70 +7,77 @@
     var checkMulher = TempData["idSexo"]?.ToString() == "1" ? "checked" : null;
 }
 
-<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+@if (Context.Session.GetString("User") != null)
+{
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 
 
-<div class="wrapper">
-    @if (TempData["MensagemErro"] != null)
-    {
-        <div class="alert alert-danger" style="text-align: center;">
-            @Html.Raw(TempData["MensagemErro"])
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-    @if (TempData["MensagemSucesso"] != null)
-    {
-        <div class="alert alert-success" style="text-align: center;">
-            @TempData["MensagemSucesso"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    }
-    <form asp-action="UsuarioEditar" asp-controller="Usuario" method="post" class="form-validation-message">
-        <h1>Editar</h1>
-        @Html.ValidationSummary(false, "", new { @class = "text-danger validation-summary-errors" })
-        <div class="input-box">
-            <label>Nome Completo:</label>
-            <input type="text" asp-for="nmPessoa" value="@Model.nmPessoa"/>
-        </div>
-        <div class="input-box">
-            <label>Email:</label>
-            <input asp-for="edEmail" value="@Model.edEmail" />
-        </div>
-        <div class="input-box">
-            <label>Telefone:</label>
-            <input type="tel" asp-for="nuTelefone" value="@Model.nuTelefone" />
-        </div>
-        <div class="input-box">
-            <label>CPF:</label>
-            <input type="text" asp-for="nuCPF" value="@Model.nuCPF" />
-        </div>
-        <div class="input-box">
-            <label>Data de Nascimento:</label>
-            <input type="text" asp-for="dtNascimento" value="@Model.dtNascimento.ToString("dd/MM/yyyy")" placeholder="Data de Nascimento"
-            onfocus="this.type='date'" onblur="this.type='text'" style="padding-top: 10px; padding-bottom: 10px;"/> 
-        </div>
-        <div class="input-box">
-            <label>Senha:</label>
-            <input type="password" asp-for="coSenha" placeholder="Senha" data-val="false" />
-        </div>
-        <div class="input-box">
-            <label>Confirmar Senha:</label>
-            <input type="password" asp-for="coSenhaConfirmar" placeholder="Confirmar senha" data-val="false" />
-        </div>
+    <div class="wrapper">
+        @if (TempData["MensagemErro"] != null)
+        {
+            <div class="alert alert-danger" style="text-align: center;">
+                @Html.Raw(TempData["MensagemErro"])
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert alert-success" style="text-align: center;">
+                @TempData["MensagemSucesso"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        <form asp-action="UsuarioEditar" asp-controller="Usuario" method="post" class="form-validation-message">
+            <h1>Editar</h1>
+            @Html.ValidationSummary(false, "", new { @class = "text-danger validation-summary-errors" })
+            <div class="input-box">
+                <label>Nome Completo:</label>
+                <input type="text" asp-for="nmPessoa" id="nmPessoa" value="@Model.nmPessoa"/>
+            </div>
+            <div class="input-box">
+                <label>Email:</label>
+                <input asp-for="edEmail" value="@Model.edEmail" />
+            </div>
+            <div class="input-box">
+                <label>Telefone:</label>
+                <input type="tel" asp-for="nuTelefone" value="@Model.nuTelefone" />
+            </div>
+            <div class="input-box">
+                <label>CPF:</label>
+                <input type="text" asp-for="nuCPF" value="@Model.nuCPF" />
+            </div>
+            <div class="input-box">
+                <label>Data de Nascimento:</label>
+                <input type="text" asp-for="dtNascimento" value="@Model.dtNascimento.ToString("dd/MM/yyyy")" placeholder="Data de Nascimento"
+                onfocus="this.type='date'" onblur="this.type='text'" style="padding-top: 10px; padding-bottom: 10px;"/> 
+            </div>
+            <div class="input-box">
+                <label>Senha:</label>
+                <input type="password" asp-for="coSenha" placeholder="Senha" data-val="false" />
+            </div>
+            <div class="input-box">
+                <label>Confirmar Senha:</label>
+                <input type="password" asp-for="coSenhaConfirmar" placeholder="Confirmar senha" data-val="false" />
+            </div>
 
-        <label style="padding-bottom: 10px; padding-top: 15px;"><input type="checkbox" id="showPasswordCheckbox" /> Mostrar senha</label>
-        <div class="remember-forgot" style="justify-content: space-around !important; padding: 10px; margin-bottom: -1px;">
-            <label><input type="radio" asp-for="idSexo" value="2" asp-checked="(Model.idSexo == 2)">Homem</label>
-            <label><input type="radio" asp-for="idSexo" value="1" asp-checked="(Model.idSexo == 1)">Mulher</label>
-        </div>
-        <button type="submit" class="btn-login">Salvar Alterações</button>
-    </form>
-</div>
+            <label style="padding-bottom: 10px; padding-top: 15px;"><input type="checkbox" id="showPasswordCheckbox" /> Mostrar senha</label>
+            <div class="remember-forgot" style="justify-content: space-around !important; padding: 10px; margin-bottom: -1px;">
+                <label><input type="radio" asp-for="idSexo" value="2" asp-checked="(Model.idSexo == 2)">Homem</label>
+                <label><input type="radio" asp-for="idSexo" value="1" asp-checked="(Model.idSexo == 1)">Mulher</label>
+            </div>
+            <button type="submit" class="btn-login">Salvar Alterações</button>
+        </form>
+    </div>
+}
+else
+{
+    <h1 style="text-align: center;">PÁGINA INDISPONÍVEL</h1>
+}
 
 <script>
     $(document).ready(function () {
@@ -81,6 +89,14 @@
                 $('#coSenha').attr('type', 'password');
                 $('#coSenhaConfirmar').attr('type', 'password');
             }
+        });
+    });
+
+    $(document).ready(function () {
+        $('#nmPessoa').on('input', function () {
+            var inputVal = $(this).val();
+            var capitalized = inputVal.replace(/(^|\s)\S/g, function (t) { return t.toUpperCase(); });
+            $('#nmPessoa').val(capitalized);
         });
     });
 </script>

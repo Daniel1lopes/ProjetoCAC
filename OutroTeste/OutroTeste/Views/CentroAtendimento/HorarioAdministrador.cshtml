@@ -1,95 +1,105 @@
-﻿@if (TempData["MensagemErro"] != null)
+﻿@if (bool.Parse(Context.Session.GetString("IsAdmin") ?? "false"))
 {
-    <div class="alert alert-danger" style="text-align: center;">
-        @Html.Raw(TempData["MensagemErro"].ToString().Replace("\n", "<br/>"))
+    <div id="mensagemErro" class="alert alert-danger" style="display:none; text-align: center;">
+        <span id="textoMensagemErro"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-}
 
-@if (TempData["MensagemSucesso"] != null)
-{
-    <div class="alert alert-success" style="text-align: center;">
-        @Html.Raw(TempData["MensagemSucesso"])
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
 
-@if (ViewBag.HorarioAdministrador != null && ViewBag.HorarioAdministrador.Count > 0)
-{
-    <h1 style="text-align: center; padding-bottom: 10px;">FILTRAR HORÁRIOS</h1>
-    <div style="flex-direction: row;">
-         <div class="dropdown">
-            <div class="form-group">
-                <label for="centroAtendimentoSelect">Centro de Atendimento:</label>
-                <select class="form-control" id="centroAtendimentoSelect">
-                    <option value="">Selecione um Centro de Atendimento</option>
-                    @foreach (var centroAtendimento in ViewBag.CentroAtendimento)
-                    {
-                        <option value="@centroAtendimento.idCentroAtendimento">@centroAtendimento.nmCentroAtendimento</option>
-                    }
-                </select>
-            </div>
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-success" style="text-align: center;">
+            @Html.Raw(TempData["MensagemSucesso"])
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
-            <div class="form-group">
-                <label for="especialidadeSelect">Especialidade:</label>
-                <select class="form-control" id="especialidadeSelect">
-                    <option value="">Selecione uma Especialidade</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="servicoSelect">Serviço:</label>
-                <select class="form-control" id="servicoSelect">
-                    <option value="">Selecione um Serviço</option>
-                </select>
-            </div>
-         </div>
-    </div>
-
-    <div class="form-group">
-        <label>Nome do usuário:</label>
-        <input type="text" class="form-control" placeholder="Insira o nome da pessoa">
-    </div>
-
-    <h1 style="text-align: center; padding-bottom: 10px;">HÓRARIOS MARCADOS</h1>
-    <div class="cards-container">
-        @foreach (var horario in ViewBag.HorarioAdministrador)
-        {
-            <div class="card-horizontal">
-                <div class="card-section">
-                    <p><strong>Nome:</strong> @horario.nmPessoa</p>
-                    <p><strong>Serviço:</strong> @horario.nmServico</p>
-                    <p><strong>Especialidade:</strong> @horario.nmEspecialidade</p>
-                </div>
-                <div class="card-section">
-                    <p><strong>Telefone:</strong> @horario.nuTelefone</p>
-                    <p><strong>Centro de Atendimento:</strong> @horario.nmCentroAtendimento</p>
-                    <p><strong>Unidade de Atendimento:</strong> Clínica-Escola de Nutrição - Edifício União - SCS</p>
-                </div>
-                <div class="card-section">
-                    <p><strong>Email:</strong> @horario.edEmail</p>
-                    <p><strong>Data do Agendamento:</strong> @horario.dtAgenda.ToString("dd/MM/yyyy")</p>
-                    <p><strong>Horário Início:</strong> @horario.hrInicio</p>
-                    <p><strong>Horário Fim:</strong> @horario.hrFim</p>
-                </div>
-                <div></div>
-                <div class="button-container">
-                    <button class="btn btn-primary button-imprimir">Imprimir</button>
-                    <form asp-controller="CentroAtendimento" asp-action="CancelarHorarioADM" method="post" class="button-form">
-                        <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
-                        <button class="btn btn-primary button-cancelar" type="submit">Cancelar</button>
-                    </form>
+    @if (ViewBag.HorarioAdministrador != null && ViewBag.HorarioAdministrador.Count > 0)
+    {
+        <h1 style="text-align: center; padding-bottom: 10px;">FILTRAR HORÁRIOS</h1>
+        <div style="flex-direction: row;">
+            <div class="dropdown">
+                <div class="form-group text-center">
+                    <label for="centroAtendimentoSelect">Centro de Atendimento:</label>
+                    <select class="form-control" id="centroAtendimentoSelect" style="margin:auto;">
+                        <option value="">Selecione um Centro de Atendimento</option>
+                        @foreach (var centroAtendimento in ViewBag.CentroAtendimento)
+                        {
+                            <option value="@centroAtendimento.idCentroAtendimento">@centroAtendimento.nmCentroAtendimento</option>
+                        }
+                    </select>
                 </div>
 
+                <div class="form-group text-center">
+                    <label for="especialidadeSelect">Especialidade:</label>
+                    <select class="form-control" id="especialidadeSelect" style="margin:auto;">
+                        <option value="">Selecione uma Especialidade</option>
+                    </select>
+                </div>
+
+                <div class="form-group text-center">
+                    <label for="servicoSelect">Serviço:</label>
+                    <select class="form-control" id="servicoSelect" style="margin:auto;">
+                        <option value="">Selecione um Serviço</option>
+                    </select>
+                </div>
             </div>
-        }
-    </div>
-}
+        </div>
+
+        <div class="form-group text-center">
+            <label>Nome do usuário:</label>
+            <input type="text" class="form-control" id="inputNomeUsuario" placeholder="Insira o nome da pessoa" style="margin:auto;">
+        </div>
+
+        <div class="d-flex justify-content-center" style="margin-top: 15px; margin-bottom: 15px;">
+            <button id="button-filtrar" class="btn btn-primary">Filtrar</button>
+            <button id="button-exportar-excel" class="btn btn-primary" style="margin-left: 15px;">Exportar para Excel</button>
+        </div>
+
+        <h1 style="text-align: center; padding-bottom: 10px;">HÓRARIOS MARCADOS</h1>
+        <div class="cards-container">
+            @foreach (var horario in ViewBag.HorarioAdministrador)
+            {
+                <div class="card-horizontal">
+                    <div class="card-section">
+                        <p><strong>Nome:</strong> @horario.nmPessoa</p>
+                        <p><strong>Serviço:</strong> @horario.nmServico</p>
+                        <p><strong>Especialidade:</strong> @horario.nmEspecialidade</p>
+                    </div>
+                    <div class="card-section">
+                        <p><strong>Telefone:</strong> @horario.nuTelefone</p>
+                        <p><strong>Centro de Atendimento:</strong> @horario.nmCentroAtendimento</p>
+                        <p><strong>Unidade de Atendimento:</strong> Clínica-Escola de Nutrição - Edifício União - SCS</p>
+                    </div>
+                    <div class="card-section">
+                        <p><strong>Email:</strong> @horario.edEmail</p>
+                        <p><strong>Data do Agendamento:</strong> @horario.dtAgenda.ToString("dd/MM/yyyy")</p>
+                        <p><strong>Horário Início:</strong> @horario.hrInicio</p>
+                        <p><strong>Horário Fim:</strong> @horario.hrFim</p>
+                    </div>
+                    <div></div>
+                    <div class="button-container">
+                        <button class="btn btn-primary button-imprimir">Imprimir</button>
+                        <form asp-controller="CentroAtendimento" asp-action="CancelarHorarioADM" method="post" class="button-form">
+                            <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
+                            <button class="btn btn-primary button-cancelar" type="submit">Cancelar</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <h1 style="text-align: center;">NÃO HÁ NENHUM HORÁRIO MARCADO.</h1>
+    }
+} 
 else
 {
-    <h1 style="text-align: center;">NÃO HÁ NENHUM HORÁRIO MARCADO.</h1>
+    <h1 style="text-align: center;">PÁGINA INDISPONÍVEL</h1>
 }
 
+<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 <script>
 
     $(document).ready(function () {
@@ -130,5 +140,120 @@ else
             });
         }
     }
+
+    $('#button-filtrar').click(function () {
+        var idCentroAtendimento = $('#centroAtendimentoSelect').val();
+        var idEspecialidade = $('#especialidadeSelect').val();
+        var idServico = $('#servicoSelect').val();
+        var nomeUsuario = $('#inputNomeUsuario').val();
+
+        // Verificação se todos os campos estão vazios
+        if (!idCentroAtendimento && !idEspecialidade && !idServico && !nomeUsuario) {
+            $('#textoMensagemErro').text('Por favor, preencha pelo menos um campo para filtrar.');
+            $('#mensagemErro').show();
+            return;
+        } else {
+            $('#mensagemErro').hide();
+        }
+
+        $.ajax({
+            url: '@Url.Action("FiltrarHorarios", "CentroAtendimento")',
+            type: 'GET',
+            data: {
+                centroAtendimento: idCentroAtendimento,
+                especialidade: idEspecialidade,
+                servico: idServico,
+                nomeUsuario: nomeUsuario
+            },
+            success: function (data) {
+                if (data.length === 0) {
+                    $('#textoMensagemErro').text('Nenhum horário encontrado com os filtros aplicados.');
+                    $('#mensagemErro').show();
+                } else {
+                    $('#mensagemErro').hide();
+                    atualizarHorarios(data);
+                }
+            }
+        });
+    });
+
+
+    function atualizarHorarios(data) {
+        var container = $('.cards-container');
+        container.empty(); 
+
+        data.forEach(horario => {
+            var card = $('<div>').addClass('card-horizontal');
+            card.append($('<div>').addClass('card-section')
+                .append($('<p>').html('<strong>Nome:</strong> ' + horario.nmPessoa))
+                .append($('<p>').html('<strong>Serviço:</strong> ' + horario.nmServico))
+                .append($('<p>').html('<strong>Especialidade:</strong> ' + horario.nmEspecialidade)));
+
+            card.append($('<div>').addClass('card-section')
+                .append($('<p>').html('<strong>Telefone:</strong> ' + horario.nuTelefone))
+                .append($('<p>').html('<strong>Centro de Atendimento:</strong> ' + horario.nmCentroAtendimento))
+                .append($('<p>').html('<strong>Unidade de Atendimento:</strong> Clínica-Escola de Nutrição - Edifício União - SCS')));
+
+            card.append($('<div>').addClass('card-section')
+                .append($('<p>').html('<strong>Email:</strong> ' + horario.edEmail))
+                .append($('<p>').html('<strong>Data do Agendamento:</strong> ' + horario.dtAgenda))
+                .append($('<p>').html('<strong>Horário Início:</strong> ' + horario.hrInicio))
+                .append($('<p>').html('<strong>Horário Fim:</strong> ' + horario.hrFim)));
+            
+            var divVazia = $('<div>');
+
+            var botaoImprimir = $('<button>').addClass('btn btn-primary button-imprimir').text('Imprimir');
+
+            var formularioCancelar = $('<form>').attr({
+                'asp-controller': 'CentroAtendimento',
+                'asp-action': 'CancelarHorarioADM',
+                'method': 'post',
+                'class': 'button-form'
+            }).append($('<input>').attr({
+                'type': 'hidden',
+                'name': 'idAgendamento',
+                'value': horario.idAgendamento
+            })).append($('<button>').addClass('btn btn-primary button-cancelar').attr('type', 'submit').text('Cancelar'));
+
+            var buttonContainer = $('<div>').addClass('button-container d-flex justify-content-center')
+                .append(botaoImprimir)
+                .append(formularioCancelar);
+
+            card.append(divVazia);
+
+            card.append(buttonContainer);
+
+            container.append(card);
+        });
+    }
+
+    $('#button-exportar-excel').click(function () {
+        // Array para manter os dados de cada card
+        var dataOcorrencias = [];
+
+        // Iterar sobre cada card e extrair os dados
+        $('.card-horizontal').each(function () {
+            var ocorrencia = {
+                'Nome': $(this).find('.card-section').eq(0).find('p').eq(0).text().replace('Nome:', '').trim(),
+                'Serviço': $(this).find('.card-section').eq(0).find('p').eq(1).text().replace('Serviço:', '').trim(),
+                'Especialidade': $(this).find('.card-section').eq(0).find('p').eq(2).text().replace('Especialidade:', '').trim(),
+                'Telefone': $(this).find('.card-section').eq(1).find('p').eq(0).text().replace('Telefone:', '').trim(),
+                'Centro de Atendimento': $(this).find('.card-section').eq(1).find('p').eq(1).text().replace('Centro de Atendimento:', '').trim(),
+                'Email': $(this).find('.card-section').eq(2).find('p').eq(0).text().replace('Email:', '').trim(),
+                'Data do Agendamento': $(this).find('.card-section').eq(2).find('p').eq(1).text().replace('Data do Agendamento:', '').trim(),
+                'Horário Início': $(this).find('.card-section').eq(2).find('p').eq(2).text().replace('Horário Início:', '').trim(),
+                'Horário Fim': $(this).find('.card-section').eq(2).find('p').eq(3).text().replace('Horário Fim:', '').trim()
+            };
+            dataOcorrencias.push(ocorrencia);
+        });
+
+        // Usando SheetJS para criar o arquivo Excel
+        var worksheet = XLSX.utils.json_to_sheet(dataOcorrencias);
+        var workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Ocorrencias");
+
+        // Gerar o arquivo Excel e simular um clique para download
+        XLSX.writeFile(workbook, "Ocorrencias.xlsx");
+    });
 
 </script>

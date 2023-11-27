@@ -1262,3 +1262,11 @@ C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\o
 C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\OutroTeste.genruntimeconfig.cache
 C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\ref\OutroTeste.dll
 C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\OutroTeste.sourcelink.json
+C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.UI.dll
+C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Embedded.dll
+C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\Desktop\Desktop\AgendaCAC\AgendaCAC2\ProjetoCAC\OutroTeste\OutroTeste\obj\Debug\net6.0\OutroTeste.MvcApplicationPartsAssemblyInfo.cs

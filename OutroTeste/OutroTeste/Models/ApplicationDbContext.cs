@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using agenda.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using OutroTeste.Models;
 
 namespace agenda.Models
@@ -29,6 +29,7 @@ namespace agenda.Models
         : base(options)
         {
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

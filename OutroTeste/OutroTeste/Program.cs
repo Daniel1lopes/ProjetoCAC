@@ -9,6 +9,7 @@ using System;
 using System.Globalization;
 using agenda.Models;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Identity;
 
 namespace agenda
 {

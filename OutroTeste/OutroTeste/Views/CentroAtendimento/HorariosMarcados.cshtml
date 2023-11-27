@@ -1,49 +1,56 @@
 ﻿@model List<agenda.Models.Agendamento>
 
-@if (TempData["MensagemErro"] != null)
+@if (Context.Session.GetString("User") != null)
 {
-    <div class="alert alert-danger" style="text-align: center;">
-        @Html.Raw(TempData["MensagemErro"].ToString().Replace("\n", "<br/>"))
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
-@if (TempData["MensagemSucesso"] != null)
-{
-    <div class="alert alert-success" style="text-align: center;">
-        @Html.Raw(TempData["MensagemSucesso"])
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
-@if (ViewBag.HorarioAgendado != null && ViewBag.HorarioAgendado.Count > 0)
-{
-    <h1 style="text-align: center; padding-bottom: 10px;">HÓRARIOS MARCADOS</h1>
-    <div class="cards-container">
-    @foreach (var horario in ViewBag.HorarioAgendado)
+    @if (TempData["MensagemErro"] != null)
     {
-        <div class="card">
-            <div class="card-content">
-                <p><strong>Data do Agendamento: </strong>@horario.dtAgenda.ToString("dd/MM/yyyy")</p>
-                <p><strong>Horário Início:</strong> @horario.hrInicio</p>
-                <p><strong>Horário Fim:</strong> @horario.hrFim</p>
-                <p><strong>Centro de Atendimento:</strong> @horario.nmCentroAtendimento</p>
-                <p><strong>Especialidade:</strong> @horario.nmEspecialidade</p>
-                <p><strong>Serviço:</strong> @horario.nmServico</p>
-                <p><strong>Unidade de Atendimento:</strong> @horario.deUnidadeAtendimento</p>
-                    <div class="button-group">
-                        <button class="button">Imprimir</button>
-                        <form asp-controller="CentroAtendimento" asp-action="CancelarHorario" method="post">
-                            <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
-                            <button class="button" type="submit">Cancelar</button>
-                        </form>
-                    </div>
-            </div>
+        <div class="alert alert-danger" style="text-align: center;">
+            @Html.Raw(TempData["MensagemErro"].ToString().Replace("\n", "<br/>"))
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
-    </div>
-}
-else 
-{   
-    <h1>NÃO HÁ NENHUM HORÁRIO MARCADO.</h1>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-success" style="text-align: center;">
+            @Html.Raw(TempData["MensagemSucesso"])
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (ViewBag.HorarioAgendado != null && ViewBag.HorarioAgendado.Count > 0)
+    {
+        <h1 style="text-align: center; padding-bottom: 10px;">HÓRARIOS MARCADOS</h1>
+        <div class="cards-container">
+            @foreach (var horario in ViewBag.HorarioAgendado)
+            {
+                <div class="card">
+                    <div class="card-content">
+                        <p><strong>Data do Agendamento: </strong>@horario.dtAgenda.ToString("dd/MM/yyyy")</p>
+                        <p><strong>Horário Início:</strong> @horario.hrInicio</p>
+                        <p><strong>Horário Fim:</strong> @horario.hrFim</p>
+                        <p><strong>Centro de Atendimento:</strong> @horario.nmCentroAtendimento</p>
+                        <p><strong>Especialidade:</strong> @horario.nmEspecialidade</p>
+                        <p><strong>Serviço:</strong> @horario.nmServico</p>
+                        <p><strong>Unidade de Atendimento:</strong> @horario.deUnidadeAtendimento</p>
+                        <div class="button-group">
+                            <button class="button">Imprimir</button>
+                            <form asp-controller="CentroAtendimento" asp-action="CancelarHorario" method="post">
+                                <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
+                                <button class="button" type="submit">Cancelar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <h1>NÃO HÁ NENHUM HORÁRIO MARCADO.</h1>
+    }
+} 
+else
+{
+    <h1 style="text-align: center;">PÁGINA INDISPONÍVEL</h1>
 }
