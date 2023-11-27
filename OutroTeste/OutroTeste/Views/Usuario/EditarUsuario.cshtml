@@ -9,13 +9,14 @@
 
 @if (Context.Session.GetString("User") != null)
 {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-
-
 
     <div class="wrapper">
         @if (TempData["MensagemErro"] != null)
@@ -53,8 +54,7 @@
             </div>
             <div class="input-box">
                 <label>Data de Nascimento:</label>
-                <input type="text" asp-for="dtNascimento" value="@Model.dtNascimento.ToString("dd/MM/yyyy")" placeholder="Data de Nascimento"
-                onfocus="this.type='date'" onblur="this.type='text'" style="padding-top: 10px; padding-bottom: 10px;"/> 
+                <input type="text" asp-for="dtNascimento" id="dtNascimento" value="@Model.dtNascimento.ToString("dd/MM/yyyy")" placeholder="Data de Nascimento" style="padding-top: 10px; padding-bottom: 10px;" />
             </div>
             <div class="input-box">
                 <label>Senha:</label>
@@ -97,6 +97,38 @@ else
             var inputVal = $(this).val();
             var capitalized = inputVal.replace(/(^|\s)\S/g, function (t) { return t.toUpperCase(); });
             $('#nmPessoa').val(capitalized);
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        flatpickr("#dtNascimento", {
+            dateFormat: "d-m-Y",
+            allowInput: true
+        });
+
+        const dtNascimento = document.getElementById('dtNascimento');
+        dtNascimento.addEventListener('input', function (e) {
+            var value = e.target.value;
+            value = value.replace(/\D/g, '') // Remove tudo que não é dígito
+                .replace(/^(\d{2})(\d)/, '$1-$2') // Coloca hífen depois do dia
+                .replace(/^(\d{2})-(\d{2})(\d)/, '$1-$2-$3'); // Coloca hífen depois do mês
+            e.target.value = value;
+        });
+
+        dtNascimento.addEventListener('input', function (e) {
+            var value = e.target.value;
+
+            // Remove tudo que não é dígito
+            value = value.replace(/\D/g, '');
+
+            // Limita o número total de dígitos para 8 (ddmmyyyy)
+            value = value.slice(0, 8);
+
+            // Insere hífen após o dia e mês
+            value = value.replace(/^(\d{2})(\d)/, '$1-$2')
+                .replace(/^(\d{2})-(\d{2})(\d)/, '$1-$2-$3');
+
+            e.target.value = value;
         });
     });
 </script>
