@@ -1,9 +1,5 @@
 ﻿@if (bool.Parse(Context.Session.GetString("IsAdmin") ?? "false"))
 {
-    <div id="mensagemErro" class="alert alert-danger" style="display:none; text-align: center;">
-        <span id="textoMensagemErro"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
 
 
     @if (TempData["MensagemSucesso"] != null)
@@ -16,7 +12,16 @@
 
     @if (ViewBag.HorarioAdministrador != null && ViewBag.HorarioAdministrador.Count > 0)
     {
-        <h1 style="text-align: center; padding-bottom: 10px;">FILTRAR HORÁRIOS</h1>
+        <div id="mensagemErro" class="alert alert-danger" style="display:none; text-align: center;">
+            <span id="textoMensagemErro"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center position-relative">
+            <a class="btn btn-voltar position-absolute" style="left: 0; padding:10px !important;" href="@Url.Action("HorarioAdministrador", "CentroAtendimento")">Resetar Filtros</a>
+            <h1 style="text-align: center; padding-bottom: 10px;">FILTRAR HORÁRIOS</h1>
+        </div>
+
         <div style="flex-direction: row;">
             <div class="dropdown">
                 <div class="form-group text-center">
@@ -101,6 +106,7 @@ else
 
 <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 <script>
+    var urlHorarioAdministrador = '@Url.Action("HorarioAdministrador", "CentroAtendimento")';
 
     $(document).ready(function () {
         $('#centroAtendimentoSelect').change(function () {
@@ -147,7 +153,6 @@ else
         var idServico = $('#servicoSelect').val();
         var nomeUsuario = $('#inputNomeUsuario').val();
 
-        // Verificação se todos os campos estão vazios
         if (!idCentroAtendimento && !idEspecialidade && !idServico && !nomeUsuario) {
             $('#textoMensagemErro').text('Por favor, preencha pelo menos um campo para filtrar.');
             $('#mensagemErro').show();
@@ -165,14 +170,25 @@ else
                 servico: idServico,
                 nomeUsuario: nomeUsuario
             },
-            success: function (data) {
-                if (data.length === 0) {
-                    $('#textoMensagemErro').text('Nenhum horário encontrado com os filtros aplicados.');
+            success: function (response) {
+                if (!response.success) {
+                    // Usar a mensagem de erro retornada pelo servidor
+                    $('#textoMensagemErro').text(response.message);
                     $('#mensagemErro').show();
                 } else {
-                    $('#mensagemErro').hide();
-                    atualizarHorarios(data);
+                    if (response.data.length === 0) {
+                        $('#textoMensagemErro').text('Nenhum horário encontrado com os filtros aplicados.');
+                        $('#mensagemErro').show();
+                    } else {
+                        $('#mensagemErro').hide();
+                        atualizarHorarios(response.data);
+                    }
                 }
+            },
+            error: function (xhr, status, error) {
+                // Tratamento de erro de solicitação AJAX
+                $('#textoMensagemErro').text('Ocorreu um erro na solicitação: ' + error);
+                $('#mensagemErro').show();
             }
         });
     });

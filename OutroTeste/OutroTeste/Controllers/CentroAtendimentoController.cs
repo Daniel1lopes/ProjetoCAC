@@ -446,7 +446,7 @@ namespace agenda.Controllers
             // Centro & Especialidade
             if (nomeUsuario == null && centroAtendimento != null && especialidade != null && servico == null)
             {
-                horariosFiltrados = _context.AgendamentoFulls.Where(af => af.icAtivoAgendamento == true && af.idCentroAtendimento == centroAtendimento).Join(_context.Pessoas, af => af.idPessoa, p => p.idPessoa,
+                horariosFiltrados = _context.AgendamentoFulls.Where(af => af.icAtivoAgendamento == true && af.idCentroAtendimento == centroAtendimento && af.idEspecialidade == especialidade).Join(_context.Pessoas, af => af.idPessoa, p => p.idPessoa,
                                                           (af, p) => new
                                                           {
                                                               af.dtAgenda,
@@ -508,7 +508,12 @@ namespace agenda.Controllers
                     })
                     .ToList();
             }
-            return Json(horariosFiltrados); 
+            if (horariosFiltrados == null || !horariosFiltrados.Any()) 
+            {
+                return Json(new { success = false, message = "Nenhum horário encontrado." });
+            }
+
+            return Json(new { success = true, data = horariosFiltrados });
         }
     }
 }
