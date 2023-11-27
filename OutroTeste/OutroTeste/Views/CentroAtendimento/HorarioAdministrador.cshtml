@@ -268,8 +268,14 @@ else
         var workbook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(workbook, worksheet, "Ocorrencias");
 
+        var dataAtual = new Date();
+        var dia = ('0' + dataAtual.getDate()).slice(-2); // Adiciona um zero à esquerda se necessário
+        var mes = ('0' + (dataAtual.getMonth() + 1)).slice(-2); // Adiciona um zero à esquerda se necessário
+        var ano = dataAtual.getFullYear();
+        var nomeArquivo = "AgendaCAC_" + dia + "-" + mes + "-" + ano + ".xlsx";
+
         // Gerar o arquivo Excel e simular um clique para download
-        XLSX.writeFile(workbook, "Ocorrencias.xlsx");
+        XLSX.writeFile(workbook, nomeArquivo);
     });
 
 </script>

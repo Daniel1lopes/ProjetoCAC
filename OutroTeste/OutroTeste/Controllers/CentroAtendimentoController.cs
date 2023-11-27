@@ -182,6 +182,9 @@ namespace agenda.Controllers
 
             var idPessoaHorario = HttpContext.Session.GetInt32("idPessoa");
 
+            var PessoaImprimir = _context.Pessoas.Where(p => p.idPessoa == idPessoaHorario).Select(p => new { p.nmPessoa, p.nuTelefone }).FirstOrDefault();
+            ViewBag.PessoaImprimir = PessoaImprimir;
+
             var HorarioAgendado = _context.AgendamentoFulls.Where(ag => ag.idPessoa == idPessoaHorario && ag.icAtivoAgendamento == true).ToList();
 
             ViewBag.HorarioAgendado = HorarioAgendado;
