@@ -3,7 +3,7 @@
     "",
     "\\OutroTeste",
     "\\OutroTeste\\OutroTeste",
-    "\\OutroTeste\\OutroTeste\\Controllers",
+    "\\OutroTeste\\OutroTeste\\Models",
     "\\OutroTeste\\OutroTeste\\Views",
     "\\OutroTeste\\OutroTeste\\Views\\CentroAtendimento",
     "\\OutroTeste\\OutroTeste\\Views\\Shared",
@@ -11,6 +11,6 @@
     "\\OutroTeste\\OutroTeste\\wwwroot",
     "\\OutroTeste\\OutroTeste\\wwwroot\\css"
   ],
-  "SelectedNode": "\\OutroTeste\\OutroTeste\\Views\\Usuario\\EditarUsuario.cshtml",
+  "SelectedNode": "\\OutroTeste\\OutroTeste\\Models\\Agenda.cs",
   "PreviewInSolutionExplorer": false
 }
