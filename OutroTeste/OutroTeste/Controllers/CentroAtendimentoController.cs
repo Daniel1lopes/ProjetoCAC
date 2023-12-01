@@ -360,7 +360,7 @@ namespace agenda.Controllers
             // Nome & Centro 
             if (nomeUsuario != null && centroAtendimento != null && especialidade == null && servico == null && dtInicio == null && dtFim == null)
             {
-                horariosFiltrados = _context.AgendamentoFulls
+                var horarios = _context.AgendamentoFulls
                     .Where(af => af.icAtivoAgendamento && af.idCentroAtendimento == centroAtendimento)
                     .Join(_context.Pessoas,
                           af => af.idPessoa,
@@ -382,11 +382,27 @@ namespace agenda.Controllers
                         joined.Pessoa.nuTelefone
                     })
                     .ToList();
+
+
+                horariosFiltrados = horarios.Select(h => new
+                {
+                    dtAgenda = h.dtAgenda.ToString("dd/MM/yyyy"),
+                    h.hrInicio,
+                    h.hrFim,
+                    h.nmCentroAtendimento,
+                    h.nmEspecialidade,
+                    h.nmServico,
+                    h.idAgendamento,
+                    h.nmUnidadeAtendimento,
+                    h.nmPessoa,
+                    h.edEmail,
+                    h.nuTelefone
+                }).ToList();
             }
             // Nome & Centro & Especialidade
             if (nomeUsuario != null && centroAtendimento != null && especialidade != null && servico == null && dtInicio == null && dtFim == null)
             {
-                horariosFiltrados = _context.AgendamentoFulls
+                var horarios = _context.AgendamentoFulls
                     .Where(af => af.icAtivoAgendamento && af.idCentroAtendimento == centroAtendimento && af.idEspecialidade == especialidade)
                     .Join(_context.Pessoas,
                           af => af.idPessoa,
@@ -408,11 +424,27 @@ namespace agenda.Controllers
                         joined.Pessoa.nuTelefone
                     })
                     .ToList();
+
+
+                horariosFiltrados = horarios.Select(h => new
+                {
+                    dtAgenda = h.dtAgenda.ToString("dd/MM/yyyy"),
+                    h.hrInicio,
+                    h.hrFim,
+                    h.nmCentroAtendimento,
+                    h.nmEspecialidade,
+                    h.nmServico,
+                    h.idAgendamento,
+                    h.nmUnidadeAtendimento,
+                    h.nmPessoa,
+                    h.edEmail,
+                    h.nuTelefone
+                }).ToList();
             }
             // Nome & Centro & Especialidade & Servico 
             if (nomeUsuario != null && centroAtendimento != null && especialidade != null && servico != null && dtInicio == null && dtFim == null)
             {
-                horariosFiltrados = _context.AgendamentoFulls
+                var horarios = _context.AgendamentoFulls
                     .Where(af => af.icAtivoAgendamento && af.idCentroAtendimento == centroAtendimento && af.idEspecialidade == especialidade && af.idServico == servico) 
                     .Join(_context.Pessoas,
                           af => af.idPessoa,
@@ -434,11 +466,27 @@ namespace agenda.Controllers
                         joined.Pessoa.nuTelefone
                     })
                     .ToList();
+
+
+                horariosFiltrados = horarios.Select(h => new
+                {
+                    dtAgenda = h.dtAgenda.ToString("dd/MM/yyyy"),
+                    h.hrInicio,
+                    h.hrFim,
+                    h.nmCentroAtendimento,
+                    h.nmEspecialidade,
+                    h.nmServico,
+                    h.idAgendamento,
+                    h.nmUnidadeAtendimento,
+                    h.nmPessoa,
+                    h.edEmail,
+                    h.nuTelefone
+                }).ToList();
             }
             // Apenas Centro 
             if (nomeUsuario == null && centroAtendimento != null && especialidade == null && servico == null && dtInicio == null && dtFim == null)
             {
-                horariosFiltrados = _context.AgendamentoFulls.Where(af => af.icAtivoAgendamento == true && af.idCentroAtendimento == centroAtendimento).Join(_context.Pessoas, af => af.idPessoa, p => p.idPessoa,
+                var horarios = _context.AgendamentoFulls.Where(af => af.icAtivoAgendamento == true && af.idCentroAtendimento == centroAtendimento).Join(_context.Pessoas, af => af.idPessoa, p => p.idPessoa,
                                                           (af, p) => new
                                                           {
                                                               af.dtAgenda,
@@ -453,11 +501,27 @@ namespace agenda.Controllers
                                                               p.edEmail,
                                                               p.nuTelefone
                                                           }).ToList();
+
+
+                horariosFiltrados = horarios.Select(h => new
+                {
+                    dtAgenda = h.dtAgenda.ToString("dd/MM/yyyy"),
+                    h.hrInicio,
+                    h.hrFim,
+                    h.nmCentroAtendimento,
+                    h.nmEspecialidade,
+                    h.nmServico,
+                    h.idAgendamento,
+                    h.nmUnidadeAtendimento,
+                    h.nmPessoa,
+                    h.edEmail,
+                    h.nuTelefone
+                }).ToList();
             }
             // Centro & Especialidade
             if (nomeUsuario == null && centroAtendimento != null && especialidade != null && servico == null && dtInicio == null && dtFim == null)
             {
-                horariosFiltrados = _context.AgendamentoFulls.Where(af => af.icAtivoAgendamento == true && af.idCentroAtendimento == centroAtendimento && af.idEspecialidade == especialidade).Join(_context.Pessoas, af => af.idPessoa, p => p.idPessoa,
+                var horarios = _context.AgendamentoFulls.Where(af => af.icAtivoAgendamento == true && af.idCentroAtendimento == centroAtendimento && af.idEspecialidade == especialidade).Join(_context.Pessoas, af => af.idPessoa, p => p.idPessoa,
                                                           (af, p) => new
                                                           {
                                                               af.dtAgenda,
@@ -472,11 +536,27 @@ namespace agenda.Controllers
                                                               p.edEmail,
                                                               p.nuTelefone
                                                           }).ToList();
+
+
+                horariosFiltrados = horarios.Select(h => new
+                {
+                    dtAgenda = h.dtAgenda.ToString("dd/MM/yyyy"),
+                    h.hrInicio,
+                    h.hrFim,
+                    h.nmCentroAtendimento,
+                    h.nmEspecialidade,
+                    h.nmServico,
+                    h.idAgendamento,
+                    h.nmUnidadeAtendimento,
+                    h.nmPessoa,
+                    h.edEmail,
+                    h.nuTelefone
+                }).ToList();
             }
             // Centro & Especialidade & Serviço
             if (nomeUsuario == null && centroAtendimento != null && especialidade != null && servico != null && dtInicio == null && dtFim == null)
             {
-                horariosFiltrados = _context.AgendamentoFulls.Where(af => af.icAtivoAgendamento == true && af.idCentroAtendimento == centroAtendimento &&
+               var horarios = _context.AgendamentoFulls.Where(af => af.icAtivoAgendamento == true && af.idCentroAtendimento == centroAtendimento &&
                                                                         af.idEspecialidade == especialidade && af.idServico == servico).Join(_context.Pessoas, af => af.idPessoa, p => p.idPessoa,
                                                           (af, p) => new
                                                           {
@@ -492,11 +572,27 @@ namespace agenda.Controllers
                                                               p.edEmail,
                                                               p.nuTelefone
                                                           }).ToList();
+
+
+                horariosFiltrados = horarios.Select(h => new
+                {
+                    dtAgenda = h.dtAgenda.ToString("dd/MM/yyyy"),
+                    h.hrInicio,
+                    h.hrFim,
+                    h.nmCentroAtendimento,
+                    h.nmEspecialidade,
+                    h.nmServico,
+                    h.idAgendamento,
+                    h.nmUnidadeAtendimento,
+                    h.nmPessoa,
+                    h.edEmail,
+                    h.nuTelefone
+                }).ToList();
             }
             // Apenas Nome 
             if (nomeUsuario != null && centroAtendimento == null && especialidade == null && servico == null && dtInicio == null && dtFim == null)
             {
-                horariosFiltrados = _context.AgendamentoFulls
+                var horarios = _context.AgendamentoFulls
                     .Where(af => af.icAtivoAgendamento)
                     .Join(_context.Pessoas,
                           af => af.idPessoa,
@@ -518,6 +614,22 @@ namespace agenda.Controllers
                         joined.Pessoa.nuTelefone
                     })
                     .ToList();
+
+
+                horariosFiltrados = horarios.Select(h => new
+                {
+                    dtAgenda = h.dtAgenda.ToString("dd/MM/yyyy"),
+                    h.hrInicio,
+                    h.hrFim,
+                    h.nmCentroAtendimento,
+                    h.nmEspecialidade,
+                    h.nmServico,
+                    h.idAgendamento,
+                    h.nmUnidadeAtendimento,
+                    h.nmPessoa,
+                    h.edEmail,
+                    h.nuTelefone
+                }).ToList();
             }
 
             // Data Inicio

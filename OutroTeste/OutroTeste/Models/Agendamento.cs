@@ -10,6 +10,7 @@ namespace agenda.Models
     public class Agendamento
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idAgendamento { get; set; }
 
         [Column(TypeName = "smalldatetime")]

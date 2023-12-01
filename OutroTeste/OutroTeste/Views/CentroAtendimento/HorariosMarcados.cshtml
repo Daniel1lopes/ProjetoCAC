@@ -41,6 +41,17 @@
 
     @if (ViewBag.HorarioAgendado != null && ViewBag.HorarioAgendado.Count > 0)
     {
+        <div id="overlayConfirmacao"></div>
+        <div id="popupConfirmacao" style="padding: 30px;">
+            <h2 style="text-align: center; padding-bottom: 15px;">
+                Tem certeza que deseja cancelar este horário?
+            </h2>
+            <div style="text-align: center;">
+                <button id="confirmCancel" class="btn btn-primary">Sim, cancelar</button>
+                <button id="cancelCancel" class="btn btn-primary">Não, manter</button>
+            </div>
+        </div>
+
         <h1 style="text-align: center; padding-bottom: 10px;">HÓRARIOS MARCADOS</h1>
         <div class="cards-container">
             @foreach (var horario in ViewBag.HorarioAgendado)
@@ -58,11 +69,11 @@
                             <p><strong>Nome:</strong> @ViewBag.PessoaImprimir.nmPessoa</p>
                             <p><strong>Telefone:</strong> @ViewBag.PessoaImprimir.nuTelefone</p>
                         </div>
-                        <div class="button-group">
-                            <button class="button btn-print" data-card-id="@cardIndex">Imprimir</button>
-                            <form asp-controller="CentroAtendimento" asp-action="CancelarHorario" method="post">
+                        <div class="button-group" style="justify-content: center !important;">
+                            <button class="button btn-print" data-card-id="@cardIndex" style="margin:5px;">Imprimir</button>
+                            <form asp-controller="CentroAtendimento" asp-action="CancelarHorario" method="post" style="margin:5px;">
                                 <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
-                                <button class="button" type="submit">Cancelar</button>
+                                <button class="button" type="button">Cancelar Agendamento</button>
                             </form>
                         </div>
                     </div>
@@ -82,6 +93,29 @@ else
 }
 
 <script>
+    document.querySelectorAll('.button').forEach(function (button) {
+        button.addEventListener('click', function (event) {
+            event.preventDefault(); // Impede a submissão do formulário
+            var form = this.parentElement; // Captura o formulário
+
+            // Mostra o overlay e o popup
+            document.getElementById('overlayConfirmacao').style.display = 'block';
+            document.getElementById('popupConfirmacao').style.display = 'block';
+
+            // Define a ação para o botão de confirmação
+            document.getElementById('confirmCancel').onclick = function () {
+                form.submit(); // Submete o formulário
+            };
+
+            // Define a ação para o botão de cancelar ação
+            document.getElementById('cancelCancel').onclick = function () {
+                document.getElementById('overlayConfirmacao').style.display = 'none';
+                document.getElementById('popupConfirmacao').style.display = 'none';
+            };
+        });
+    });
+
+
     document.querySelectorAll('.btn-print').forEach(function (button) {
         button.addEventListener('click', function () {
             var cardId = this.getAttribute('data-card-id');

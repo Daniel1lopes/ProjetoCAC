@@ -14,6 +14,7 @@ namespace agenda.Models
 
         [Key]
         [Column("idAgenda", TypeName = "int")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int idAgenda { get; set; }
         [Column("dtAgenda", TypeName = "date")]
         public DateTime dtAgenda { get; set; }

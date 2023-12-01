@@ -100,7 +100,7 @@
                         <button class="btn btn-primary button-imprimir" data-id="@horario.idAgendamento">Imprimir</button>
                         <form asp-controller="CentroAtendimento" asp-action="CancelarHorarioADM" method="post" class="button-form">
                             <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
-                            <button class="btn btn-primary button-cancelar" type="submit">Cancelar</button>
+                            <button class="btn btn-primary button-cancelar" type="submit" data-id-agendamento="@horario.idAgendamento">Cancelar Agendamento</button>
                         </form>
                     </div>
                 </div>
@@ -274,16 +274,20 @@ else
 
             var botaoImprimir = $('<button>').addClass('btn btn-primary button-imprimir').text('Imprimir');
 
+            var urlCancelar = '@Url.Action("CancelarHorarioADM", "CentroAtendimento")';
+
             var formularioCancelar = $('<form>').attr({
-                'asp-controller': 'CentroAtendimento',
-                'asp-action': 'CancelarHorarioADM',
+                'action': urlCancelar, // Use a URL gerada
                 'method': 'post',
                 'class': 'button-form'
             }).append($('<input>').attr({
                 'type': 'hidden',
                 'name': 'idAgendamento',
-                'value': horario.idAgendamento
-            })).append($('<button>').addClass('btn btn-primary button-cancelar').attr('type', 'submit').text('Cancelar'));
+                'value': horario.idAgendamento 
+            })).append($('<button>').addClass('btn btn-primary button-cancelar').attr({
+                'type': 'submit',
+                'data-id-agendamento': horario.idAgendamento 
+            }).text('Cancelar Agendamento'));
 
             var buttonContainer = $('<div>').addClass('button-container d-flex justify-content-center')
                 .append(botaoImprimir)
@@ -296,6 +300,14 @@ else
             container.append(card);
         });
     }
+
+    $(document).on('submit', '.button-form', function (event) {
+        var idAgendamento = $(this).find('.button-cancelar').data('id-agendamento');
+        var confirmacao = confirm('Tem certeza que deseja cancelar o horário ?');
+        if (!confirmacao) {
+            event.preventDefault(); 
+        }
+    });
 
     $('#button-exportar-excel').click(function () {
         // Array para manter os dados de cada card
