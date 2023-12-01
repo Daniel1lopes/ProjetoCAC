@@ -1,6 +1,9 @@
 ﻿@if (bool.Parse(Context.Session.GetString("IsAdmin") ?? "false"))
 {
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     @if (TempData["MensagemSucesso"] != null)
     {
@@ -53,8 +56,18 @@
 
         <div class="form-group text-center">
             <label>Nome do usuário:</label>
-            <input type="text" class="form-control" id="inputNomeUsuario" placeholder="Insira o nome da pessoa" style="margin:auto;">
+            <input type="text" class="form-control" id="inputNomeUsuario" placeholder="Insira o nome completo da pessoa" style="margin:auto;">
         </div>
+
+        <div style="text-align: center;">
+            <label>Selecione o intervalo de tempo:</label>
+            <div style="margin-top: 10px;">
+                <input type="text" class="form-control" id="dtInicio" placeholder="Inicio" style="text-align: center; display: inline; width: 10%;">
+                <input type="text" class="form-control" id="dtFim" placeholder="Fim" style="text-align: center; display: inline; width: 10%;">
+            </div>
+        </div>
+
+
 
         <div class="d-flex justify-content-center" style="margin-top: 15px; margin-bottom: 15px;">
             <button id="button-filtrar" class="btn btn-primary">Filtrar</button>
@@ -84,7 +97,7 @@
                     </div>
                     <div></div>
                     <div class="button-container">
-                        <button class="btn btn-primary button-imprimir">Imprimir</button>
+                        <button class="btn btn-primary button-imprimir" data-id="@horario.idAgendamento">Imprimir</button>
                         <form asp-controller="CentroAtendimento" asp-action="CancelarHorarioADM" method="post" class="button-form">
                             <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
                             <button class="btn btn-primary button-cancelar" type="submit">Cancelar</button>
@@ -105,7 +118,44 @@ else
 }
 
 <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Aplica o flatpickr aos dois campos de entrada
+        flatpickr("#dtInicio", {
+            dateFormat: "d-m-Y",
+            allowInput: true,
+            "locale": "pt"
+        });
+        flatpickr("#dtFim", {
+            dateFormat: "d-m-Y",
+            allowInput: true,
+            "locale": "pt"
+        });
+
+        // Função para formatar a data
+        function formatarData(elemento) {
+            var value = elemento.value;
+            value = value.replace(/\D/g, '')
+                .slice(0, 8)
+                .replace(/^(\d{2})(\d)/, '$1-$2')
+                .replace(/^(\d{2})-(\d{2})(\d)/, '$1-$2-$3');
+            elemento.value = value;
+        }
+
+        // Adiciona o event listener para ambos os campos de entrada
+        const dtInicio = document.getElementById('dtInicio');
+        const dtFim = document.getElementById('dtFim');
+
+        dtInicio.addEventListener('blur', function (e) {
+            formatarData(e.target);
+        });
+
+        dtFim.addEventListener('blur', function (e) {
+            formatarData(e.target);
+        });
+    });
+
     var urlHorarioAdministrador = '@Url.Action("HorarioAdministrador", "CentroAtendimento")';
 
     $(document).ready(function () {
@@ -152,8 +202,10 @@ else
         var idEspecialidade = $('#especialidadeSelect').val();
         var idServico = $('#servicoSelect').val();
         var nomeUsuario = $('#inputNomeUsuario').val();
+        var dtInicio = $('#dtInicio').val();
+        var dtFim = $('#dtFim').val();
 
-        if (!idCentroAtendimento && !idEspecialidade && !idServico && !nomeUsuario) {
+        if (!idCentroAtendimento && !idEspecialidade && !idServico && !nomeUsuario && !dtInicio && !dtFim) {
             $('#textoMensagemErro').text('Por favor, preencha pelo menos um campo para filtrar.');
             $('#mensagemErro').show();
             return;
@@ -168,7 +220,9 @@ else
                 centroAtendimento: idCentroAtendimento,
                 especialidade: idEspecialidade,
                 servico: idServico,
-                nomeUsuario: nomeUsuario
+                nomeUsuario: nomeUsuario,
+                dtInicio: dtInicio,
+                dtFim: dtFim
             },
             success: function (response) {
                 if (!response.success) {
