@@ -418,3 +418,14 @@ body {
     padding: 20px;
     z-index: 1001;
 }
+
+.buttonCancelar {
+    border-color: #43054e !important;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    background-color: #43054e;
+    border: none;
+}

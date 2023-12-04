@@ -11840,11 +11840,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Desktop\\Desktop\\AgendaCAC\\AgendaCAC2\\ProjetoCAC\\OutroTeste\\OutroTeste\\OutroTeste.csproj",
-      "projectName": "OutroTeste",
-      "projectPath": "C:\\Users\\Desktop\\Desktop\\AgendaCAC\\AgendaCAC2\\ProjetoCAC\\OutroTeste\\OutroTeste\\OutroTeste.csproj",
+      "projectUniqueName": "C:\\Users\\Desktop\\Desktop\\AgendaCAC\\AgendaCAC2\\AgendaCAC\\ProjetoCAC\\OutroTeste\\OutroTeste\\AgendaCAC.csproj",
+      "projectName": "AgendaCAC",
+      "projectPath": "C:\\Users\\Desktop\\Desktop\\AgendaCAC\\AgendaCAC2\\AgendaCAC\\ProjetoCAC\\OutroTeste\\OutroTeste\\AgendaCAC.csproj",
       "packagesPath": "C:\\Users\\Desktop\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Desktop\\Desktop\\AgendaCAC\\AgendaCAC2\\ProjetoCAC\\OutroTeste\\OutroTeste\\obj\\",
+      "outputPath": "C:\\Users\\Desktop\\Desktop\\AgendaCAC\\AgendaCAC2\\AgendaCAC\\ProjetoCAC\\OutroTeste\\OutroTeste\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Desktop\\AppData\\Roaming\\NuGet\\NuGet.Config",

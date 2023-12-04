@@ -73,7 +73,7 @@
                             <button class="button btn-print" data-card-id="@cardIndex" style="margin:5px;">Imprimir</button>
                             <form asp-controller="CentroAtendimento" asp-action="CancelarHorario" method="post" style="margin:5px;">
                                 <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
-                                <button class="button" type="button">Cancelar Agendamento</button>
+                                <button class="buttonCancelar" type="button">Cancelar Agendamento</button>
                             </form>
                         </div>
                     </div>
@@ -94,7 +94,7 @@ else
 
 <script>
     // Popup confirmação
-    document.querySelectorAll('.button').forEach(function (button) {
+    document.querySelectorAll('.buttonCancelar:not(.btn-print)').forEach(function (button) {
         button.addEventListener('click', function (event) {
             event.preventDefault(); 
             var form = this.parentElement; 
