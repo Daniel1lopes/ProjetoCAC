@@ -38,21 +38,14 @@ namespace agenda.Controllers
             return View();
         }
 
-        public Pessoa BuscarPorEmail(string login)
+        public Pessoa BuscarPorCPF(string cpf)
         {
-            return _context.Pessoas.FirstOrDefault(x => x.edEmail.ToUpper() == login.ToUpper());
+            return _context.Pessoas.FirstOrDefault(x => x.nuCPF == cpf);
         }
 
         public String displayNomePessoa(string Usuario)
         {
-            if(Usuario.Contains("@"))
-            {
-                return _context.Pessoas.Where(p => p.edEmail == Usuario).Select(p => p.nmPessoa).FirstOrDefault();
-            } 
-            else
-            {
-                return _context.Pessoas.Where(x => x.nmPessoa.ToUpper() == Usuario.ToUpper()).Select(x => x.nmPessoa).FirstOrDefault();
-            }
+            return _context.Pessoas.Where(p => p.nuCPF == Usuario).Select(p => p.nmPessoa).FirstOrDefault();
         }
 
         [HttpPost]
@@ -64,18 +57,18 @@ namespace agenda.Controllers
                 {
                     var senha = login.Senha.GerarHash();
 
-                    var verificacaoSenha = _context.Pessoas.FirstOrDefault(x => x.coSenha == senha && x.edEmail == login.Usuario);
+                    var verificacaoSenha = _context.Pessoas.FirstOrDefault(x => x.coSenha == senha && x.nuCPF == login.Usuario);
 
                     var colaboradorAdmin = _context.Pessoas
-                        .Where(p => p.edEmail.ToUpper() == login.Usuario.ToUpper() && p.coSenha == senha)
+                        .Where(p => p.nuCPF == login.Usuario && p.coSenha == senha)
                         .Join(_context.Colaboradores, p => p.idPessoa, c => c.idPessoa, (p, c) => new { Pessoa = p, Colaborador = c })
                         .Where(pc => pc.Colaborador.icAdministrador == true && pc.Colaborador.icAtivo == true)
                         .Select(pc => pc.Colaborador.icAdministrador)
                         .FirstOrDefault();
+                        
+                    Pessoa pessoaCPF = BuscarPorCPF(login.Usuario);
 
-                    Pessoa pessoaEmail = BuscarPorEmail(login.Usuario);
-
-                    if (pessoaEmail != null)
+                    if (BuscarPorCPF != null)
                     {
                         if (verificacaoSenha != null)
                         {
@@ -86,9 +79,9 @@ namespace agenda.Controllers
 
                             HttpContext.Session.SetString("User", displayNomePessoa(login.Usuario));
                             
-                            if (pessoaEmail != null) 
+                            if (BuscarPorCPF != null) 
                             {
-                                HttpContext.Session.SetInt32("idPessoa", pessoaEmail.idPessoa);
+                                HttpContext.Session.SetInt32("idPessoa", pessoaCPF.idPessoa);
                             }
 
                             return RedirectToAction("Index", "CentroAtendimento");
@@ -156,6 +149,15 @@ namespace agenda.Controllers
                     return View("CriarConta", pessoa);
                 }
 
+                bool validarCPF = Pessoa.ValidarCPF(pessoa.nuCPF);
+
+                if (validarCPF == false)
+                {
+                    TempData["MensagemErro"] = "O CPF digitado não existe.";
+
+                    return View("CriarConta", pessoa);
+                }
+
                 var cpfExistente = _context.Pessoas.FirstOrDefault(p => p.nuCPF == pessoa.nuCPF);
                 var emailExistente = _context.Pessoas.FirstOrDefault(p => p.edEmail == pessoa.edEmail);
 
@@ -214,7 +216,7 @@ namespace agenda.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Pessoa pessoa = _context.Pessoas.FirstOrDefault(x => x.edEmail.ToUpper() == esqueceuSenha.Email.ToUpper());
+                    Pessoa pessoa = _context.Pessoas.FirstOrDefault(x => x.nuCPF == esqueceuSenha.CPF);
 
                     if (pessoa != null)
                     {
@@ -339,7 +341,16 @@ namespace agenda.Controllers
             {
                if (ModelState.IsValid)
                {
-                   if (editar.dtNascimento > DateTime.Now)
+                    bool validarCPF = Pessoa.ValidarCPF(editar.nuCPF);
+
+                    if (validarCPF == false)
+                    {
+                        TempData["MensagemErro"] = "O CPF digitado não existe.";
+
+                        return View("EditarUsuario", editarPessoaErro);
+                    }
+
+                    if (editar.dtNascimento > DateTime.Now)
                    {
                        TempData["MensagemErro"] = "A data de nascimento não pode estar no futuro.";
 
@@ -412,11 +423,6 @@ namespace agenda.Controllers
                 TempData["MensagemErro"] = $"Ops, não conseguimos redefinir sua senha, tente novamente, detalhe do erro: {erro.Message}";
                 return RedirectToAction("EditarUsuario");
             }
-        }
-
-        public IActionResult Teste()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

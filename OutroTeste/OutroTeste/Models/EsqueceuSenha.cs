@@ -4,11 +4,11 @@ namespace agenda.Models
 {
     public class EsqueceuSenha
     {
-        [Required(ErrorMessage = "Por favor, preencha o email")]
-        [EmailAddress(ErrorMessage = "Por favor, insira um email válido")]
-        [Display(Name = "Digite o email registrado", Prompt = "Insira o email registrado")]
-        [StringLength(70)]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "Por favor, preencha o CPF")]
+        [Display(Name = "Digite o CPF registrado", Prompt = "Insira o CPF registrado")]
+        [StringLength(11)]
+        [RegularExpression(@"^\d{11}$", ErrorMessage = "O CPF deve conter exatamente 11 dígitos.")]
+        public string CPF { get; set; }
 
     }
 }

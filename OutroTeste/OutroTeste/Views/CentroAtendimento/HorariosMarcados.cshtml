@@ -93,21 +93,19 @@ else
 }
 
 <script>
+    // Popup confirmação
     document.querySelectorAll('.button').forEach(function (button) {
         button.addEventListener('click', function (event) {
-            event.preventDefault(); // Impede a submissão do formulário
-            var form = this.parentElement; // Captura o formulário
+            event.preventDefault(); 
+            var form = this.parentElement; 
 
-            // Mostra o overlay e o popup
             document.getElementById('overlayConfirmacao').style.display = 'block';
             document.getElementById('popupConfirmacao').style.display = 'block';
 
-            // Define a ação para o botão de confirmação
             document.getElementById('confirmCancel').onclick = function () {
-                form.submit(); // Submete o formulário
+                form.submit(); 
             };
 
-            // Define a ação para o botão de cancelar ação
             document.getElementById('cancelCancel').onclick = function () {
                 document.getElementById('overlayConfirmacao').style.display = 'none';
                 document.getElementById('popupConfirmacao').style.display = 'none';
@@ -115,20 +113,17 @@ else
         });
     });
 
-
+    // Imprimir
     document.querySelectorAll('.btn-print').forEach(function (button) {
         button.addEventListener('click', function () {
             var cardId = this.getAttribute('data-card-id');
             var cardContent = document.getElementById('card-' + cardId).innerHTML;
             var originalContent = document.body.innerHTML;
 
-            // Prepara a página para impressão
             document.body.innerHTML = cardContent;
 
-            // Imprime a página
             window.print();
 
-            // Restaura o conteúdo original da página
             document.body.innerHTML = originalContent;
         });
     });

@@ -105,5 +105,42 @@ namespace agenda.Models
             coSenha = novaSenha.GerarHash();
             return novaSenha;
         }
+
+        public static bool ValidarCPF(string cpf)
+        {
+            cpf = cpf.Trim().Replace(".", "").Replace("-", "");
+
+            if (cpf.Length != 11)
+                return false;
+
+            foreach (var n in cpf)
+            {
+                if (!char.IsDigit(n))
+                    return false;
+            }
+
+            if (cpf.All(c => c == cpf[0]))
+                return false;
+
+            var multiplicadores1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            var multiplicadores2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+            var tempCpf = cpf.Substring(0, 9);
+            var soma = tempCpf.Select((c, i) => (c - '0') * multiplicadores1[i]).Sum();
+
+            var resto = soma % 11;
+            resto = resto < 2 ? 0 : 11 - resto;
+
+            var digito = resto.ToString();
+            tempCpf += digito;
+            soma = tempCpf.Select((c, i) => (c - '0') * multiplicadores2[i]).Sum();
+
+            resto = soma % 11;
+            resto = resto < 2 ? 0 : 11 - resto;
+
+            digito += resto.ToString();
+
+            return cpf.EndsWith(digito);
+        }
     }
 }

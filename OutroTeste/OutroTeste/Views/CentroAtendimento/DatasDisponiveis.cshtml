@@ -98,12 +98,12 @@
         <h4 id="horarioAgenda">Horário: </h4>
         <h4 id="qtdeDisponivel">Vaga(s) Disponíveis: </h4>
         <div style="display: flex; justify-content: center; gap: 10px;">
-            <button class="btn btn-primary btn-fechar-popup" style="width: 50%;">Cancelar</button>
             <form asp-controller="CentroAtendimento" asp-action="MarcacaoDeHorario" method="post" style="width: 50%;">
                 <input type="hidden" name="idAgenda" id="formIDAgenda" />
                 <input type="hidden" name="idPessoa" value="@Context.Session.GetString("User")" />
                 <button class="btn btn-primary" id="confirmButton" style="width: 100%;">Confirmar</button>
             </form>
+            <button class="btn btn-primary btn-fechar-popup" style="width: 50%;">Cancelar</button>
         </div>
     </div>
     <!-- A sobreposição -->

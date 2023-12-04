@@ -15,6 +15,17 @@
 
     @if (ViewBag.HorarioAdministrador != null && ViewBag.HorarioAdministrador.Count > 0)
     {
+        <div id="overlayConfirmacao"></div>
+        <div id="popupConfirmacao" style="padding: 30px;">
+            <h2 style="text-align: center; padding-bottom: 15px;">
+                Tem certeza que deseja cancelar este horário?
+            </h2>
+            <div style="text-align: center;">
+                <button id="confirmCancel" class="btn btn-primary">Sim, cancelar</button>
+                <button id="cancelCancel" class="btn btn-primary">Não, manter</button>
+            </div>
+        </div>
+
         <div id="mensagemErro" class="alert alert-danger" style="display:none; text-align: center;">
             <span id="textoMensagemErro"></span>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -97,7 +108,7 @@
                     </div>
                     <div></div>
                     <div class="button-container">
-                        <button class="btn btn-primary button-imprimir" data-id="@horario.idAgendamento">Imprimir</button>
+                        <button class="btn btn-primary button-imprimir" data-id="@horario.idAgendamento" style="display:none">Imprimir</button>
                         <form asp-controller="CentroAtendimento" asp-action="CancelarHorarioADM" method="post" class="button-form">
                             <input type="hidden" name="idAgendamento" value="@horario.idAgendamento" />
                             <button class="btn btn-primary button-cancelar" type="submit" data-id-agendamento="@horario.idAgendamento">Cancelar Agendamento</button>
@@ -226,7 +237,6 @@ else
             },
             success: function (response) {
                 if (!response.success) {
-                    // Usar a mensagem de erro retornada pelo servidor
                     $('#textoMensagemErro').text(response.message);
                     $('#mensagemErro').show();
                 } else {
@@ -240,7 +250,6 @@ else
                 }
             },
             error: function (xhr, status, error) {
-                // Tratamento de erro de solicitação AJAX
                 $('#textoMensagemErro').text('Ocorreu um erro na solicitação: ' + error);
                 $('#mensagemErro').show();
             }
@@ -272,12 +281,12 @@ else
             
             var divVazia = $('<div>');
 
-            var botaoImprimir = $('<button>').addClass('btn btn-primary button-imprimir').text('Imprimir');
+            var botaoImprimir = $('<button>').addClass('btn btn-primary button-imprimir').text('Imprimir').css('display','none');
 
             var urlCancelar = '@Url.Action("CancelarHorarioADM", "CentroAtendimento")';
 
             var formularioCancelar = $('<form>').attr({
-                'action': urlCancelar, // Use a URL gerada
+                'action': urlCancelar, 
                 'method': 'post',
                 'class': 'button-form'
             }).append($('<input>').attr({
@@ -301,13 +310,28 @@ else
         });
     }
 
+    var formularioAtual = null;
+
     $(document).on('submit', '.button-form', function (event) {
-        var idAgendamento = $(this).find('.button-cancelar').data('id-agendamento');
-        var confirmacao = confirm('Tem certeza que deseja cancelar o horário ?');
-        if (!confirmacao) {
-            event.preventDefault(); 
-        }
+        event.preventDefault();
+        formularioAtual = this;
+
+        document.getElementById('overlayConfirmacao').style.display = 'block';
+        document.getElementById('popupConfirmacao').style.display = 'block';
     });
+
+
+    document.getElementById('confirmCancel').onclick = function () {
+        if (formularioAtual) {
+            formularioAtual.submit();
+        }
+    };
+
+    document.getElementById('cancelCancel').onclick = function () {
+        document.getElementById('overlayConfirmacao').style.display = 'none';
+        document.getElementById('popupConfirmacao').style.display = 'none';
+    };
+
 
     $('#button-exportar-excel').click(function () {
         // Array para manter os dados de cada card
